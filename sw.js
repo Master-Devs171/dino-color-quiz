@@ -1,5 +1,5 @@
-const CACHE='dino-match-v35';
-const FILES=['./','./index.html','./style.css?v=15','./world.css?v=26','./racer.css?v=2','./app.js?v=35','./racer.js?v=6','./version.json','./assets/three.module.js','./assets/three.core.js','./manifest.webmanifest','./icon.svg','./assets/dino-puzzles.jpg','./assets/dino-puzzles-2.jpg','./assets/puzzle-adventures.png','./assets/puzzle-wonders.png','./assets/puzzle-discoveries.png'];
+const CACHE='dino-match-v36';
+const FILES=['./','./index.html','./style.css?v=15','./world.css?v=27','./racer.css?v=2','./app.js?v=36','./racer.js?v=6','./version.json','./assets/three.module.js','./assets/three.core.js','./manifest.webmanifest','./icon.svg','./assets/dino-puzzles.jpg','./assets/dino-puzzles-2.jpg','./assets/puzzle-adventures.png','./assets/puzzle-wonders.png','./assets/puzzle-discoveries.png'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>Promise.all(FILES.map(file=>c.add(file).catch(()=>null)))).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 self.addEventListener('message',e=>{if(e.data==='SKIP_WAITING')self.skipWaiting()});
