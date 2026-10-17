@@ -2,7 +2,7 @@ let THREE;
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],praises=['Fantástico!','Muito bem!','Boa!','És incrível!','Conseguiste!'];
 const defaultState={puzzle:{level:0,pieces:[],completed:[]},paint:{row:null,col:0,image:'',color:'#ff6688'},blocks:{mapVersion:3,inventoryVersion:2,x:500,y:505,dir:{x:0,y:-1},collected:[],placed:[],selected:'brick',grass:100,brick:100,water:100,flower:100,food:100,fed:[],animals:[],adopted:null}};
 let state;try{const saved=JSON.parse(localStorage.dinoFunStateV11||'{}');state=structuredClone(defaultState);state.puzzle=Object.assign(state.puzzle,saved.puzzle||{});state.paint=Object.assign(state.paint,saved.paint||{});state.blocks=Object.assign(state.blocks,saved.blocks||{});if(state.blocks.mapVersion!==3)state.blocks=structuredClone(defaultState.blocks);if(saved.blocks?.inventoryVersion!==2){Object.assign(state.blocks,{inventoryVersion:2,grass:100,brick:100,water:100,flower:100,food:100})}}catch(e){state=structuredClone(defaultState)}
-const APP_VERSION='1.29';
+const APP_VERSION='1.30';
 const MAX_PLACED_BLOCKS=1200;
 let sound=true,audioCtx,puzzleLevel=state.puzzle.level,puzzlePieces=[],puzzleSelected=null,puzzleLocked=false,swRegistration,updateFound=false,manualUpdate=false,reloading=false,updateSetupPromise,saveTimer;
 const screens=$$('.screen');
@@ -18,7 +18,9 @@ function openGame(game){tone(520);if(game==='puzzle'){puzzleLevel=Math.min(state
 const puzzleData=[
  ...['Bronto no prado','Tricerátops das flores','Estego do lago','T-Rex da selva','Pterodáctilo dos vulcões','Anquilo do jardim'].map((name,index)=>({name,image:'assets/dino-puzzles.jpg',cols:3,rows:2,index})),
  ...['Velociraptor do rio','Parassauro das flores','Paquicefalossauro das rochas','Diplodoco do arco-íris','Espinossauro da lagoa','Bebé T-Rex no ovo','Iguanodonte da floresta','Dino das borboletas','Estiracossauro do outono','Mosassauro no oceano','Estegossauro da praia','Braquiossauro da neve'].map((name,index)=>({name,image:'assets/dino-puzzles-2.jpg',cols:4,rows:3,index})),
- ...['Camião dos bombeiros','Astronauta na Lua','Submarino no oceano','Trator da quinta','Dragão do castelo','Comboio das montanhas','Família de elefantes','Escavadora em ação','Navio dos piratas','Foguetão nas estrelas'].map((name,index)=>({name,image:'assets/puzzle-adventures.png',cols:5,rows:2,index}))
+ ...['Camião dos bombeiros','Astronauta na Lua','Submarino no oceano','Trator da quinta','Dragão do castelo','Comboio das montanhas','Família de elefantes','Escavadora em ação','Navio dos piratas','Foguetão nas estrelas'].map((name,index)=>({name,image:'assets/puzzle-adventures.png',cols:5,rows:2,index})),
+ ...['Panda do bambu','Tucano da floresta','Família de ursos polares','Golfinho tropical','Raposa de outono','Coala do eucalipto','Unicórnio do arco-íris','Sereia do palácio','Tesouro da gruta','Robô do futuro','Balão sobre os campos','Farol ao luar'].map((name,index)=>({name,image:'assets/puzzle-wonders.png',cols:6,rows:2,index})),
+ ...['Autocarro escolar','Helicóptero de salvamento','Veleiro da baía','Veterinária e cachorrinho','Padeiro da aldeia','Astrónomo dos planetas','Bombeira corajosa','Arqueóloga dos fósseis','Limpa-neves da montanha','Autocaravana no lago'].map((name,index)=>({name,image:'assets/puzzle-discoveries.png',cols:5,rows:2,index}))
 ];
 function puzzleGrid(){return puzzleLevel<2?2:3}
 function pieceStyle(piece,n){const p=puzzleData[puzzleLevel],pc=p.index%p.cols,pr=Math.floor(p.index/p.cols),col=piece%n,row=Math.floor(piece/n),x=(pc+col/n)/(p.cols-1/n)*100,y=(pr+row/n)/(p.rows-1/n)*100;return `background-image:url('${p.image}');background-size:${p.cols*n*100}% ${p.rows*n*100}%;background-position:${x}% ${y}%`}
