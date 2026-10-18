@@ -1,6 +1,6 @@
-const CACHE='dino-match-v56';
-const FILES=['./','./index.html','./style.css?v=15','./world.css?v=30','./racer.css?v=3','./assets/qrcode.js?v=1','./assets/jsQR.js?v=1','./app.js?v=56','./multiplayer.js?v=4','./racer.js?v=15','./version.json','./assets/three.module.js','./assets/three.core.js','./manifest.webmanifest','./icon.svg','./assets/dino-puzzles.jpg','./assets/dino-puzzles-2.jpg','./assets/puzzle-adventures.png','./assets/puzzle-wonders.png','./assets/puzzle-discoveries.png'];
+const CACHE='dinoplay-core-v57';
+const FILES=['./','./index.html','./style.css?v=15','./platform.css?v=1','./platform.js?v=1','./app.js?v=56','./version.json','./manifest.webmanifest','./icon.svg'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>Promise.all(FILES.map(file=>c.add(file).catch(()=>null)))).then(()=>self.skipWaiting())));
-self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
+self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE&&!k.startsWith('dinoplay-games-')).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 self.addEventListener('message',e=>{if(e.data==='SKIP_WAITING')self.skipWaiting()});
 self.addEventListener('fetch',e=>{if(e.request.mode==='navigate'){e.respondWith(fetch(e.request).then(r=>{const copy=r.clone();caches.open(CACHE).then(c=>c.put('./index.html',copy));return r}).catch(()=>caches.match('./index.html')));return}if(new URL(e.request.url).pathname.endsWith('/version.json')){e.respondWith(fetch(e.request,{cache:'no-store'}).catch(()=>caches.match('./version.json')));return}e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))});
