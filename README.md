@@ -1,4 +1,4 @@
-# Dino Diversão
+# DinoPlay
 
 Aplicação infantil instalável no Android para crianças a partir dos 5 anos. Inclui 50 puzzles coloridos de dinossauros, animais, fantasia, veículos, profissões e descobertas, o Mundo dos Blocos 3D e a Grande Corrida dos Dinos 3D, com rivais, obstáculos, estrelas, turbo, pontuação e recorde guardado. O Mundo dos Blocos é uma aventura de exploração, mineração e construção em ecrã completo num mapa 1000×1000. O terreno é formado por blocos e inclui montanhas, vales, neve, areia, rios, lagos e lava, com oito camadas escaváveis até à rocha-mãe. A água e a lava podem entrar nos canais abertos pelo jogador. Picareta, pá e machado são encontrados no mapa e servem para recolher pedra, terra e madeira. Uma casa inicial grande de 13×9 blocos, com paredes altas, divisões, porta, várias janelas e telhado, pode ser desmontada, reconstruída e ampliada. A movimentação é deliberadamente mais lenta para permitir avançar um bloco de cada vez. O mapa tem 100 estrelas; cada estrela oferece 100 unidades de cada bloco. O reinício pede confirmação, não existem animais de estimação, chat nem contas online, e todo o progresso fica guardado no dispositivo.
 
