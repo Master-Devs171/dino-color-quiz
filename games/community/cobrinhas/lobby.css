@@ -147,3 +147,19 @@ body[data-menu="playing"] #power-status{top:88px;background:#320958e8;border-col
 @media(max-width:700px){body[data-menu="playing"] header{left:12px;right:12px;}body[data-menu="playing"] #mini-task{top:84px;left:96px;right:12px;transform:none;font-size:11px;padding:9px;width:auto;}body[data-menu="playing"] #power-status{top:135px;left:96px;right:12px;transform:none;width:auto;max-width:none;font-size:10px;}body[data-menu="playing"] #scoreboard{background:#270845e8;}}
 @media(min-width:701px) and (max-width:1200px){body[data-menu="playing"] #mini-task{top:112px;left:165px;transform:none;font-size:12px;padding:9px 14px;}}
 body[data-menu="playing"] #mini-task{bottom:auto;height:auto;} @media(max-width:700px){body[data-menu="playing"] #mini-task{max-width:none;}}
+/* Pause and game-over share a real card layout, without the lobby's side rails. */
+body:is([data-menu="paused"],[data-menu="end"]) .welcome{width:min(760px,100%);max-width:760px;min-height:0;}
+body:is([data-menu="paused"],[data-menu="end"]) .welcome-content{padding:22px 26px;gap:18px;min-width:0;}
+body:is([data-menu="paused"],[data-menu="end"]) .journey-summary{position:static;width:100%;margin:0;grid-template-columns:1fr auto;}
+body:is([data-menu="paused"],[data-menu="end"]) .pause-title{margin:0;text-align:center;font-size:28px;}
+body:is([data-menu="paused"],[data-menu="end"]) .welcome fieldset{display:none;}
+body:is([data-menu="paused"],[data-menu="end"]) #customize{width:min(440px,100%);min-height:0;margin:5px 0 8px;padding:0 12px 14px;box-sizing:border-box;}
+body:is([data-menu="paused"],[data-menu="end"]) #lobby-snake{max-height:120px;}
+body:is([data-menu="paused"],[data-menu="end"]) #play{width:min(440px,100%);min-height:80px;height:auto;padding:15px 20px;font-size:27px;line-height:1.2;box-sizing:border-box;gap:14px;}
+body:is([data-menu="paused"],[data-menu="end"]) #play>span:first-child{min-width:0;white-space:normal;overflow-wrap:normal;}
+body:is([data-menu="paused"],[data-menu="end"]) .garden-menu{position:static;width:100%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:24px 0 0;order:5;}
+body:is([data-menu="paused"],[data-menu="end"]) .garden-menu button{width:100%;min-width:0;min-height:100px;box-sizing:border-box;}
+body:is([data-menu="paused"],[data-menu="end"]) .garden-menu b{font-size:15px;}
+body:is([data-menu="paused"],[data-menu="end"]) .welcome-foot{order:6;width:100%;margin:10px 0 0;}
+body:is([data-menu="paused"],[data-menu="end"]) #round-result{width:100%;box-sizing:border-box;text-align:center;}
+@media(max-width:700px){body:is([data-menu="paused"],[data-menu="end"]) .welcome-content{padding:8px 4px 18px;gap:17px;}body:is([data-menu="paused"],[data-menu="end"]) .garden-menu{grid-template-columns:repeat(2,minmax(0,1fr));gap:38px 12px;}body:is([data-menu="paused"],[data-menu="end"]) #play{font-size:24px;min-height:76px;}body:is([data-menu="paused"],[data-menu="end"]) #customize{width:calc(100% - 24px);}}

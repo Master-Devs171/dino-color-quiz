@@ -62,6 +62,7 @@
   };
   function uiMode(mode) {
     document.body.dataset.menu = mode;
+    if (mode !== "playing") overlay.scrollTop = 0;
     sceneDirty = true;
   }
   function interpolate(s) {
