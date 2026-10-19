@@ -168,6 +168,7 @@
   $("skin-save").onclick = () => {
     appearance = SnakeStyle.sanitize(draft);
     syncColor();
+    window.GardenJournal?.record("outfit", appearance.pattern);
     if (hostReady)
       DinoPlay.storage
         .set("appearance", appearance)
@@ -177,6 +178,8 @@
             performance.now(),
           ),
         );
+    if (!hostReady)
+      window.GardenSave?.set("appearance", appearance).catch(() => {});
     closeEditor();
   };
   function previewSkin(t) {
@@ -222,7 +225,21 @@
   const keys = new Set(),
     fruits = ["🍎", "🍓", "🍊", "🍇", "🍒"];
   async function connect() {
-    if (window.parent === window) return;
+    if (window.parent === window) {
+      try {
+        const saved = await window.GardenSave?.get("best");
+        if (Number.isFinite(saved) && saved > best) {
+          best = saved;
+          $("best").textContent = best;
+        }
+        const savedStyle = await window.GardenSave?.get("appearance");
+        if (savedStyle) {
+          appearance = SnakeStyle.sanitize(savedStyle);
+          syncColor();
+        }
+      } catch {}
+      return;
+    }
     try {
       await DinoPlay.ready();
       hostReady = true;
@@ -241,7 +258,7 @@
       /* The game remains playable if the host is unavailable. */
     }
   }
-  connect();
+  const connectionReady = connect();
   function resize() {
     sceneDirty = true;
     width = innerWidth;
@@ -276,6 +293,7 @@
     if (!running) {
       $("round-result").hidden = true;
       game.reset();
+      window.GardenJournal?.record("rounds", 1);
       heading = 0;
       running = true;
       simulationClock = 0;
@@ -330,7 +348,13 @@
       e.preventDefault();
       keys.add(e.code);
     }
-    if (e.code === "Escape" && !e.repeat && !wardrobe.open) pause();
+    if (
+      e.code === "Escape" &&
+      !e.repeat &&
+      !wardrobe.open &&
+      !$("adventures").open
+    )
+      pause();
   });
   addEventListener("keyup", (e) => keys.delete(e.code));
   let fieldPointer = null,
@@ -658,6 +682,8 @@
         simulationClock -= 1 / 60;
       }
       game.events = events;
+      const meals = events.filter((event) => event === "eat").length;
+      if (meals) window.GardenJournal?.record("fruit", meals);
       game.player.chomp = Math.max(0, (game.player.chomp || 0) - dt);
       if (events.includes("eat")) game.player.chomp = 0.3;
       trailClock += dt;
@@ -731,6 +757,8 @@
         notice("Uma nova voltinha! Já vais voltar 🌱", now);
       else if (game.events.includes("drop"))
         notice("Uma cobrinha deixou pontinhos! ✨", now);
+      if (!hostReady && window.GardenSave && game.player.score > best)
+        window.GardenSave.set("best", game.player.score).catch(() => {});
       if (game.player.score > best) {
         best = game.player.score;
         $("best").textContent = best;
@@ -738,6 +766,11 @@
       if (now > hudAt) {
         hudAt = now + 500;
         const head = game.player.body[0];
+        if (head)
+          window.GardenJournal?.record(
+            "region",
+            (head.x > WORLD / 2 ? 1 : 0) + (head.y > WORLD / 2 ? 2 : 0),
+          );
         if (head)
           $("region").textContent = [
             "🌼 Campo das Flores",
@@ -798,5 +831,33 @@
     if (now > toastUntil) $("notice").style.opacity = 0;
     draw();
   }
+  window.GardenBridge = {
+    ready: connectionReady,
+    async get(key) {
+      if (hostReady) return DinoPlay.storage.get(key);
+      if (window.GardenSave) return GardenSave.get(key);
+      throw Error("Storage unavailable");
+    },
+    async set(key, value) {
+      if (hostReady) return DinoPlay.storage.set(key, value);
+      if (window.GardenSave) return GardenSave.set(key, value);
+      throw Error("Storage unavailable");
+    },
+    pauseForPanel() {
+      const active = running && !paused;
+      if (active) pause();
+      return active;
+    },
+    closePanel(active) {
+      if (active && !document.hidden && paused) pause();
+    },
+    equip(style) {
+      appearance = SnakeStyle.sanitize({ ...appearance, ...style });
+      syncColor();
+      if (hostReady)
+        DinoPlay.storage.set("appearance", appearance).catch(() => {});
+      else window.GardenSave?.set("appearance", appearance).catch(() => {});
+    },
+  };
   requestAnimationFrame(frame);
 })();

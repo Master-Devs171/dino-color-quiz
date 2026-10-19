@@ -28,6 +28,7 @@
       <button id="edit-snake" aria-label="Personalizar a cobrinha">🎨</button
       ><button id="pause" aria-label="Pausar">Ⅱ</button>
     </header>
+    <div id="mini-task" aria-label="Aventura atual"></div>
     <div id="region">🌼 Campo das Flores</div>
     <div id="notice" role="status" aria-live="polite"></div>
     <aside id="scoreboard">
@@ -75,6 +76,14 @@
           </div>
         </div>
         <div class="welcome-content">
+          <div class="journey-summary">
+            <span class="level-badge" id="journey-level">🌱 Nível 1</span
+            ><span id="journey-stars">⭐ 0</span>
+            <div class="journey-track"><div id="journey-bar"></div></div>
+            <small id="journey-caption"
+              >Cada descoberta faz o teu jardim crescer.</small
+            >
+          </div>
           <h2 class="pause-title">Uma pausinha ☁️</h2>
           <div id="round-result" role="status" hidden></div>
           <div class="title-tag">VAMOS BRINCAR LÁ FORA?</div>
@@ -117,7 +126,7 @@
             <div id="colors"></div>
           </fieldset>
           <button class="wardrobe-entry" id="customize">
-            🎨 Criar a minha cobrinha <span>➜</span></button
+            🎨 Oficina das cobrinhas <span>➜</span></button
           ><label class="pace"
             ><span
               ><input type="checkbox" id="gentle" checked /><span
@@ -129,6 +138,15 @@
           ><button class="primary" id="play">
             <span>Vamos brincar!</span><span class="play-arrow">➜</span>
           </button>
+          <div class="garden-menu">
+            <button id="open-adventures">
+              <span>🗺️</span><b>Aventuras</b
+              ><small id="task-ready">Pequenas descobertas</small></button
+            ><button id="open-album">
+              <span>📒</span><b>O meu álbum</b
+              ><small id="album-count">0 / 8 autocolantes</small>
+            </button>
+          </div>
           <div class="welcome-foot">
             <span>💛 Sem pressa. Tenta outra vez sempre!</span
             ><small
@@ -371,9 +389,41 @@
       <p id="skin-save-status" role="status"></p>
     </dialog>
     <script src="../../../sdk/dinoplay-game-sdk.js"></script>
+    <dialog id="adventures" aria-labelledby="adventures-title">
+      <header class="adventure-top">
+        <div>
+          <small>O TEU CANTINHO DE DESCOBERTAS</small>
+          <h2 id="adventures-title">Pequenas aventuras 🌼</h2>
+        </div>
+        <button id="adventures-close" aria-label="Fechar aventuras">✕</button>
+      </header>
+      <div class="adventure-wallet">
+        <span id="wallet-level">🌱 Nível 1</span
+        ><span id="wallet-stars">⭐ 0 estrelas</span>
+      </div>
+      <nav class="book-tabs" aria-label="Livro de descobertas">
+        <button id="show-tasks" aria-pressed="true">🗺️ Aventuras</button
+        ><button id="show-album" aria-pressed="false">📒 Autocolantes</button
+        ><button id="show-gifts" aria-pressed="false">
+          🎁 Skins especiais
+        </button>
+      </nav>
+      <div class="book-scroll">
+        <div id="task-list"></div>
+        <div id="sticker-list" hidden></div>
+        <div id="gift-list" hidden></div>
+      </div>
+      <footer class="book-footer">
+        <p id="reward-status" role="status">
+          O progresso fica à tua espera. Continua quando quiseres 💛
+        </p>
+      </footer>
+    </dialog>
     <script src="engine.js"></script>
+    <script src="progress.js"></script>
     <script src="skin.js"></script>
     <script src="game.js"></script>
     <script src="choices.js"></script>
+    <script src="journey-ui.js"></script>
   </body>
 </html>
