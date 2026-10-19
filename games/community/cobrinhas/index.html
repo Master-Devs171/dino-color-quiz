@@ -8,7 +8,7 @@
     />
     <meta name="theme-color" content="#edf4df" />
     <title>Cobrinhas do Jardim</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css" /><link rel="stylesheet" href="lobby.css" />
   </head>
   <body data-menu="welcome">
     <canvas
@@ -86,9 +86,9 @@
           </div>
           <h2 class="pause-title">Uma pausinha ☁️</h2>
           <div id="round-result" role="status" hidden></div>
-          <div class="title-tag">VAMOS BRINCAR LÁ FORA?</div>
+          <div class="title-tag">🌼 UM MUNDO DE DESCOBERTAS 🌼</div>
           <h1>
-            Cobrinhas<br />do
+            Cobrinhas <br />do
             <span
               >Jardim<svg viewBox="0 0 190 13" aria-hidden="true">
                 <path d="M4 9Q90-3 185 7" /></svg></span
@@ -126,7 +126,7 @@
             <div id="colors"></div>
           </fieldset>
           <button class="wardrobe-entry" id="customize">
-            🎨 Oficina das cobrinhas <span>➜</span></button
+            <canvas id="lobby-snake" width="640" height="220" aria-label="A tua cobrinha personalizada"></canvas><b>🎨 Editar cobrinha</b><span>✏️</span></button
           ><label class="pace"
             ><span
               ><input type="checkbox" id="gentle" checked /><span
@@ -136,7 +136,7 @@
               >🐢 Devagarinho<small>Perfeito para os pequeninos</small></span
             ></label
           ><button class="primary" id="play">
-            <span>Vamos brincar!</span><span class="play-arrow">➜</span>
+            <span>Jogar!</span><span class="play-arrow">➜</span>
           </button>
           <div class="garden-menu">
             <button id="open-adventures">
@@ -424,6 +424,6 @@
     <script src="skin.js"></script>
     <script src="game.js"></script>
     <script src="choices.js"></script>
-    <script src="journey-ui.js"></script>
+    <script src="journey-ui.js"></script><script src="lobby.js"></script>
   </body>
 </html>

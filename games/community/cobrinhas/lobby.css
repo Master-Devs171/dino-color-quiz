@@ -1,0 +1,50 @@
+/* A bright, spacious toy-box lobby. Gameplay and dialogs keep their own layout. */
+body:not([data-menu="playing"]) #overlay {background:radial-gradient(ellipse at 50% 42%,#32d9f4 0,#08b8f3 42%,#0879dc 100%);padding:24px;overflow:auto;}
+body:not([data-menu="playing"]) #overlay::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.13;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Cg fill='none' stroke='white' stroke-width='5'%3E%3Cpath d='M30 20l5 10 11 2-8 8 2 11-10-5-10 5 2-11-8-8 11-2z'/%3E%3Ccircle cx='105' cy='100' r='20'/%3E%3Cpath d='M94 101q11 15 22 0M98 92h1m12 0h1'/%3E%3C/g%3E%3C/svg%3E");transform:rotate(-8deg) scale(1.2);}
+body:not([data-menu="playing"]) .welcome{position:relative;display:block;width:min(1180px,100%);min-height:min(760px,calc(100dvh - 85px));max-height:none;margin:auto;background:transparent;border:0;box-shadow:none;overflow:visible;}
+body:not([data-menu="playing"]) .welcome-art{display:none;}
+body:not([data-menu="playing"]) .welcome-content{display:flex;align-items:center;flex-direction:column;padding:100px 190px 20px;gap:15px;position:relative;color:white;overflow:visible;}
+body:not([data-menu="playing"]) .journey-summary{position:absolute;top:0;left:22%;right:10%;display:grid;grid-template-columns:1fr auto;gap:7px 20px;padding:0;background:transparent;border:0;}
+body:not([data-menu="playing"]) .level-badge,body:not([data-menu="playing"]) #journey-stars{background:#52317c;color:white;border:3px solid #153c77;border-radius:24px;box-shadow:0 5px 0 #124b8c;padding:10px 20px;font-size:21px;font-weight:900;}
+body:not([data-menu="playing"]) .journey-track{height:14px;background:#0966ae;border:2px solid #164b8b;grid-column:1;}
+body:not([data-menu="playing"]) #journey-bar{background:linear-gradient(90deg,#a5ed52,#f9ed5a);}
+body:not([data-menu="playing"]) #journey-caption{color:#fff;font-size:12px;grid-column:1 / -1;text-align:center;}
+body:not([data-menu="playing"]) h1{color:white;font-size:clamp(32px,4vw,52px);line-height:1;text-align:center;text-shadow:0 4px 0 #1675b1;margin:0;}
+body:not([data-menu="playing"]) h1 br{display:none;}body:not([data-menu="playing"]) h1 span{color:#fff7a7;}body:not([data-menu="playing"]) h1 svg,body:not([data-menu="playing"]) .title-flower{display:none;}
+body:not([data-menu="playing"]) .title-tag{color:#e4faff;font-size:11px;letter-spacing:2px;}
+body:not([data-menu="playing"]) .intro{color:#ecfbff;text-align:center;font-size:15px;margin:0;}body:not([data-menu="playing"]) .intro br{display:none;}
+body:not([data-menu="playing"]) #customize{display:flex;flex-direction:column;justify-content:center;position:relative;width:100%;max-width:560px;padding:0 12px 16px;min-height:190px;background:#91edfa;border:5px solid #154b80;border-radius:32px;box-shadow:0 9px 0 #0872b4,inset 0 4px 0 #d7ffff;color:#153f70;margin:14px 0 20px;transition:transform .2s;}
+#lobby-snake{display:block;position:static;width:100%;height:auto;max-height:190px;touch-action:auto;pointer-events:none;}
+body:not([data-menu="playing"]) #customize b{font-size:20px;}body:not([data-menu="playing"]) #customize>span{position:absolute;right:-16px;top:-18px;background:#fff29b;border:4px solid #154b80;border-radius:50%;width:55px;height:55px;display:grid;place-items:center;}
+body:not([data-menu="playing"]) #play{width:min(360px,100%);min-height:96px;background:linear-gradient(#fff160,#ffc916 55%,#f3a600);color:#fff;border:5px solid #8a601e;border-radius:28px;box-shadow:0 9px 0 #97601e,0 15px 0 #0969ad,inset 0 6px 0 #fff6a8;font-size:42px;font-weight:1000;text-shadow:2px 3px 0 #b46516;margin:0 0 18px;}
+body:not([data-menu="playing"]) #play .play-arrow{background:transparent;color:white;}
+body:not([data-menu="playing"]) .garden-menu{position:absolute;left:0;top:155px;display:flex;flex-direction:column;width:150px;gap:25px;margin:0;}
+body:not([data-menu="playing"]) .garden-menu button{display:flex;flex-direction:column;align-items:center;background:#254c97;color:white;border:4px solid #153463;border-radius:24px;min-height:130px;box-shadow:0 7px 0 #1263a1,inset 0 3px 0 #6b9bdf;padding:12px;}
+body:not([data-menu="playing"]) .garden-menu button>span{font-size:46px;}body:not([data-menu="playing"]) .garden-menu b{font-size:18px;}body:not([data-menu="playing"]) .garden-menu small{color:#d4edff;font-size:11px;}
+body:not([data-menu="playing"]) .pace{position:absolute;right:0;top:180px;width:160px;padding:16px 12px;display:flex;flex-direction:column;background:#254c97;border:4px solid #153463;border-radius:24px;color:white;box-shadow:0 6px 0 #1263a1;gap:12px;text-align:center;}
+body:not([data-menu="playing"]) .pace small{color:#ceeaff;}
+body:not([data-menu="playing"]) .menu-help{position:absolute;right:0;top:330px;width:160px;background:#254c97;color:white;border:4px solid #153463;border-radius:20px;padding:12px;z-index:2;}
+body:not([data-menu="playing"]) .menu-help summary{color:white;}body:not([data-menu="playing"]) .how-to{background:#eefbff;color:#154778;border-radius:15px;padding:10px;}body:not([data-menu="playing"]) .how-to small{color:#315872;}
+body:not([data-menu="playing"]) .welcome-foot{color:#e7faff;text-align:center;display:flex;flex-direction:column;gap:8px;}body:not([data-menu="playing"]) .welcome-foot small{color:#c6edff;}
+body:not([data-menu="playing"]) .input-help{position:relative;color:#dcf5ff;bottom:auto;flex-wrap:wrap;margin:18px auto 0;}
+body:not([data-menu="playing"]) .pause-title{color:white;}body:not([data-menu="playing"]) #round-result{color:#154778;background:#e3faff;border-radius:18px;padding:15px;}
+#customize:hover,#play:hover{transform:translateY(-3px);}#customize:focus-visible,#play:focus-visible,.garden-menu button:focus-visible{outline:4px solid white;outline-offset:6px;}
+@media(max-width:700px){
+body:not([data-menu="playing"]) #overlay{padding:14px 12px 25px;display:block;}body:not([data-menu="playing"]) .welcome{min-height:0;}
+body:not([data-menu="playing"]) .welcome-content{padding:95px 0 0;gap:12px;}
+body:not([data-menu="playing"]) .journey-summary{left:0;right:0;gap:6px 10px;}
+body:not([data-menu="playing"]) .level-badge,body:not([data-menu="playing"]) #journey-stars{padding:8px 14px;font-size:17px;}
+body:not([data-menu="playing"]) h1{font-size:35px;}body:not([data-menu="playing"]) #customize{margin:8px 0 10px;min-height:150px;width:calc(100% - 16px);border-radius:25px;}#lobby-snake{max-height:150px;}
+body:not([data-menu="playing"]) #play{min-height:80px;font-size:34px;width:90%;}
+body:not([data-menu="playing"]) .garden-menu{position:static;width:100%;flex-direction:row;gap:12px;order:5;}
+body:not([data-menu="playing"]) .garden-menu button{width:50%;min-height:105px;padding:8px;}body:not([data-menu="playing"]) .garden-menu button>span{font-size:32px;}
+body:not([data-menu="playing"]) .pace{position:static;width:100%;flex-direction:row;justify-content:center;padding:10px;order:6;box-sizing:border-box;}
+body:not([data-menu="playing"]) .menu-help{position:static;width:100%;box-sizing:border-box;order:7;}
+body:not([data-menu="playing"]) .welcome-foot{order:8;font-size:12px;margin-top:10px;}body:not([data-menu="playing"]) .input-help{font-size:10px;}
+}
+@media(prefers-reduced-motion:reduce){#customize,#play{transition:none;}}
+body:not([data-menu="playing"]) #overlay{overflow-x:hidden;}
+body:not([data-menu="playing"]) h1 br::after{content:" ";}body:not([data-menu="playing"]) h1{word-spacing:4px;}
+body:not([data-menu="playing"]) .menu-help summary{background:transparent!important;color:white!important;padding:4px!important;}
+body:not([data-menu="playing"]) .welcome-foot{opacity:1;}body:not([data-menu="playing"]) .welcome-foot>span{color:#fff;}
+@media(min-width:701px) and (max-height:800px){body:not([data-menu="playing"]) .welcome{min-height:0;}body:not([data-menu="playing"]) .welcome-content{padding-top:90px;gap:10px;}body:not([data-menu="playing"]) #customize{margin:6px 0 16px;min-height:160px;}#lobby-snake{max-height:150px;}body:not([data-menu="playing"]) #play{min-height:82px;margin-bottom:8px;}}

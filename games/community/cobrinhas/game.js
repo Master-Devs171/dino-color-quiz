@@ -832,6 +832,7 @@
     draw();
   }
   window.GardenBridge = {
+    getAppearance: () => ({ ...appearance }),
     ready: connectionReady,
     async get(key) {
       if (hostReady) return DinoPlay.storage.get(key);
