@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#edf4df" />
+    <title>Cobrinhas do Jardim</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas
+      tabindex="0"
+      id="garden"
+      aria-label="Arena de cobrinhas. Usa as setas ou arrasta o dedo para orientar a tua cobrinha."
+    ></canvas>
+    <header>
+      <div class="score">
+        <span class="hud-icon">🍓</span>
+        <div><small>AS TUAS FRUTINHAS</small><b id="score">0</b></div>
+      </div>
+      <div class="record">
+        <span>🌟</span>
+        <div><small>O TEU RECORDE</small><b id="best">0</b></div>
+      </div>
+      <button id="edit-snake" aria-label="Personalizar a cobrinha">🎨</button
+      ><button id="pause" aria-label="Pausar">Ⅱ</button>
+    </header>
+    <div id="region">🌼 Campo das Flores</div>
+    <div id="notice" role="status" aria-live="polite"></div>
+    <aside>
+      <div class="ranking-title">
+        <span>🌼</span>
+        <div>
+          <b>Amigos do jardim</b><small>Uma aventura com o computador</small>
+        </div>
+      </div>
+      <div id="ranking"></div>
+      <div class="garden-badge"><i></i> 13 cobrinhas a explorar</div>
+    </aside>
+    <div class="controls">
+      <div class="steer-wrap">
+        <div id="joystick" aria-label="Arrasta para orientar">
+          <span class="joystick-arrow up">⌃</span
+          ><span class="joystick-arrow down">⌄</span
+          ><span class="joystick-arrow left">‹</span
+          ><span class="joystick-arrow right">›</span><span id="stick"></span>
+        </div>
+        <small>Vamos por aqui!</small>
+      </div>
+      <button id="boost"><span>⚡</span><small>Acelerar</small></button>
+    </div>
+    <div id="overlay">
+      <section class="welcome">
+        <div class="welcome-art">
+          <div class="art-brand">
+            <span>🌱</span> DinoPlay <span class="brand-dot">●</span>
+          </div>
+          <div class="art-caption">
+            Pequenas cobrinhas.<br />Grandes descobertas.
+          </div>
+          <img
+            src="garden-friends.svg"
+            alt="Uma cobrinha verde sorridente num jardim com flores e frutas"
+            class="friends-art"
+          />
+          <div class="art-sticker">100%<br /><b>diversão!</b></div>
+          <div class="art-footer">
+            <span>🌼</span> Um jardim à tua espera <span>🌼</span>
+          </div>
+        </div>
+        <div class="welcome-content">
+          <div id="round-result" role="status" hidden></div>
+          <div class="title-tag">VAMOS BRINCAR LÁ FORA?</div>
+          <h1>
+            Cobrinhas<br />do
+            <span
+              >Jardim<svg viewBox="0 0 190 13" aria-hidden="true">
+                <path d="M4 9Q90-3 185 7" /></svg></span
+            ><span class="title-flower">✿</span>
+          </h1>
+          <p class="intro">
+            Um bocadinho de fruta,<br />um montão de aventura!
+          </p>
+          <div class="how-to">
+            <div>
+              <span class="step-icon peach">🍓</span>
+              <p>
+                <b>Nhami, nhami!</b
+                ><small>Apanha a comida e vê a tua cobrinha crescer.</small>
+              </p>
+            </div>
+            <div>
+              <span class="step-icon lilac">✨</span>
+              <p>
+                <b>Uma curva esperta!</b
+                ><small
+                  >Se outra cobrinha bater em ti, apanha os pontinhos que
+                  deixa.</small
+                >
+              </p>
+            </div>
+          </div>
+          <fieldset>
+            <legend>
+              Qual é a tua cobrinha? <span id="color-name">Verdinha</span>
+            </legend>
+            <div id="colors"></div>
+          </fieldset>
+          <button class="wardrobe-entry" id="customize">
+            🎨 Criar a minha cobrinha <span>➜</span></button
+          ><label class="pace"
+            ><span
+              ><input type="checkbox" id="gentle" checked /><span
+                class="toggle"
+              ></span></span
+            ><span
+              >🐢 Devagarinho<small>Perfeito para os pequeninos</small></span
+            ></label
+          ><button class="primary" id="play">
+            <span>Vamos brincar!</span><span class="play-arrow">➜</span>
+          </button>
+          <div class="welcome-foot">
+            <span>💛 Sem pressa. Tenta outra vez sempre!</span
+            ><small
+              >Sem Internet · Sem anúncios · Adversárias do computador</small
+            >
+          </div>
+        </div>
+      </section>
+      <div class="input-help">
+        <span>🌿 A borda elimina a cobra</span><i>·</i
+        ><span>👆 Arrasta para virar</span><i>·</i><span>⌨ Setas ou WASD</span
+        ><i>·</i><span>⚡ Espaço para acelerar</span>
+      </div>
+    </div>
+    <dialog id="wardrobe" aria-labelledby="wardrobe-title">
+      <div class="editor-top">
+        <div>
+          <small>O TEU ATELIÊ DE CORES</small>
+          <h2 id="wardrobe-title">Uma cobrinha só tua! ✨</h2>
+        </div>
+        <button id="editor-close" aria-label="Cancelar e fechar">✕</button>
+      </div>
+      <div class="editor-grid">
+        <div class="preview-wrap">
+          <canvas
+            id="skin-preview"
+            width="600"
+            height="360"
+            aria-label="Pré-visualização animada da tua cobrinha"
+          ></canvas
+          ><span>Feita à tua maneira 💛</span>
+          <p>As cores e os acessórios não alteram as regras.</p>
+        </div>
+        <div class="editor-options">
+          <div class="paint-row">
+            <label
+              >Cor do corpo<input
+                id="skin-color"
+                type="color"
+                value="#78c85d" /></label
+            ><label
+              >Cor do padrão<input
+                id="skin-secondary"
+                type="color"
+                value="#ffe2a4"
+            /></label>
+          </div>
+          <label
+            >Padrão<select id="skin-pattern">
+              <option value="plain">🍃 Uma só cor</option>
+              <option value="stripes">🍬 Riscas coloridas</option>
+              <option value="dots">🫧 Pintinhas</option>
+              <option value="rainbow">🌈 Arco-íris</option>
+              <option value="flag">🏳 Cores da bandeira</option>
+            </select></label
+          ><label
+            >Olhinhos<select id="skin-eyes">
+              <option value="classic">👀 Curiosos</option>
+              <option value="big">🥹 Grandalhões</option>
+              <option value="happy">😊 Sorridentes</option>
+              <option value="sleepy">😌 Sonhadores</option>
+              <option value="wink">😉 A piscar o olho</option>
+              <option value="stars">⭐ Estrelinhas</option>
+              <option value="glasses">😎 Óculos de sol</option>
+            </select></label
+          >
+          <h3 class="editor-heading">😊 Uma carinha à tua maneira</h3>
+          <div class="face-colors">
+            <label
+              >Cor da cara<input
+                type="color"
+                id="skin-headColor"
+                value="#78c85d" /></label
+            ><label
+              >Cor dos olhos<input
+                type="color"
+                id="skin-eyeColor"
+                value="#344d40" /></label
+            ><label
+              >Cor das bochechas<input
+                type="color"
+                id="skin-cheekColor"
+                value="#efa6a3"
+            /></label>
+          </div>
+          <label
+            >Boquinha<select id="skin-mouth">
+              <option value="smile">🙂 Sorriso</option>
+              <option value="grin">😁 Sorrisão</option>
+              <option value="tiny">😮 Boquinha redonda</option>
+              <option value="tongue">😛 Língua de fora</option>
+              <option value="none">🍃 Sem boca</option>
+            </select></label
+          ><label
+            >Bochechas<select id="skin-cheeks">
+              <option value="blush">🌸 Coradinhas</option>
+              <option value="freckles">✨ Sardinhas</option>
+              <option value="none">🍃 Sem pintura</option>
+            </select></label
+          >
+          <h3 class="editor-heading">🎀 Acessórios e magia</h3>
+          <label
+            >Acessório<select id="skin-hat">
+              <option value="none">🌱 Sem acessório</option>
+              <option value="flower">🌸 Florzinha</option>
+              <option value="crown">👑 Coroa</option>
+              <option value="bow">🎀 Lacinho</option>
+              <option value="cap">🧢 Boné</option>
+            </select></label
+          ><label
+            >Rasto mágico<select id="skin-trail">
+              <option value="none">🍃 Sem rasto</option>
+              <option value="stars">✨ Estrelinhas</option>
+              <option value="hearts">💗 Corações</option>
+              <option value="bubbles">🫧 Bolhinhas</option>
+            </select></label
+          >
+          <h3 class="editor-heading">🏳 A tua bandeira</h3>
+          <label
+            >Escolhe uma bandeira<select id="skin-flag">
+              <option value="none">Sem bandeira</option>
+              <option value="pt">Portugal</option>
+              <option value="br">Brasil</option>
+              <option value="gb">Reino Unido</option>
+              <option value="fr">França</option>
+              <option value="de">Alemanha</option>
+              <option value="es">Espanha</option>
+              <option value="pl">Polónia</option>
+              <option value="it">Itália</option>
+              <option value="ua">Ucrânia</option>
+              <option value="us">Estados Unidos</option>
+              <option value="rainbow">Arco-íris</option>
+              <option value="custom">Criar a minha bandeira</option>
+            </select></label
+          ><label
+            >Desenho da bandeira personalizada<select id="skin-flagStyle">
+              <option value="horizontal">☰ Riscas horizontais</option>
+              <option value="vertical">▥ Riscas verticais</option>
+              <option value="cross">✚ Cruz</option>
+            </select></label
+          >
+          <div class="paint-row">
+            <label
+              >Primeira cor da bandeira<input
+                id="skin-flagColorA"
+                type="color"
+                value="#b591ee" /></label
+            ><label
+              >Segunda cor da bandeira<input
+                id="skin-flagColorB"
+                type="color"
+                value="#ffe2a4"
+            /></label>
+          </div>
+          <p class="editor-note">
+            Para usar as tuas cores, escolhe «Criar a minha bandeira». O padrão
+            «Cores da bandeira» também pinta o corpo!
+          </p>
+        </div>
+      </div>
+      <div class="editor-bottom">
+        <button id="skin-random">🎲 Surpreende-me!</button
+        ><button id="skin-reset">↺ Recomeçar o visual</button
+        ><button class="primary" id="skin-save">Está mesmo gira! ✓</button>
+      </div>
+      <p id="skin-save-status" role="status"></p>
+    </dialog>
+    <script src="../../../sdk/dinoplay-game-sdk.js"></script>
+    <script src="engine.js"></script>
+    <script src="skin.js"></script>
+    <script src="game.js"></script>
+  </body>
+</html>
