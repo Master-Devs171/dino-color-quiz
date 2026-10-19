@@ -85,3 +85,4 @@ body:not([data-menu="playing"]) .welcome-foot{opacity:1;}body:not([data-menu="pl
 .book-footer{background:#0877bf;border-color:#4bd0ef;color:#fff;}.book-footer p{color:#fff;}
 #wardrobe button:focus-visible,#adventures button:focus-visible{outline:3px solid #fff18a;outline-offset:3px;}
 #adventures #reward-status{color:#fff;} #wardrobe .preset-card b{color:#174779;}
+#wardrobe #skin-save-status{color:#fff;} #wardrobe .editor-note{color:#315872;} #wardrobe .panel-fields input[type="color"]{background:#c3f3fd;border-color:#66c6e4;}
