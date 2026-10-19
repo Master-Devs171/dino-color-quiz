@@ -1,6 +1,7 @@
 (()=>{
 'use strict';
-const el=id=>document.getElementById(id),worldKeys=['placed','dug','fluids','drained','collected','houseCreated','forestCreated','grass','dirt','sand','brick','wood','door','window','water','lava','flower'],MAX_GUESTS=4;
+const multiplayerPolicy=window.DinoPlayMultiplayer?.game('blocks');
+const el=id=>document.getElementById(id),worldKeys=['placed','dug','fluids','drained','collected','houseCreated','forestCreated','grass','dirt','sand','brick','wood','door','window','water','lava','flower'],MAX_GUESTS=(multiplayerPolicy?.maxPlayers||5)-1;
 let role=null,guestConn=null,hostPeers=new Map(),stream=null,scanFrame=null,wakeLock=null,lastBroadcast=0;
 const original={move:movePlayer,place:placeBlock,remove:removeBlock,trade:tradeWood,reset:resetWorld,sync:syncWorld3D};
 const recoverButton=document.createElement('button'),inviteButton=document.createElement('button');recoverButton.id='multiRecover';recoverButton.className='multi-primary hidden';recoverButton.textContent='↻ Recuperar partida';inviteButton.id='multiInvite';inviteButton.className='multi-primary hidden';inviteButton.textContent='＋ Convidar outro jogador';el('multiStop').before(inviteButton,recoverButton);document.querySelector('.multi-privacy').textContent='A câmara apenas lê o código neste aparelho. Nenhuma imagem é guardada ou enviada. Durante a partida, o ecrã permanece ativo para proteger a ligação.';
