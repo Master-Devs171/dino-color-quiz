@@ -1,7 +1,7 @@
 (() => {
   "use strict";
   const $ = (id) => document.getElementById(id),
-    { Book, tasks, skins } = GardenProgress,
+    { Book, tasks, skins, shop, surprises } = GardenProgress,
     book = new Book();
   let loaded = false,
     dirty = false,
@@ -10,6 +10,7 @@
     queued = [],
     lastReady = 0,
     panelWasPlaying = false;
+  let spinning = false, wheelRotation = 0;
   const panel = $("adventures");
   const el = (tag, text, className) => {
     const node = document.createElement(tag);
@@ -66,6 +67,8 @@
           current.title
       : "🌻 Todas as aventuras descobertas!";
     if (!panel.open) return;
+    renderShop();
+    renderWheel();
     $("task-list").replaceChildren();
     for (const task of tasks) {
       const claimed = book.state.claimed.includes(task.id),
@@ -155,6 +158,42 @@
       $("gift-list").appendChild(card);
     }
   }
+  function skinCard(id, skin, owned, action, label) {
+    const card=el('article',undefined,'gift-card');
+    const art=el('span',undefined,'gift-snake'); art.style.setProperty('--skin',skin.color);art.style.setProperty('--stripe',skin.secondary);
+    card.append(el('span',skin.icon,'gift-icon'),art,el('h3',skin.name));
+    const button=el('button',label);button.disabled=!loaded || (!owned && book.stars<skin.price);
+    button.onclick=()=>{if(owned){GardenBridge.equip(skin);$('reward-status').textContent=skin.name+' está pronta para brincar!';}else action();};
+    card.append(button);return card;
+  }
+  function renderShop(){
+    $('shop-list').replaceChildren();
+    for(const [id,skin] of Object.entries(shop)){
+      const owned=book.state.purchased.includes(id);
+      const card=skinCard(id,skin,owned,()=>{
+        if(!book.buy(id))return;
+        save();render();flush();$('reward-status').textContent=skin.name+' já é tua! Podes vesti-la quando quiseres.';
+      },owned?'Vestir · Já é tua':'Obter por ⭐ '+skin.price);
+      card.append(el('p',owned?'Guardada na tua coleção.':'Custa '+skin.price+' estrelas das aventuras. Sem dinheiro real.'));
+      $('shop-list').append(card);
+    }
+  }
+  function renderWheel(){
+    $('spin-wheel').disabled=!loaded||spinning||book.state.surprises.length===Object.keys(surprises).length;
+    $('spin-wheel').textContent=spinning?'A rodar…':book.state.surprises.length===4?'Coleção completa! 💛':'Rodar grátis ✨';
+    $('wheel-collection').replaceChildren();
+    for(const id of book.state.surprises){const skin=surprises[id];$('wheel-collection').append(skinCard(id,skin,true,null,'Vestir esta skin'));}
+  }
+  $('spin-wheel').onclick=()=>{
+    if(!loaded||spinning)return;
+    const id=book.spin();if(!id)return;
+    spinning=true;save();flush();
+    const index=Object.keys(surprises).indexOf(id), target=(360-(index*90+45))%360;
+    wheelRotation=(Math.floor(wheelRotation/360)+5)*360+target;
+    $('prize-wheel').style.transform='rotate('+wheelRotation+'deg)';
+    $('wheel-status').textContent='Uma surpresa a caminho…';renderWheel();
+    setTimeout(()=>{spinning=false;$('wheel-status').textContent='Ganhaste a skin '+surprises[id].name+' '+surprises[id].icon+'! Já ficou guardada.';renderWheel();},matchMedia('(prefers-reduced-motion: reduce)').matches?0:2200);
+  };
   function claim(id) {
     const reward = book.claim(id);
     if (!reward) return;
@@ -171,13 +210,13 @@
   }
   function switchView(next) {
     view = next;
-    for (const id of ["tasks", "album", "gifts"]) {
+    for (const id of ["tasks", "album", "gifts", "shop", "wheel"]) {
       $(
         id === "tasks"
           ? "task-list"
           : id === "album"
             ? "sticker-list"
-            : "gift-list",
+            : id === "gifts" ? "gift-list" : id === "shop" ? "shop-list" : "wheel-panel",
       ).hidden = id !== view;
       $("show-" + id).setAttribute("aria-pressed", String(id === view));
     }
@@ -186,7 +225,7 @@
         ? "Pequenas aventuras 🌼"
         : view === "album"
           ? "O meu álbum de descobertas 📒"
-          : "Surpresas do jardim 🎁";
+          : view === "gifts" ? "Surpresas do jardim 🎁" : view === "shop" ? "A lojinha do jardim 🏪" : "Roda da Sorte 🎡";
     render();
   }
   function open(next) {
@@ -202,12 +241,14 @@
   }
   $("open-adventures").onclick = () => open("tasks");
   $("open-album").onclick = () => open("album");
+  $("open-shop").onclick = () => open("shop");
+  $("open-wheel").onclick = () => open("wheel");
   $("adventures-close").onclick = close;
   panel.addEventListener("cancel", (e) => {
     e.preventDefault();
     close();
   });
-  for (const id of ["tasks", "album", "gifts"])
+  for (const id of ["tasks", "album", "gifts", "shop", "wheel"])
     $("show-" + id).onclick = () => switchView(id);
   window.GardenJournal = {
     record(kind, value) {

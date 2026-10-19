@@ -140,12 +140,12 @@
           </button>
           <div class="garden-menu">
             <button id="open-adventures">
-              <span>🗺️</span><b>Aventuras</b
+              <span>🎁</span><b>Aventuras</b
               ><small id="task-ready">Pequenas descobertas</small></button
             ><button id="open-album">
               <span>📒</span><b>O meu álbum</b
               ><small id="album-count">0 / 8 autocolantes</small>
-            </button>
+            </button><button id="open-wheel"><span>🎡</span><b>Roda da Sorte</b><small>4 skins de oferta</small></button><button id="open-shop"><span>🏪</span><b>Loja</b><small>Troca as tuas estrelas</small></button>
           </div>
           <div class="welcome-foot">
             <span>💛 Sem pressa. Tenta outra vez sempre!</span
@@ -406,12 +406,17 @@
         ><button id="show-album" aria-pressed="false">📒 Autocolantes</button
         ><button id="show-gifts" aria-pressed="false">
           🎁 Skins especiais
-        </button>
+        </button><button id="show-shop" aria-pressed="false">🏪 Loja</button><button id="show-wheel" aria-pressed="false">🎡 Roda da Sorte</button>
       </nav>
       <div class="book-scroll">
         <div id="task-list"></div>
         <div id="sticker-list" hidden></div>
-        <div id="gift-list" hidden></div>
+        <div id="gift-list" hidden></div><div id="shop-list" hidden></div>
+        <section id="wheel-panel" hidden aria-label="Roda da Sorte">
+          <h3>Uma voltinha, uma nova cobrinha!</h3><p>4 skins de oferta, sem repetições. As skins que faltam têm a mesma possibilidade de sair. Não custa estrelas.</p>
+          <div class="wheel-stage"><span class="wheel-pointer" aria-hidden="true">▼</span><div id="prize-wheel" aria-hidden="true"><span>🫐</span><span>🍉</span><span>☁️</span><span>🌈</span></div></div>
+          <button id="spin-wheel">Rodar grátis ✨</button><p id="wheel-status" role="status" aria-live="polite"></p><div id="wheel-collection"></div>
+        </section>
       </div>
       <footer class="book-footer">
         <p id="reward-status" role="status">

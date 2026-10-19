@@ -86,3 +86,23 @@ body:not([data-menu="playing"]) .welcome-foot{opacity:1;}body:not([data-menu="pl
 #wardrobe button:focus-visible,#adventures button:focus-visible{outline:3px solid #fff18a;outline-offset:3px;}
 #adventures #reward-status{color:#fff;} #wardrobe .preset-card b{color:#174779;}
 #wardrobe #skin-save-status{color:#fff;} #wardrobe .editor-note{color:#315872;} #wardrobe .panel-fields input[type="color"]{background:#c3f3fd;border-color:#66c6e4;}
+/* Big floating icons, inspired by toy arcade menus. */
+body:not([data-menu="playing"]) .garden-menu{top:130px;gap:36px;width:145px;}
+body:not([data-menu="playing"]) .garden-menu button{position:relative;min-height:95px;padding:39px 8px 9px;background:#193c78;border:3px solid #102b55;border-radius:20px;box-shadow:0 7px 0 #0864a6,inset 0 2px 0 #537bb9;}
+body:not([data-menu="playing"]) .garden-menu button>span{position:absolute;top:-29px;font-size:56px;line-height:1;filter:drop-shadow(0 4px 1px #163a6c55);}
+body:not([data-menu="playing"]) .garden-menu b{font-size:17px;}
+#shop-list,#wheel-collection{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;}
+.book-tabs{flex-wrap:wrap;}.book-tabs button{flex:1 1 120px;}
+#wheel-panel{text-align:center;color:#fff;max-width:650px;margin:auto;}
+#wheel-panel>p{line-height:1.6;font-size:13px;max-width:490px;margin:12px auto 20px;}
+.wheel-stage{position:relative;width:260px;height:260px;margin:26px auto;}
+.wheel-pointer{position:absolute;z-index:1;top:-23px;left:calc(50% - 19px);color:#fff18a;font-size:42px;filter:drop-shadow(0 3px 1px #774a14);}
+#prize-wheel{position:relative;width:100%;height:100%;box-sizing:border-box;border:12px solid #ffe267;border-radius:50%;background:conic-gradient(#e9bbff 0 90deg,#9decd2 90deg 180deg,#b4e8ff 180deg 270deg,#ffb7d4 270deg);box-shadow:0 7px 0 #a37620,inset 0 0 0 4px #fff8bd;transition:transform 2.2s cubic-bezier(.16,.74,.14,1);}
+#prize-wheel:after{content:'★';position:absolute;inset:calc(50% - 20px);width:40px;height:40px;line-height:40px;background:#fff18a;border-radius:50%;color:#9a6318;box-shadow:0 3px 0 #c18c25;}
+#prize-wheel>span{position:absolute;font-size:35px;line-height:1;}
+#prize-wheel>span:nth-child(1){top:25px;right:28px;}#prize-wheel>span:nth-child(2){bottom:25px;right:28px;}#prize-wheel>span:nth-child(3){bottom:25px;left:28px;}#prize-wheel>span:nth-child(4){top:25px;left:28px;}
+#spin-wheel{min-height:55px;padding:12px 30px;border:3px solid #a77920;border-radius:20px;background:linear-gradient(#fff160,#ffc916);color:#624312;font-size:20px;font-weight:900;box-shadow:0 5px 0 #97601e;}
+#spin-wheel:disabled{background:#c8e1ea;border-color:#90b4c5;color:#315872;box-shadow:none;}
+#wheel-status{min-height:42px;}#wheel-collection{margin-top:20px;}
+@media(max-width:700px){body:not([data-menu="playing"]) .garden-menu{display:grid;grid-template-columns:1fr 1fr;width:100%;gap:40px 12px;margin-top:24px;}body:not([data-menu="playing"]) .garden-menu button{width:100%;min-height:100px;padding-top:42px;}body:not([data-menu="playing"]) .garden-menu button>span{font-size:56px;}#shop-list,#wheel-collection{grid-template-columns:1fr 1fr;}.book-tabs button{flex:1 1 27%;font-size:11px;padding:9px 4px;}.wheel-stage{width:220px;height:220px;}}
+@media(prefers-reduced-motion:reduce){#prize-wheel{transition:none;}}
