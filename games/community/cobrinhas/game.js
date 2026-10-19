@@ -185,9 +185,9 @@
   function previewSkin(t) {
     const c = previewCtx;
     c.clearRect(0, 0, 600, 360);
-    c.fillStyle = "#e7efd9";
+    c.fillStyle = "#91edfa";
     c.fillRect(0, 0, 600, 360);
-    c.strokeStyle = "#cedfba";
+    c.strokeStyle = "#54c9e8";
     c.lineWidth = 2;
     for (let i = 0; i < 15; i++) {
       c.beginPath();

@@ -48,3 +48,40 @@ body:not([data-menu="playing"]) h1 br::after{content:" ";}body:not([data-menu="p
 body:not([data-menu="playing"]) .menu-help summary{background:transparent!important;color:white!important;padding:4px!important;}
 body:not([data-menu="playing"]) .welcome-foot{opacity:1;}body:not([data-menu="playing"]) .welcome-foot>span{color:#fff;}
 @media(min-width:701px) and (max-height:800px){body:not([data-menu="playing"]) .welcome{min-height:0;}body:not([data-menu="playing"]) .welcome-content{padding-top:90px;gap:10px;}body:not([data-menu="playing"]) #customize{margin:6px 0 16px;min-height:160px;}#lobby-snake{max-height:150px;}body:not([data-menu="playing"]) #play{min-height:82px;margin-bottom:8px;}}
+/* Shared arcade palette for every menu, including panels opened during play. */
+#wardrobe,#adventures{background:radial-gradient(ellipse at 50% 30%,#32d9f4,#08b8f3 55%,#0879dc);color:#fff;border:4px solid #154b80;box-shadow:0 10px 0 #085a9b,0 24px 80px #073f7966;scrollbar-color:#8ceafa #0877bf;}
+#wardrobe::backdrop,#adventures::backdrop{background:#063d827d;backdrop-filter:blur(7px);}
+#wardrobe .editor-top small,#adventures .adventure-top small{color:#e5faff;}
+#wardrobe h2,#adventures h2{color:#fff;text-shadow:0 3px 0 #0875b0;}
+#wardrobe #editor-close,#adventures #adventures-close{background:#fff18a;border:2px solid #9b721b;border-radius:14px;color:#714a12;box-shadow:0 3px 0 #a36c17;}
+#wardrobe .preview-wrap{background:#91edfa;border-color:#154b80;color:#174779;box-shadow:0 5px 0 #0872b4;}
+#wardrobe .preview-wrap p{color:#315872;}
+#wardrobe .editor-tabs{background:#096cae;border-color:#154b80;}
+#wardrobe .editor-tabs button,.book-tabs button{background:#52317c;border-color:#173e76;color:#fff;box-shadow:0 3px 0 #0969a4;}
+#wardrobe .editor-tabs button[aria-selected="true"],.book-tabs button[aria-pressed="true"]{background:#fff18a;border-color:#ae7b20;color:#624312;}
+#wardrobe .editor-panel{background:#dff9ff;border-color:#54c9e8;color:#174779;}
+#wardrobe .editor-panel h3,#wardrobe .editor-options label{color:#174779;}
+#wardrobe .choice-card,#wardrobe .preset-card{background:#b9f0fc;border-color:#79cee8;color:#174779;box-shadow:0 3px 0 #58b6d7;}
+#wardrobe .choice-card[aria-pressed="true"],#wardrobe .preset-card[aria-pressed="true"]{background:#fff18a;border-color:#bd8c25;color:#624312;}
+#wardrobe .choice-card[aria-pressed="true"]:after{background:#52317c;color:white;}
+#wardrobe .choice-name{color:inherit;}
+#wardrobe .paint-row input,#wardrobe select{background:#c3f3fd;border-color:#66c6e4;color:#174779;}
+#wardrobe .editor-bottom{background:#087dc5;border-color:#3dc8ef;color:white;}
+#wardrobe #skin-random,#wardrobe #skin-reset{background:#254c97;color:white;border-color:#153463;}
+#wardrobe #skin-save{background:linear-gradient(#fff160,#ffc916 60%,#f3a600);border-color:#aa741b;color:#624312;box-shadow:0 4px 0 #97601e;}
+#wardrobe .editor-bottom small{color:#e4faff;}
+.adventure-wallet>span,.adventure-wallet>span:last-child{background:#52317c;color:white;border:2px solid #173e76;}
+.book-scroll{scrollbar-color:#8ceafa #0877bf;}
+.task-card,.task-card.is-complete,.gift-card{background:#dff9ff;border-color:#70d2ef;border-bottom-color:#2398c7;color:#174779;}
+.task-icon{background:#91edfa;border-color:#fff;}
+.task-card p,.task-card small,.gift-card p{color:#315872;}
+.task-track{background:#acdcee;}.task-track>span{background:#176bae;}
+.task-card button,.gift-card button{background:#bddfec;color:#345b78;border-color:#80b9ce;}
+.task-card button:not(:disabled),.gift-card button:not(:disabled){background:#ffe567;color:#624312;border-bottom:3px solid #bf8b23;}
+.sticker-card{background:#bfeefb;border-color:#4fb0d5;color:#174779;}
+.sticker-card b,.sticker-card small{color:#315872;}
+.sticker-card.earned,.sticker-card.earned:nth-child(2n){background:#fff18a;border-color:#fff7bf;box-shadow:0 4px 0 #ba8d2755;}
+.sticker-card.earned b{color:#624312;}.sticker-card.earned small{color:#735727;}
+.book-footer{background:#0877bf;border-color:#4bd0ef;color:#fff;}.book-footer p{color:#fff;}
+#wardrobe button:focus-visible,#adventures button:focus-visible{outline:3px solid #fff18a;outline-offset:3px;}
+#adventures #reward-status{color:#fff;} #wardrobe .preset-card b{color:#174779;}
