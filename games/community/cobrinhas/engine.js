@@ -7,6 +7,8 @@
     FOOD_LIMIT = 1800;
   const POWERS = {magnet: {icon:"🧲",name:"Íman",duration:12},vision:{icon:"🔭",name:"Binóculos",duration:12},speed:{icon:"👟",name:"Sapatos velozes",duration:8}};
   const palette = ["#78c85d", "#b591ee", "#ffb752", "#58cddd", "#ef8db4"];
+  const sizeForScore = score => 0.72 + 1.28 * (1 - Math.exp(-Math.max(0, Number(score) || 0) / 160));
+  const zoomForScore = score => Math.max(0.42, 1.18 / Math.sqrt(1 + Math.max(0, Number(score) || 0) / 160));
   const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
   class Garden {
     constructor(random = Math.random) {
@@ -26,14 +28,14 @@
         color: palette[id % palette.length],
         score: 0,
         effects: {magnet:0,vision:0,speed:0},
-        targetLength: 34,
+        targetLength: 22,
         grace: 2,
         respawn: 0,
         think: 0,
         foodTarget: null,
         previousBody: null,
         previousAngle: angle,
-        body: Array.from({ length: 34 }, (_, i) => ({
+        body: Array.from({ length: 22 }, (_, i) => ({
           x: p.x - Math.cos(angle) * i * GAP,
           y: p.y - Math.sin(angle) * i * GAP,
         })),
@@ -166,11 +168,12 @@
         };
         // The head touching any wall eliminates both player and computer snakes,
         // including during their initial protection from other snakes.
+        const radius = 17 * sizeForScore(s.score);
         if (
-          p.x <= RADIUS ||
-          p.x >= WORLD - RADIUS ||
-          p.y <= RADIUS ||
-          p.y >= WORLD - RADIUS
+          p.x <= radius ||
+          p.x >= WORLD - radius ||
+          p.y <= radius ||
+          p.y >= WORLD - radius
         ) {
           this.drop(s);
           if (s.id === 0) this.events.push("border");
@@ -198,7 +201,7 @@
           if (distance(p, this.food[i]) < 25) {
             const f = this.food.splice(i, 1)[0];
             s.score += f.value;
-            s.targetLength = Math.min(200, 34 + s.score * 2);
+            s.targetLength = Math.min(400, 22 + s.score * 2);
             if (s.id === 0) this.events.push("eat");
           }
       }
@@ -209,7 +212,7 @@
           for (const other of this.snakes)
             if (other !== s && other.body.length && !other.grace) {
               if (
-                other.body.some((p) => distance(s.body[0], p) < RADIUS * 1.65)
+                other.body.some((p) => distance(s.body[0], p) < RADIUS * 0.825 * (sizeForScore(s.score) + sizeForScore(other.score)))
               ) {
                 hit.add(s);
                 break;
@@ -231,6 +234,6 @@
       }
     }
   }
-  root.Cobrinhas = { Garden, WORLD, RADIUS, palette, FOOD_COUNT, FOOD_LIMIT, POWERS };
+  root.Cobrinhas = { Garden, WORLD, RADIUS, palette, FOOD_COUNT, FOOD_LIMIT, POWERS, sizeForScore, zoomForScore };
   if (typeof module !== "undefined") module.exports = root.Cobrinhas;
 })(typeof window === "undefined" ? globalThis : window);

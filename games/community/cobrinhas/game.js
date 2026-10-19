@@ -1,6 +1,6 @@
 (() => {
   "use strict";
-  const { Garden, WORLD, palette, POWERS } = Cobrinhas;
+  const { Garden, WORLD, palette, POWERS, zoomForScore, sizeForScore } = Cobrinhas;
   const game = new Garden(),
     canvas = document.querySelector("canvas"),
     ctx = canvas.getContext("2d");
@@ -293,6 +293,7 @@
     if (!running) {
       $("round-result").hidden = true;
       game.reset();
+      scale = Math.max(0.42, Math.min(0.95, Math.min(width, height) / 650)) * zoomForScore(0);
       window.GardenJournal?.record("rounds", 1);
       heading = 0;
       running = true;
@@ -532,10 +533,10 @@
         ctx.font = "bold 10px Trebuchet MS,system-ui";
         ctx.fillStyle = "#fffef0";
         ctx.beginPath();
-        ctx.roundRect(h.x - 16, h.y - 42, 32, 17, 8);
+        ctx.roundRect(h.x - 16, h.y - 24 - 22 * sizeForScore(s.score), 32, 17, 8);
         ctx.fill();
         ctx.fillStyle = "#53764a";
-        ctx.fillText("TU", h.x, h.y - 33);
+        ctx.fillText("TU", h.x, h.y - 15 - 22 * sizeForScore(s.score));
       }
       ctx.globalAlpha = 1;
     }
@@ -768,7 +769,7 @@
     }
     const targetScale =
       Math.max(0.42, Math.min(0.95, Math.min(width, height) / 650)) *
-      Math.max(0.65, 1 - game.player.score * 0.0008) *
+      zoomForScore(game.player.score) *
       (game.player.effects.vision>0 ? 0.68 : 1) *
       (boost || game.player.effects.speed>0 ? 0.91 : 1);
     scale += (targetScale - scale) * (1 - Math.exp(-dt * 3));

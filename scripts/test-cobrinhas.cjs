@@ -19,7 +19,7 @@ function isolated() {
 const eat = isolated();
 eat.update(0.02, 0);
 assert.equal(eat.player.score, 3);
-assert.equal(eat.player.targetLength, 40);
+assert.equal(eat.player.targetLength, 28);
 const g = new Garden();
 const player = g.player,
   bot = g.snakes[1];
@@ -29,7 +29,7 @@ player.body = Array.from({ length: 34 }, (_, i) => ({
   x: 1200 - i * 8,
   y: 1200,
 }));
-bot.body = Array.from({ length: 34 }, (_, i) => ({ x: 1100, y: 1179 - i * 8 }));
+bot.body = Array.from({ length: 34 }, (_, i) => ({ x: 1100, y: 1186 - i * 8 }));
 bot.angle = Math.PI / 2;
 g.food = [{ x: 1100, y: 1300, value: 1, kind: 0 }];
 g.update(0.001, 0);
@@ -132,3 +132,9 @@ for (const id of [0, 1])
 console.log(
   "Bordas: quatro lados eliminam jogador/adversária, incluindo proteção inicial, e deixam pontos.",
 );
+const {sizeForScore,zoomForScore}=require('../games/community/cobrinhas/engine.js');
+assert.equal(new Garden().player.body.length,22);
+for(const score of [0,10,50,100,300,1000]){assert.ok(sizeForScore(score+10)>sizeForScore(score));assert.ok(zoomForScore(score+10)<=zoomForScore(score));}
+assert.ok(sizeForScore(300)>sizeForScore(0)*2);assert.ok(zoomForScore(300)<zoomForScore(0)*.65);
+assert.ok(sizeForScore(1000000)<=2);assert.ok(zoomForScore(1000000)>=.42);
+console.log('Crescimento: início pequeno, grossura progressiva e câmara com afastamento limitado OK.');

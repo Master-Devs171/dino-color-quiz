@@ -245,6 +245,7 @@
       body = s.body;
     if (!body.length) return;
     const head = body[0];
+    const growth = s.score === undefined ? 1 : (root.Cobrinhas?.sizeForScore(s.score) ?? 1);
     for (let i = body.length - 1; i >= 0; i--) {
       const p = body[i],
         r = 14 * Math.min(1, 0.4 + (body.length - i) / 12);
@@ -274,10 +275,10 @@
           a.pattern === "dots" && i % 4 === 0 ? a.secondary : "",
           r,
         ),
-        p.x - 20,
-        p.y - 18,
-        40,
-        40,
+        p.x - 20 * growth,
+        p.y - 18 * growth,
+        40 * growth,
+        40 * growth,
       );
     }
     ctx.save();
@@ -285,7 +286,7 @@
     ctx.rotate(s.angle);
     const chomp =
       !reduced && s.chomp > 0 ? 1 + Math.sin(s.chomp * 14) * 0.08 : 1;
-    ctx.scale(chomp, chomp);
+    ctx.scale(chomp * growth, chomp * growth);
     ctx.fillStyle = a.headColor;
     ctx.beginPath();
     ctx.ellipse(0, 0, 17, 16, 0, 0, 7);
@@ -395,7 +396,8 @@
     ctx.restore();
     if (a.hat !== "none") {
       ctx.save();
-      ctx.translate(head.x, head.y - 19);
+      ctx.translate(head.x, head.y - 19 * growth);
+      ctx.scale(growth,growth);
       ctx.rotate(reduced ? 0 : Math.sin(time * 3) * 0.07);
       ctx.font = "23px serif";
       ctx.textAlign = "center";
@@ -410,6 +412,7 @@
     if (a.flag !== "none") {
       ctx.save();
       ctx.translate(head.x, head.y);
+      ctx.scale(growth,growth);
       flag(ctx, a, time, reduced);
       ctx.restore();
     }
