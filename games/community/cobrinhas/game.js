@@ -1,6 +1,6 @@
 (() => {
   "use strict";
-  const { Garden, WORLD, palette } = Cobrinhas;
+  const { Garden, WORLD, palette, POWERS } = Cobrinhas;
   const game = new Garden(),
     canvas = document.querySelector("canvas"),
     ctx = canvas.getContext("2d");
@@ -415,48 +415,12 @@
   }
   function draw() {
     ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = "#edf3da";
+    ctx.fillStyle = "#4561a6";
     ctx.fillRect(0, 0, width, height);
     ctx.save();
     ctx.translate(width / 2, height / 2);
     ctx.scale(scale, scale);
     ctx.translate(-camera.x, -camera.y);
-    const zones = [
-      {
-        x: WORLD * 0.25,
-        y: WORLD * 0.25,
-        r: 950,
-        color: "#e5efcf",
-        icon: "🌼",
-      },
-      {
-        x: WORLD * 0.75,
-        y: WORLD * 0.25,
-        r: 950,
-        color: "#eee7db",
-        icon: "🌸",
-      },
-      {
-        x: WORLD * 0.25,
-        y: WORLD * 0.75,
-        r: 950,
-        color: "#e5ecdd",
-        icon: "🍀",
-      },
-      {
-        x: WORLD * 0.75,
-        y: WORLD * 0.75,
-        r: 950,
-        color: "#f2edce",
-        icon: "🌻",
-      },
-    ];
-    for (const z of zones) {
-      ctx.fillStyle = z.color;
-      ctx.beginPath();
-      ctx.arc(z.x, z.y, z.r, 0, 7);
-      ctx.fill();
-    }
     const left = Math.max(0, camera.x - width / scale / 2),
       top = Math.max(0, camera.y - height / scale / 2);
     for (
@@ -469,42 +433,19 @@
         y < Math.min(WORLD, camera.y + height / scale / 2);
         y += 160
       ) {
-        ctx.fillStyle = "#dce9c34d";
-        ctx.beginPath();
-        ctx.ellipse(x + 70, y + 80, 50, 30, 0.4, 0, 7);
-        ctx.fill();
-        ctx.strokeStyle = "#b9d09f70";
-        ctx.lineWidth = 2;
-        ctx.lineCap = "round";
-        ctx.beginPath();
-        ctx.moveTo(x + 35, y + 40);
-        ctx.lineTo(x + 32, y + 35);
-        ctx.moveTo(x + 35, y + 40);
-        ctx.lineTo(x + 39, y + 34);
-        ctx.stroke();
-        ctx.fillStyle = "#b6cc9c70";
-        ctx.beginPath();
-        ctx.arc(x + 120, y + 115, 1.6, 0, 7);
-        ctx.fill();
+        const offset=Math.sin(x*.19+y*.13)*25;
+        ctx.fillStyle='#354d873f';ctx.beginPath();ctx.moveTo(x+33,y+76+offset);ctx.lineTo(x+60,y+35+offset);ctx.lineTo(x+109,y+40+offset);ctx.lineTo(x+128,y+78+offset);ctx.lineTo(x+94,y+111+offset);ctx.lineTo(x+48,y+103+offset);ctx.closePath();ctx.fill();
+        ctx.fillStyle='#7290d22e';ctx.beginPath();ctx.moveTo(x+30,y+69+offset);ctx.lineTo(x+58,y+29+offset);ctx.lineTo(x+106,y+34+offset);ctx.lineTo(x+125,y+72+offset);ctx.lineTo(x+91,y+103+offset);ctx.lineTo(x+45,y+96+offset);ctx.closePath();ctx.fill();
       }
-    ctx.strokeStyle = "#bbd39c";
+    ctx.strokeStyle = "#ffca67";
     ctx.lineWidth = 18;
     ctx.setLineDash([4, 25]);
     ctx.lineCap = "round";
     ctx.strokeRect(0, 0, WORLD, WORLD);
     ctx.setLineDash([]);
-    ctx.font = "25px serif";
+    ctx.font = "30px serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    for (let i = 0; i < 150; i++) {
-      let x = (i * 467 + 85) % WORLD,
-        y = (i * 719 + 160) % WORLD;
-      if (
-        Math.abs(x - camera.x) < width / scale / 2 + 30 &&
-        Math.abs(y - camera.y) < height / scale / 2 + 30
-      )
-        ctx.fillText(i % 2 ? "🌼" : "🌿", x, y);
-    }
     for (const f of game.food) {
       if (
         Math.abs(f.x - camera.x) > width / scale / 2 + 30 ||
@@ -532,13 +473,23 @@
         ctx.beginPath();
         ctx.arc(f.x - 3, f.y - 4, 2, 0, 7);
         ctx.fill();
-      } else
+      } else {
+        ctx.fillStyle = "#ffffff";
         ctx.fillText(
           fruits[f.kind],
           f.x,
           f.y + (reducedMotion ? 0 : Math.sin(game.time * 2 + f.x) * 2),
         );
+      }
     }
+    for(const item of game.powerups){
+      if(item.cooldown>0 || Math.abs(item.x-camera.x)>width/scale/2+45 || Math.abs(item.y-camera.y)>height/scale/2+45)continue;
+      const bob=reducedMotion?0:Math.sin(game.time*2+item.x)*4;
+      ctx.fillStyle='#37dcf155';ctx.strokeStyle='#99faff';ctx.lineWidth=3;ctx.beginPath();ctx.arc(item.x,item.y+bob,29,0,Math.PI*2);ctx.fill();ctx.stroke();
+      ctx.fillStyle='#ffffffbb';ctx.beginPath();ctx.ellipse(item.x-10,item.y-16+bob,8,4,-.6,0,7);ctx.fill();ctx.font='30px serif';ctx.fillStyle='#fff';ctx.fillText(POWERS[item.kind].icon,item.x,item.y+bob+3);
+    }
+    const activeHead=game.player.body[0];
+    if(activeHead && game.player.effects.magnet>0){ctx.strokeStyle='#72efff55';ctx.lineWidth=2;ctx.setLineDash([7,12]);ctx.beginPath();ctx.arc(activeHead.x,activeHead.y,185,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);}
     for (const s of [...game.snakes.slice(1), game.player]) {
       if (!s.body.length) continue;
       ctx.globalAlpha = s.grace > 0 ? 0.55 : 1;
@@ -740,6 +691,7 @@
           });
         }
       }
+      for(const kind of Object.keys(POWERS)) if(game.events.includes('power:'+kind))notice(POWERS[kind].icon+' '+POWERS[kind].name+' · '+POWERS[kind].duration+' segundos!',now);
       if (game.events.includes("border")) {
         running = false;
         paused = false;
@@ -765,6 +717,7 @@
       }
       if (now > hudAt) {
         hudAt = now + 500;
+        $('power-status').textContent=Object.entries(POWERS).filter(([kind])=>game.player.effects[kind]>0).map(([kind,info])=>info.icon+' '+info.name+' '+Math.ceil(game.player.effects[kind])+'s').join(' · ');
         const head = game.player.body[0];
         if (head)
           window.GardenJournal?.record(
@@ -816,7 +769,8 @@
     const targetScale =
       Math.max(0.42, Math.min(0.95, Math.min(width, height) / 650)) *
       Math.max(0.65, 1 - game.player.score * 0.0008) *
-      (boost ? 0.91 : 1);
+      (game.player.effects.vision>0 ? 0.68 : 1) *
+      (boost || game.player.effects.speed>0 ? 0.91 : 1);
     scale += (targetScale - scale) * (1 - Math.exp(-dt * 3));
     const h = game.player.body[0];
     if (h) {
