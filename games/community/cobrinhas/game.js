@@ -416,7 +416,7 @@
   }
   function draw() {
     ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = "#6521a9";
+    ctx.fillStyle = "#168dd5";
     ctx.fillRect(0, 0, width, height);
     ctx.save();
     ctx.translate(width / 2, height / 2);
@@ -435,7 +435,7 @@
         y += 160
       ) {
         const offset=Math.sin(x*.19+y*.13)*14;
-        ctx.fillStyle='#4a0e85';ctx.beginPath();ctx.ellipse(x+78,y+80+offset,62,73,Math.sin(x+y)*.25,0,Math.PI*2);ctx.fill();
+        ctx.fillStyle='#106fba';ctx.beginPath();ctx.ellipse(x+78,y+80+offset,62,73,Math.sin(x+y)*.25,0,Math.PI*2);ctx.fill();
       }
     ctx.strokeStyle = "#ffca67";
     ctx.lineWidth = 18;

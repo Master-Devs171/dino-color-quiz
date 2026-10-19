@@ -1,7 +1,7 @@
 {
   "id": "cobrinhas",
   "name": "Cobrinhas do Jardim",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "runtime": "sandbox",
   "entry": "games/community/cobrinhas/index.html",
   "category": "explore",
