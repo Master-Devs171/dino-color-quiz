@@ -1,0 +1,8 @@
+{
+  "catalogVersion": 1,
+  "games": [
+    {"id":"puzzle","name":"Puzzles de Aventuras","version":"1.0.0","runtime":"native","entry":"puzzle","category":"learn","age":"5+","cover":"assets/dinoplay-puzzles.png","description":"Monta 50 imagens coloridas e treina a atenção.","size":"12 MB","multiplayer":false,"offline":true,"assets":["assets/dino-puzzles.jpg","assets/dino-puzzles-2.jpg","assets/puzzle-adventures.png","assets/puzzle-wonders.png","assets/puzzle-discoveries.png"]},
+    {"id":"blocks","name":"Mundo dos Blocos","version":"1.3.0","runtime":"native","entry":"blocks","category":"create","age":"6+","cover":"assets/dinoplay-blocks.png","description":"Constrói, escava e transforma um enorme mundo 3D.","size":"18 MB","multiplayer":true,"offline":true,"assets":["world.css?v=31","assets/three.module.js","assets/three.core.js","multiplayer-core.js?v=3","multiplayer.js?v=7"]},
+    {"id":"race","name":"Cidade das Aventuras","version":"1.0.0","runtime":"native","entry":"race","category":"explore","age":"5+","cover":"assets/dinoplay-city.png","description":"Explora a cidade, ganha moedas e compra veículos.","size":"9 MB","multiplayer":false,"offline":true,"assets":["racer.css?v=3","racer.js?v=15","assets/three.module.js","assets/three.core.js"]}
+  ]
+}

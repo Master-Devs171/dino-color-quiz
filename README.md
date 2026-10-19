@@ -1,21 +1,27 @@
 # DinoPlay
 
-## Política multiplayer partilhada
+DinoPlay é uma plataforma infantil instalável: uma biblioteca segura onde cada família escolhe os jogos que quer instalar. Os jogos oficiais e os futuros jogos da comunidade partilham instalação offline, atualizações, idiomas, progresso isolado, controlo parental e o modelo multiplayer DinoPlay.
 
-Todos os jogos multiplayer usam `multiplayer-core.js`: máximo de cinco jogadores, convites privados, aprovação do anfitrião, sem chat nem salas públicas. O multiplayer pela Internet vem bloqueado e só pode ser autorizado por um adulto na Área dos Pais.
+## Contribuir com um jogo
 
-Aplicação infantil instalável no Android para crianças a partir dos 5 anos. Inclui 50 puzzles coloridos de dinossauros, animais, fantasia, veículos, profissões e descobertas, o Mundo dos Blocos 3D e a Grande Corrida dos Dinos 3D, com rivais, obstáculos, estrelas, turbo, pontuação e recorde guardado. O Mundo dos Blocos é uma aventura de exploração, mineração e construção em ecrã completo num mapa 1000×1000. O terreno é formado por blocos e inclui montanhas, vales, neve, areia, rios, lagos e lava, com oito camadas escaváveis até à rocha-mãe. A água e a lava podem entrar nos canais abertos pelo jogador. Picareta, pá e machado são encontrados no mapa e servem para recolher pedra, terra e madeira. Uma casa inicial grande de 13×9 blocos, com paredes altas, divisões, porta, várias janelas e telhado, pode ser desmontada, reconstruída e ampliada. A movimentação é deliberadamente mais lenta para permitir avançar um bloco de cada vez. O mapa tem 100 estrelas; cada estrela oferece 100 unidades de cada bloco. O reinício pede confirmação, não existem animais de estimação, chat nem contas online, e todo o progresso fica guardado no dispositivo.
+As contribuições são feitas por pull request e revistas antes de entrarem na biblioteca. Comece em [CONTRIBUTING.md](CONTRIBUTING.md) e consulte:
 
-A corrida utiliza condução livre num circuito 3D extenso, com uma superfície de asfalto contínua e lisa, retas longas, curvas largas para ambos os lados, uma sequência direita–esquerda, subidas e descidas. Tem volante, acelerador, travão e marcha-atrás, com velocidade e aderência diferentes dentro e fora do asfalto. Oito zonas luminosas de boost oferecem aceleração e velocidade máxima temporárias. A corrida dura cinco minutos; a câmara acompanha e inclina com o veículo, enquanto os rivais, estrelas e obstáculos percorrem as diferentes alturas da pista.
+- [Formato e SDK dos jogos](docs/GAME-SPEC.md)
+- [Regras de segurança infantil](docs/CHILD-SAFETY.md)
+- [Modelo multiplayer obrigatório](docs/MULTIPLAYER.md)
+- [Esquema do manifesto](games/game.schema.json)
 
-A PWA verifica atualizações ao abrir, ao regressar ao primeiro plano, de 15 em 15 minutos e através do botão manual. A navegação usa a versão online quando disponível e recorre ao cache apenas sem ligação.
+Execute `node scripts/validate-catalog.mjs` antes de enviar a contribuição. O GitHub repete automaticamente essa validação em cada pull request.
 
-Os motores 3D suspendem a renderização fora do respetivo modo para reduzir aquecimento e consumo de bateria. As construções usam reconstrução e gravação controladas, com libertação de recursos gráficos e um limite de segurança para evitar esgotamento de memória ou armazenamento.
+## Arquitetura de segurança
+
+- Jogos comunitários funcionam num `iframe` isolado, sem acesso direto aos dados da plataforma.
+- Recursos remotos, anúncios, rastreadores, chat, compras e autenticação própria são proibidos.
+- Cada jogo recebe apenas as capacidades declaradas e aprovadas.
+- O armazenamento é separado por jogo e limitado a 256 KB.
+- O multiplayer fica bloqueado por predefinição e só funciona com amizades aprovadas pelos dois responsáveis, até cinco jogadores e sem salas públicas.
+- A biblioteca continua a funcionar offline depois de cada jogo ser instalado.
 
 ## Jogar e instalar
 
-Abra o endereço do GitHub Pages no Chrome do Android e escolha **Adicionar ao ecrã inicial** ou **Instalar aplicação**.
-
-## Publicação
-
-Publique os ficheiros na raiz de um repositório público. Em **Settings > Pages**, selecione **Deploy from a branch**, branch `main` e pasta `/ (root)`.
+Abra [DinoPlay](https://rjcferreira.github.io/dino-color-quiz/) no Chrome do Android e escolha **Instalar aplicação**. A PWA verifica atualizações ao abrir e através do botão de atualização.
