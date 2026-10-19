@@ -132,3 +132,18 @@ body:not([data-menu="playing"]) .garden-menu b{font-size:17px;}
 #power-status{display:none;position:fixed;top:105px;left:50%;transform:translateX(-50%);z-index:4;max-width:calc(100% - 30px);width:max-content;background:#193c78ed;color:white;border:2px solid #86e8ff;border-radius:18px;padding:9px 14px;font-size:13px;font-weight:800;box-shadow:0 4px 0 #163d7866;pointer-events:none;text-align:center;}
 body[data-menu="playing"] #power-status:not(:empty){display:block;}
 @media(max-width:700px){#power-status{top:94px;font-size:11px;padding:7px 10px;}}
+/* Purple arcade HUD: keep the arena and its characters in the foreground. */
+body[data-menu="playing"] header{left:165px;right:22px;}
+body[data-menu="playing"] .score,body[data-menu="playing"] .record{background:#2a094fbb;border:2px solid #ae77e9;box-shadow:0 4px 0 #290a4a66;color:white;}
+body[data-menu="playing"] header small,body[data-menu="playing"] header b{color:#fff2b0;}
+body[data-menu="playing"] #pause,body[data-menu="playing"] #edit-snake{background:#3f1067;color:#fff2b0;border-color:#a871d5;}
+body[data-menu="playing"] #scoreboard{background:#270845bb;border:0;box-shadow:none;color:#fff;border-radius:18px;}
+body[data-menu="playing"] .ranking-title b,body[data-menu="playing"] .rank-row,body[data-menu="playing"] .rank-row b,body[data-menu="playing"] .rank-row strong{color:#fff;}
+body[data-menu="playing"] .ranking-title small,body[data-menu="playing"] .garden-badge{color:#e1c7f0;}
+body[data-menu="playing"] .rank-row.you{background:#a865d666;}
+body[data-menu="playing"] #region{display:none;}
+body[data-menu="playing"] #mini-task{left:50%;top:24px;transform:translateX(-50%);background:#2b084cdd;color:#fff2b0;border:2px solid #a76ee0;font-size:14px;padding:14px 22px;}
+body[data-menu="playing"] #power-status{top:88px;background:#320958e8;border-color:#c596ff;}
+@media(max-width:700px){body[data-menu="playing"] header{left:12px;right:12px;}body[data-menu="playing"] #mini-task{top:84px;left:96px;right:12px;transform:none;font-size:11px;padding:9px;width:auto;}body[data-menu="playing"] #power-status{top:135px;left:96px;right:12px;transform:none;width:auto;max-width:none;font-size:10px;}body[data-menu="playing"] #scoreboard{background:#270845e8;}}
+@media(min-width:701px) and (max-width:1200px){body[data-menu="playing"] #mini-task{top:112px;left:165px;transform:none;font-size:12px;padding:9px 14px;}}
+body[data-menu="playing"] #mini-task{bottom:auto;height:auto;} @media(max-width:700px){body[data-menu="playing"] #mini-task{max-width:none;}}

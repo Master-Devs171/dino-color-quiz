@@ -416,7 +416,7 @@
   }
   function draw() {
     ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = "#4561a6";
+    ctx.fillStyle = "#6521a9";
     ctx.fillRect(0, 0, width, height);
     ctx.save();
     ctx.translate(width / 2, height / 2);
@@ -434,9 +434,8 @@
         y < Math.min(WORLD, camera.y + height / scale / 2);
         y += 160
       ) {
-        const offset=Math.sin(x*.19+y*.13)*25;
-        ctx.fillStyle='#354d873f';ctx.beginPath();ctx.moveTo(x+33,y+76+offset);ctx.lineTo(x+60,y+35+offset);ctx.lineTo(x+109,y+40+offset);ctx.lineTo(x+128,y+78+offset);ctx.lineTo(x+94,y+111+offset);ctx.lineTo(x+48,y+103+offset);ctx.closePath();ctx.fill();
-        ctx.fillStyle='#7290d22e';ctx.beginPath();ctx.moveTo(x+30,y+69+offset);ctx.lineTo(x+58,y+29+offset);ctx.lineTo(x+106,y+34+offset);ctx.lineTo(x+125,y+72+offset);ctx.lineTo(x+91,y+103+offset);ctx.lineTo(x+45,y+96+offset);ctx.closePath();ctx.fill();
+        const offset=Math.sin(x*.19+y*.13)*14;
+        ctx.fillStyle='#4a0e85';ctx.beginPath();ctx.ellipse(x+78,y+80+offset,62,73,Math.sin(x+y)*.25,0,Math.PI*2);ctx.fill();
       }
     ctx.strokeStyle = "#ffca67";
     ctx.lineWidth = 18;
@@ -444,7 +443,7 @@
     ctx.lineCap = "round";
     ctx.strokeRect(0, 0, WORLD, WORLD);
     ctx.setLineDash([]);
-    ctx.font = "30px serif";
+    ctx.font = "46px serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     for (const f of game.food) {
@@ -453,9 +452,9 @@
         Math.abs(f.y - camera.y) > height / scale / 2 + 30
       )
         continue;
-      ctx.fillStyle = "#8d9e6020";
+      ctx.fillStyle = "#26044355";
       ctx.beginPath();
-      ctx.ellipse(f.x, f.y + 12, 10, 3, 0, 0, 7);
+      ctx.ellipse(f.x, f.y + 20, 18, 5, 0, 0, 7);
       ctx.fill();
       if (f.kind === 5) {
         ctx.fillStyle = "#f9d87530";
@@ -559,23 +558,23 @@
     ctx.globalAlpha = 1;
     ctx.restore();
     // A small map makes it easier to find food and the other snakes.
-    const size = width < 700 ? 76 : 90,
-      x = width - size - 27,
-      y = height - size - 153;
-    ctx.fillStyle = "#fffef2df";
+    const size = width < 700 ? 64 : 120,
+      x = 18,
+      y = width < 700 ? 88 : 20;
+    ctx.fillStyle = "#200637bb";
     ctx.beginPath();
     ctx.roundRect(x - 8, y - 20, size + 16, size + 30, 16);
     ctx.fill();
     ctx.font = "bold 8px Trebuchet MS,system-ui";
     ctx.textAlign = "center";
-    ctx.fillStyle = "#8ba073";
+    ctx.fillStyle = "#f1deff";
     ctx.fillText("O TEU JARDIM", x + size / 2, y - 9);
-    ctx.fillStyle = "#e0ebcd";
+    ctx.fillStyle = "#321050";
     ctx.beginPath();
     ctx.roundRect(x, y, size, size, 9);
     ctx.fill();
     for (let i = 0; i < 4; i++) {
-      ctx.fillStyle = ["#d6e5b5", "#e2d3d8", "#d2e3d7", "#eae1b2"][i];
+      ctx.fillStyle = ["#351052", "#3d125d", "#421368", "#391255"][i];
       ctx.fillRect(
         x + ((i % 2) * size) / 2,
         y + (Math.floor(i / 2) * size) / 2,
@@ -591,9 +590,11 @@
       (width / scale / WORLD) * size,
       (height / scale / WORLD) * size,
     );
+    ctx.fillStyle='#e5d9f1';
+    for(let i=0;i<game.food.length;i+=9){const f=game.food[i];ctx.beginPath();ctx.arc(x+f.x/WORLD*size,y+f.y/WORLD*size,1.3,0,7);ctx.fill();}
     for (const s of game.snakes)
       if (s.body.length) {
-        ctx.fillStyle = s.id === 0 ? "#356e2b" : s.color;
+        ctx.fillStyle = s.id === 0 ? "#b5ff5c" : s.color;
         ctx.beginPath();
         ctx.arc(
           x + (s.body[0].x / WORLD) * size,
@@ -770,7 +771,7 @@
     const targetScale =
       Math.max(0.42, Math.min(0.95, Math.min(width, height) / 650)) *
       zoomForScore(game.player.score) *
-      (game.player.effects.vision>0 ? 0.68 : 1) *
+      (game.player.effects.vision>0 ? 0.84 : 1) *
       (boost || game.player.effects.speed>0 ? 0.91 : 1);
     scale += (targetScale - scale) * (1 - Math.exp(-dt * 3));
     const h = game.player.body[0];

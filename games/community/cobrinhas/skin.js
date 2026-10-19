@@ -222,7 +222,9 @@
     c.beginPath();
     c.arc(1, 4, r, 0, 7);
     c.fill();
-    c.fillStyle = color;
+    const shading=c.createRadialGradient?.(-r*.35,-r*.4,1,0,0,r);
+    if(shading?.addColorStop){shading.addColorStop(0,color);shading.addColorStop(.6,color);shading.addColorStop(1,"#"+[1,3,5].map(i=>Math.round(parseInt(color.slice(i,i+2),16)*.6).toString(16).padStart(2,"0")).join(""));}
+    c.fillStyle = shading?.addColorStop ? shading : color;
     c.beginPath();
     c.arc(0, 0, r, 0, 7);
     c.fill();
@@ -246,9 +248,9 @@
     if (!body.length) return;
     const head = body[0];
     const growth = s.score === undefined ? 1 : (root.Cobrinhas?.sizeForScore(s.score) ?? 1);
-    for (let i = body.length - 1; i >= 0; i--) {
+    for (let i = body.length - 1; i >= 0; i -= 2) {
       const p = body[i],
-        r = 14 * Math.min(1, 0.4 + (body.length - i) / 12);
+        r = 14 * Math.min(1, 0.78 + (body.length - i) / 16);
       if (
         view &&
         (p.x < view.left ||

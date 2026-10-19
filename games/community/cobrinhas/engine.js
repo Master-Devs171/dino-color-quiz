@@ -7,8 +7,8 @@
     FOOD_LIMIT = 1800;
   const POWERS = {magnet: {icon:"🧲",name:"Íman",duration:12},vision:{icon:"🔭",name:"Binóculos",duration:12},speed:{icon:"👟",name:"Sapatos velozes",duration:8}};
   const palette = ["#78c85d", "#b591ee", "#ffb752", "#58cddd", "#ef8db4"];
-  const sizeForScore = score => 0.72 + 1.28 * (1 - Math.exp(-Math.max(0, Number(score) || 0) / 160));
-  const zoomForScore = score => Math.max(0.42, 1.18 / Math.sqrt(1 + Math.max(0, Number(score) || 0) / 160));
+  const sizeForScore = score => 1.2 + 1.2 * (1 - Math.exp(-Math.max(0, Number(score) || 0) / 250));
+  const zoomForScore = score => Math.max(0.7, 1.65 / Math.sqrt(1 + Math.max(0, Number(score) || 0) / 300));
   const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
   class Garden {
     constructor(random = Math.random) {
@@ -28,14 +28,14 @@
         color: palette[id % palette.length],
         score: 0,
         effects: {magnet:0,vision:0,speed:0},
-        targetLength: 22,
+        targetLength: 12,
         grace: 2,
         respawn: 0,
         think: 0,
         foodTarget: null,
         previousBody: null,
         previousAngle: angle,
-        body: Array.from({ length: 22 }, (_, i) => ({
+        body: Array.from({ length: 12 }, (_, i) => ({
           x: p.x - Math.cos(angle) * i * GAP,
           y: p.y - Math.sin(angle) * i * GAP,
         })),
@@ -201,7 +201,7 @@
           if (distance(p, this.food[i]) < 25) {
             const f = this.food.splice(i, 1)[0];
             s.score += f.value;
-            s.targetLength = Math.min(400, 22 + s.score * 2);
+            s.targetLength = Math.min(400, Math.floor(12 + s.score * 1.5));
             if (s.id === 0) this.events.push("eat");
           }
       }
