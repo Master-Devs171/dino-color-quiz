@@ -210,6 +210,7 @@
   }
   function switchView(next) {
     view = next;
+    panel.dataset.view = next;
     for (const id of ["tasks", "album", "gifts", "shop", "wheel"]) {
       $(
         id === "tasks"

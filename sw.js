@@ -1,4 +1,4 @@
-const CACHE='dinoplay-core-v77';
+const CACHE='dinoplay-core-v78';
 const FILES=['./','./index.html','./style.css?v=15','./world.css?v=31','./platform.css?v=7','./game-runtime.css?v=1','./platform.js?v=14','./language.css?v=1','./i18n.js?v=2','./multiplayer-core.js?v=3','./multiplayer.js?v=7','./app.js?v=64','./games/catalog.json?v=5','./sdk/dinoplay-game-sdk.js?v=1','./version.json','./dinoplay-v23.webmanifest','./dinoplay-v23-192.png','./dinoplay-v23-512.png','./assets/dinoplay-mascot.png','./assets/dinoplay-puzzles.png','./assets/dinoplay-blocks.png','./assets/dinoplay-city.png','./assets/flags/pt.svg','./assets/flags/br.svg','./assets/flags/gb.svg','./assets/flags/fr.svg','./assets/flags/de.svg','./assets/flags/es.svg','./assets/flags/pl.svg'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>Promise.all(FILES.map(file=>c.add(file).catch(()=>null)))).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE&&!k.startsWith('dinoplay-games-')).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));

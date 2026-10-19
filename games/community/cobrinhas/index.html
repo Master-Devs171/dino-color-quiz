@@ -97,28 +97,7 @@
           <p class="intro">
             Um bocadinho de fruta,<br />um montão de aventura!
           </p>
-          <details class="menu-help">
-            <summary>🌱 Como se joga?</summary>
-            <div class="how-to">
-              <div>
-                <span class="step-icon peach">🍓</span>
-                <p>
-                  <b>Nhami, nhami!</b
-                  ><small>Apanha a comida e vê a tua cobrinha crescer.</small>
-                </p>
-              </div>
-              <div>
-                <span class="step-icon lilac">✨</span>
-                <p>
-                  <b>Uma curva esperta!</b
-                  ><small
-                    >Se outra cobrinha bater em ti, apanha os pontinhos que
-                    deixa.</small
-                  >
-                </p>
-              </div>
-            </div>
-          </details>
+
           <fieldset>
             <legend>
               Qual é a tua cobrinha? <span id="color-name">Verdinha</span>
@@ -127,15 +106,7 @@
           </fieldset>
           <button class="wardrobe-entry" id="customize">
             <canvas id="lobby-snake" width="640" height="220" aria-label="A tua cobrinha personalizada"></canvas><b>🎨 Editar cobrinha</b><span>✏️</span></button
-          ><label class="pace"
-            ><span
-              ><input type="checkbox" id="gentle" checked /><span
-                class="toggle"
-              ></span></span
-            ><span
-              >🐢 Devagarinho<small>Perfeito para os pequeninos</small></span
-            ></label
-          ><button class="primary" id="play">
+          ><input type="checkbox" id="gentle" checked hidden aria-hidden="true" tabindex="-1" /><button class="primary" id="play">
             <span>Jogar!</span><span class="play-arrow">➜</span>
           </button>
           <div class="garden-menu">
@@ -413,9 +384,9 @@
         <div id="sticker-list" hidden></div>
         <div id="gift-list" hidden></div><div id="shop-list" hidden></div>
         <section id="wheel-panel" hidden aria-label="Roda da Sorte">
-          <h3>Uma voltinha, uma nova cobrinha!</h3><p>4 skins de oferta, sem repetições. As skins que faltam têm a mesma possibilidade de sair. Não custa estrelas.</p>
-          <div class="wheel-stage"><span class="wheel-pointer" aria-hidden="true">▼</span><div id="prize-wheel" aria-hidden="true"><span>🫐</span><span>🍉</span><span>☁️</span><span>🌈</span></div></div>
-          <button id="spin-wheel">Rodar grátis ✨</button><p id="wheel-status" role="status" aria-live="polite"></p><div id="wheel-collection"></div>
+          <div class="wheel-copy"><small>UMA SURPRESA COLORIDA</small><h3>Roda da Sorte!</h3><p>4 skins de oferta, sem repetições. As skins que faltam têm a mesma possibilidade de sair.</p></div>
+          <div class="wheel-stage"><span class="wheel-pointer" aria-hidden="true"><svg viewBox="0 0 76 108"><defs><linearGradient id="pin-gold" x2="0" y2="1"><stop stop-color="#fff596"/><stop offset=".45" stop-color="#ffcf17"/><stop offset="1" stop-color="#ff9d00"/></linearGradient></defs><path d="M38 104C33 104 3 52 3 37A35 35 0 0 1 73 37C73 52 43 104 38 104Z" fill="url(#pin-gold)" stroke="#d98a04" stroke-width="3"/><circle cx="38" cy="36" r="11" fill="#e38e0b"/></svg></span><div id="prize-wheel" aria-hidden="true"><span>🫐<b>Amora</b></span><span>🍉<b>Melancia</b></span><span>☁️<b>Nuvem</b></span><span>🌈<b>Festa</b></span></div></div>
+          <div class="wheel-action"><button id="spin-wheel">Rodar grátis ✨</button><p>Uma oferta do jardim 💛<br />Não custa estrelas.</p><p id="wheel-status" role="status" aria-live="polite"></p></div><div id="wheel-collection"></div>
         </section>
       </div>
       <footer class="book-footer">

@@ -106,3 +106,26 @@ body:not([data-menu="playing"]) .garden-menu b{font-size:17px;}
 #wheel-status{min-height:42px;}#wheel-collection{margin-top:20px;}
 @media(max-width:700px){body:not([data-menu="playing"]) .garden-menu{display:grid;grid-template-columns:1fr 1fr;width:100%;gap:40px 12px;margin-top:24px;}body:not([data-menu="playing"]) .garden-menu button{width:100%;min-height:100px;padding-top:42px;}body:not([data-menu="playing"]) .garden-menu button>span{font-size:56px;}#shop-list,#wheel-collection{grid-template-columns:1fr 1fr;}.book-tabs button{flex:1 1 27%;font-size:11px;padding:9px 4px;}.wheel-stage{width:220px;height:220px;}}
 @media(prefers-reduced-motion:reduce){#prize-wheel{transition:none;}}
+/* A special prize stage with a golden rim and a bright, friendly spin button. */
+#adventures[data-view="wheel"]{width:min(1000px,calc(100% - 28px));background:radial-gradient(ellipse at 35% 45%,#48206c,#210e3d 75%);border:3px solid #6be9e5;box-shadow:0 15px 65px #10235080;position:relative;}
+#adventures[data-view="wheel"] .adventure-top{position:absolute;top:18px;right:18px;padding:0;margin:0;z-index:3;}
+#adventures[data-view="wheel"] .adventure-top>div,#adventures[data-view="wheel"] .adventure-wallet,#adventures[data-view="wheel"] .book-tabs,#adventures[data-view="wheel"] .book-footer{display:none;}
+#adventures[data-view="wheel"] #adventures-close{width:52px;height:52px;font-size:27px;background:linear-gradient(#fff475,#ffc616);border:3px solid #ffe27b;box-shadow:0 4px 0 #b87d17;color:#8b5310;}
+#adventures[data-view="wheel"] .book-scroll{padding:45px 30px 28px;}
+#wheel-panel{max-width:none;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);grid-template-rows:auto 1fr;align-items:center;gap:0 28px;}
+.wheel-copy{grid-column:2;grid-row:1;text-align:left;padding-top:35px;}.wheel-copy small{color:#dcc2f4;font-size:10px;letter-spacing:2px;}.wheel-copy h3{font-size:38px;margin:10px 0;color:#fff6a6;text-shadow:0 4px 0 #571e67;}.wheel-copy p{font-size:13px;line-height:1.7;color:#e9dff7;}
+.wheel-stage{grid-column:1;grid-row:1 / 3;width:min(100%,410px);height:auto;aspect-ratio:1;margin:30px auto;filter:drop-shadow(0 10px 16px #10042155);}
+.wheel-stage:after{content:"";position:absolute;inset:7px;border:9px dotted #fffbd3;border-radius:50%;pointer-events:none;filter:drop-shadow(0 0 5px #fff792);}
+.wheel-pointer{width:66px;height:94px;top:-48px;left:calc(50% - 33px);font-size:0;filter:drop-shadow(0 5px 3px #a46e1366);}.wheel-pointer svg{width:100%;height:100%;}
+#prize-wheel{border:25px solid #ffdb24;background:conic-gradient(#8ced7e 0 90deg,#68ddf5 90deg 180deg,#e086f4 180deg 270deg,#ffb46c 270deg);box-shadow:0 8px 0 #b97812,inset 0 0 20px #7a561555,0 0 0 4px #fff18a,inset 0 0 0 5px #fff4a5;}
+#prize-wheel>span{font-size:clamp(30px,4vw,48px);display:flex;flex-direction:column;align-items:center;gap:9px;color:#754123;text-shadow:0 1px 0 #ffffff88;}
+#prize-wheel>span b{font-size:clamp(12px,1.6vw,19px);font-weight:900;}
+#prize-wheel>span:nth-child(1){top:16%;right:15%;}#prize-wheel>span:nth-child(2){bottom:16%;right:13%;}#prize-wheel>span:nth-child(3){bottom:16%;left:15%;}#prize-wheel>span:nth-child(4){top:16%;left:15%;}
+#prize-wheel:after{background:linear-gradient(#fff79c,#ffc21a);border:3px solid #fff5af;box-shadow:0 4px 0 #b17a20;color:#af6a13;}
+.wheel-action{grid-column:2;grid-row:2;align-self:start;text-align:left;padding-top:16px;}
+#spin-wheel{min-height:78px;width:100%;font-size:29px;border-radius:32px;border:3px solid #ff6698;background:linear-gradient(#ff267a,#ef075a 65%,#cb084d);color:#fff7aa;text-shadow:0 3px 0 #a33d36;box-shadow:0 7px 0 #b63e3f,0 13px 0 #75422f,inset 0 5px 0 #ff6c9b;}
+.wheel-action>p{color:#ddc7eb;font-size:12px;line-height:1.6;margin:23px 0 0;}
+#wheel-status{color:#fff4a0;font-weight:700;min-height:45px;}
+#wheel-collection{grid-column:1 / -1;grid-template-columns:repeat(4,minmax(0,1fr));}
+@media(max-width:700px){#adventures[data-view="wheel"] .book-scroll{padding:65px 16px 20px;}#wheel-panel{grid-template-columns:1fr;gap:12px;}.wheel-copy{grid-column:1;grid-row:1;text-align:center;padding-top:0;}.wheel-copy h3{font-size:28px;margin:4px 0;}.wheel-copy p{font-size:11px;margin:8px 0 0;}.wheel-stage{grid-column:1;grid-row:2;width:min(100% - 12px,310px);margin:36px auto 12px;}.wheel-action{grid-column:1;grid-row:3;text-align:center;padding:0 10px;}#spin-wheel{min-height:66px;font-size:25px;}.wheel-action>p{margin-top:19px;}#wheel-collection{grid-column:1;grid-template-columns:1fr 1fr;}#prize-wheel{border-width:20px;}.wheel-stage:after{border-width:7px;}#prize-wheel>span b{font-size:13px;}.wheel-pointer{width:56px;height:80px;top:-40px;left:calc(50% - 28px);}}
+#adventures[data-view="wheel"] .adventure-top{left:auto;bottom:auto;width:auto;}
