@@ -1,14 +1,14 @@
 {
   "id": "cobrinhas",
   "name": "Cobrinhas do Jardim",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "runtime": "sandbox",
   "entry": "games/community/cobrinhas/index.html",
   "category": "explore",
   "age": "5+",
   "cover": "games/community/cobrinhas/cover.svg",
   "description": "Come frutas, cresce e faz as cobrinhas do computador chocar contigo para recolher os seus pontos.",
-  "size": "68 KB",
+  "size": "114 KB",
   "multiplayer": false,
   "offline": true,
   "assets": [
@@ -19,9 +19,12 @@
     "games/community/cobrinhas/cover.svg",
     "sdk/dinoplay-game-sdk.js",
     "games/community/cobrinhas/garden-friends.svg",
-    "games/community/cobrinhas/skin.js"
+    "games/community/cobrinhas/skin.js",
+    "games/community/cobrinhas/choices.js"
   ],
-  "permissions": ["storage"],
+  "permissions": [
+    "storage"
+  ],
   "license": "MIT",
   "author": "Master-Devs171"
 }

@@ -24,6 +24,64 @@
   const colorNames = ["Verdinha", "Lilás", "Tangerina", "Gotinha", "Rosinha"];
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const sparkles = [];
+  let sceneDirty = true,
+    previewAt = -Infinity;
+  const renderBodies = new Map();
+  const tabNames = ["body", "face", "extras", "flag"];
+  function selectTab(name, focus = false) {
+    $("editor-scroll").scrollTop = 0;
+    for (const id of tabNames) {
+      const active = id === name;
+      const tab = $("tab-" + id);
+      tab.setAttribute("aria-selected", String(active));
+      tab.tabIndex = active ? 0 : -1;
+      $("panel-" + id).hidden = !active;
+      if (active && focus) tab.focus();
+    }
+  }
+  tabNames.forEach((name, i) => {
+    $("tab-" + name).onclick = () => selectTab(name);
+    $("tab-" + name).addEventListener("keydown", (e) => {
+      if (["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) {
+        e.preventDefault();
+        const n =
+          e.key === "Home"
+            ? 0
+            : e.key === "End"
+              ? 3
+              : (i + (e.key === "ArrowRight" ? 1 : 3)) % 4;
+        selectTab(tabNames[n], true);
+      }
+    });
+  });
+  $("ranking-toggle").onclick = () => {
+    const button = $("ranking-toggle");
+    const open = button.getAttribute("aria-expanded") !== "true";
+    button.setAttribute("aria-expanded", String(open));
+    $("scoreboard").dataset.expanded = String(open);
+  };
+  function uiMode(mode) {
+    document.body.dataset.menu = mode;
+    sceneDirty = true;
+  }
+  function interpolate(s) {
+    let body = renderBodies.get(s.id);
+    if (!body) {
+      body = [];
+      renderBodies.set(s.id, body);
+    }
+    body.length = s.body.length;
+    const alpha = simulationClock * 60;
+    const previous = s.previousBody || s.body;
+    for (let i = 0; i < body.length; i++) {
+      const p = s.body[i],
+        old = previous[i] || p;
+      body[i] ??= { x: 0, y: 0 };
+      body[i].x = old.x + (p.x - old.x) * alpha;
+      body[i].y = old.y + (p.y - old.y) * alpha;
+    }
+    return body;
+  }
   let appearance = SnakeStyle.sanitize(),
     draft = { ...appearance },
     editorWasPlaying = false,
@@ -40,6 +98,7 @@
     for (const key of styleKeys) $("skin-" + key).value = draft[key];
   }
   function syncColor() {
+    sceneDirty = true;
     selected = appearance.color;
     game.player.color = selected;
     $("color-name").textContent =
@@ -54,6 +113,7 @@
     editorWasPlaying = running && !paused;
     if (editorWasPlaying) pause();
     draft = { ...appearance };
+    selectTab("body");
     syncEditor();
     $("skin-save-status").textContent = hostReady
       ? "O teu visual fica guardado nesta app."
@@ -183,9 +243,10 @@
   }
   connect();
   function resize() {
+    sceneDirty = true;
     width = innerWidth;
     height = innerHeight;
-    const dpr = Math.min(devicePixelRatio || 1, 2);
+    const dpr = Math.min(devicePixelRatio || 1, 1.5);
     canvas.width = width * dpr;
     canvas.height = height * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -217,6 +278,8 @@
       game.reset();
       heading = 0;
       running = true;
+      simulationClock = 0;
+      renderBodies.clear();
     }
     game.player.color = selected;
     if (hostReady)
@@ -225,6 +288,7 @@
     paused = false;
     $("play").blur();
     overlay.hidden = true;
+    uiMode("playing");
     canvas.focus({ preventScroll: true });
     $("pause").textContent = "Ⅱ";
     $("pause").setAttribute("aria-label", "Pausar");
@@ -235,6 +299,7 @@
     paused = !paused;
     clearInput();
     overlay.hidden = !paused;
+    uiMode(paused ? "paused" : "playing");
     $("play").querySelector("span").textContent = "Continuar a brincar";
     $("pause").textContent = paused ? "▶" : "Ⅱ";
     $("pause").setAttribute("aria-label", paused ? "Continuar" : "Pausar");
@@ -455,12 +520,6 @@
       ctx.globalAlpha = s.grace > 0 ? 0.55 : 1;
       const h = s.body[0];
       // Draw only visible body portions; keep the full body in the simulation.
-      const visibleBody = s.body.filter(
-        (p, i) =>
-          i === 0 ||
-          (Math.abs(p.x - camera.x) < width / scale / 2 + 50 &&
-            Math.abs(p.y - camera.y) < height / scale / 2 + 50),
-      );
       const outfit =
         s.id === 0
           ? appearance
@@ -472,10 +531,27 @@
             };
       SnakeStyle.draw(
         ctx,
-        { ...s, body: visibleBody },
+        {
+          ...s,
+          body: interpolate(s),
+          angle:
+            (s.previousAngle ?? s.angle) +
+            Math.atan2(
+              Math.sin(s.angle - (s.previousAngle ?? s.angle)),
+              Math.cos(s.angle - (s.previousAngle ?? s.angle)),
+            ) *
+              simulationClock *
+              60,
+        },
         outfit,
         game.time,
         reducedMotion,
+        {
+          left: camera.x - width / scale / 2 - 55,
+          right: camera.x + width / scale / 2 + 55,
+          top: camera.y - height / scale / 2 - 55,
+          bottom: camera.y + height / scale / 2 + 55,
+        },
       );
       if (s.id === 0) {
         ctx.font = "bold 10px Trebuchet MS,system-ui";
@@ -560,7 +636,10 @@
       last = now;
       return;
     }
-    if (wardrobe.open) previewSkin(now / 1000);
+    if (wardrobe.open && now - previewAt > 33) {
+      previewSkin(now / 1000);
+      previewAt = now;
+    }
     const dt = Math.min(Math.max(0, (now - last) / 1000), 0.1);
     last = now;
     if (running && !paused) {
@@ -640,6 +719,7 @@
         paused = false;
         clearInput();
         overlay.hidden = false;
+        uiMode("end");
         $("round-result").hidden = false;
         $("round-result").textContent =
           "🌿 Tocaste na borda! A tua cobra foi eliminada. Fizeste " +
@@ -692,6 +772,13 @@
           });
         }
       }
+    }
+    if (!running || paused) {
+      if (sceneDirty) {
+        draw();
+        sceneDirty = false;
+      }
+      return;
     }
     const targetScale =
       Math.max(0.42, Math.min(0.95, Math.min(width, height) / 650)) *

@@ -10,7 +10,7 @@
     <title>Cobrinhas do Jardim</title>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
+  <body data-menu="welcome">
     <canvas
       tabindex="0"
       id="garden"
@@ -30,7 +30,10 @@
     </header>
     <div id="region">🌼 Campo das Flores</div>
     <div id="notice" role="status" aria-live="polite"></div>
-    <aside>
+    <aside id="scoreboard">
+      <button id="ranking-toggle" aria-expanded="false" aria-controls="ranking">
+        🌼 Amigos <span>⌄</span>
+      </button>
       <div class="ranking-title">
         <span>🌼</span>
         <div>
@@ -72,6 +75,7 @@
           </div>
         </div>
         <div class="welcome-content">
+          <h2 class="pause-title">Uma pausinha ☁️</h2>
           <div id="round-result" role="status" hidden></div>
           <div class="title-tag">VAMOS BRINCAR LÁ FORA?</div>
           <h1>
@@ -84,25 +88,28 @@
           <p class="intro">
             Um bocadinho de fruta,<br />um montão de aventura!
           </p>
-          <div class="how-to">
-            <div>
-              <span class="step-icon peach">🍓</span>
-              <p>
-                <b>Nhami, nhami!</b
-                ><small>Apanha a comida e vê a tua cobrinha crescer.</small>
-              </p>
+          <details class="menu-help">
+            <summary>🌱 Como se joga?</summary>
+            <div class="how-to">
+              <div>
+                <span class="step-icon peach">🍓</span>
+                <p>
+                  <b>Nhami, nhami!</b
+                  ><small>Apanha a comida e vê a tua cobrinha crescer.</small>
+                </p>
+              </div>
+              <div>
+                <span class="step-icon lilac">✨</span>
+                <p>
+                  <b>Uma curva esperta!</b
+                  ><small
+                    >Se outra cobrinha bater em ti, apanha os pontinhos que
+                    deixa.</small
+                  >
+                </p>
+              </div>
             </div>
-            <div>
-              <span class="step-icon lilac">✨</span>
-              <p>
-                <b>Uma curva esperta!</b
-                ><small
-                  >Se outra cobrinha bater em ti, apanha os pontinhos que
-                  deixa.</small
-                >
-              </p>
-            </div>
-          </div>
+          </details>
           <fieldset>
             <legend>
               Qual é a tua cobrinha? <span id="color-name">Verdinha</span>
@@ -144,7 +151,7 @@
         </div>
         <button id="editor-close" aria-label="Cancelar e fechar">✕</button>
       </div>
-      <div class="editor-grid">
+      <div class="editor-grid" id="editor-scroll">
         <div class="preview-wrap">
           <canvas
             id="skin-preview"
@@ -156,130 +163,204 @@
           <p>As cores e os acessórios não alteram as regras.</p>
         </div>
         <div class="editor-options">
-          <div class="paint-row">
-            <label
-              >Cor do corpo<input
-                id="skin-color"
-                type="color"
-                value="#78c85d" /></label
-            ><label
-              >Cor do padrão<input
-                id="skin-secondary"
-                type="color"
-                value="#ffe2a4"
-            /></label>
+          <div
+            class="editor-tabs"
+            role="tablist"
+            aria-label="Personalizar a cobrinha"
+          >
+            <button
+              id="tab-body"
+              type="button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="panel-body"
+              tabindex="0"
+            >
+              <span>🍬</span>Corpo</button
+            ><button
+              id="tab-face"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="panel-face"
+              tabindex="-1"
+            >
+              <span>😊</span>Cara</button
+            ><button
+              id="tab-extras"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="panel-extras"
+              tabindex="-1"
+            >
+              <span>✨</span>Magia</button
+            ><button
+              id="tab-flag"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="panel-flag"
+              tabindex="-1"
+            >
+              <span>🏳</span>Bandeira
+            </button>
           </div>
-          <label
-            >Padrão<select id="skin-pattern">
-              <option value="plain">🍃 Uma só cor</option>
-              <option value="stripes">🍬 Riscas coloridas</option>
-              <option value="dots">🫧 Pintinhas</option>
-              <option value="rainbow">🌈 Arco-íris</option>
-              <option value="flag">🏳 Cores da bandeira</option>
-            </select></label
-          ><label
-            >Olhinhos<select id="skin-eyes">
-              <option value="classic">👀 Curiosos</option>
-              <option value="big">🥹 Grandalhões</option>
-              <option value="happy">😊 Sorridentes</option>
-              <option value="sleepy">😌 Sonhadores</option>
-              <option value="wink">😉 A piscar o olho</option>
-              <option value="stars">⭐ Estrelinhas</option>
-              <option value="glasses">😎 Óculos de sol</option>
-            </select></label
+          <section
+            class="editor-panel"
+            role="tabpanel"
+            id="panel-body"
+            aria-labelledby="tab-body"
           >
-          <h3 class="editor-heading">😊 Uma carinha à tua maneira</h3>
-          <div class="face-colors">
-            <label
-              >Cor da cara<input
-                type="color"
-                id="skin-headColor"
-                value="#78c85d" /></label
-            ><label
-              >Cor dos olhos<input
-                type="color"
-                id="skin-eyeColor"
-                value="#344d40" /></label
-            ><label
-              >Cor das bochechas<input
-                type="color"
-                id="skin-cheekColor"
-                value="#efa6a3"
-            /></label>
-          </div>
-          <label
-            >Boquinha<select id="skin-mouth">
-              <option value="smile">🙂 Sorriso</option>
-              <option value="grin">😁 Sorrisão</option>
-              <option value="tiny">😮 Boquinha redonda</option>
-              <option value="tongue">😛 Língua de fora</option>
-              <option value="none">🍃 Sem boca</option>
-            </select></label
-          ><label
-            >Bochechas<select id="skin-cheeks">
-              <option value="blush">🌸 Coradinhas</option>
-              <option value="freckles">✨ Sardinhas</option>
-              <option value="none">🍃 Sem pintura</option>
-            </select></label
+            <h3>🍬 Corpo da tua cobrinha</h3>
+            <div class="panel-fields">
+              <label
+                >Cor do corpo<input
+                  id="skin-color"
+                  type="color"
+                  value="#78c85d" /></label
+              ><label
+                >Cor do padrão<input
+                  id="skin-secondary"
+                  type="color"
+                  value="#ffe2a4" /></label
+              ><label
+                >Padrão<select id="skin-pattern">
+                  <option value="plain">🍃 Uma só cor</option>
+                  <option value="stripes">🍬 Riscas coloridas</option>
+                  <option value="dots">🫧 Pintinhas</option>
+                  <option value="rainbow">🌈 Arco-íris</option>
+                  <option value="flag">🏳 Cores da bandeira</option>
+                </select></label
+              >
+            </div>
+          </section>
+          <section
+            class="editor-panel"
+            role="tabpanel"
+            id="panel-face"
+            aria-labelledby="tab-face"
+            hidden
           >
-          <h3 class="editor-heading">🎀 Acessórios e magia</h3>
-          <label
-            >Acessório<select id="skin-hat">
-              <option value="none">🌱 Sem acessório</option>
-              <option value="flower">🌸 Florzinha</option>
-              <option value="crown">👑 Coroa</option>
-              <option value="bow">🎀 Lacinho</option>
-              <option value="cap">🧢 Boné</option>
-            </select></label
-          ><label
-            >Rasto mágico<select id="skin-trail">
-              <option value="none">🍃 Sem rasto</option>
-              <option value="stars">✨ Estrelinhas</option>
-              <option value="hearts">💗 Corações</option>
-              <option value="bubbles">🫧 Bolhinhas</option>
-            </select></label
+            <h3>😊 Cara da tua cobrinha</h3>
+            <div class="panel-fields">
+              <label
+                >Cor da cara<input
+                  type="color"
+                  id="skin-headColor"
+                  value="#78c85d" /></label
+              ><label
+                >Cor dos olhos<input
+                  type="color"
+                  id="skin-eyeColor"
+                  value="#344d40" /></label
+              ><label
+                >Cor das bochechas<input
+                  type="color"
+                  id="skin-cheekColor"
+                  value="#efa6a3" /></label
+              ><label
+                >Olhinhos<select id="skin-eyes">
+                  <option value="classic">👀 Curiosos</option>
+                  <option value="big">🥹 Grandalhões</option>
+                  <option value="happy">😊 Sorridentes</option>
+                  <option value="sleepy">😌 Sonhadores</option>
+                  <option value="wink">😉 A piscar o olho</option>
+                  <option value="stars">⭐ Estrelinhas</option>
+                  <option value="glasses">😎 Óculos de sol</option>
+                </select></label
+              ><label
+                >Boquinha<select id="skin-mouth">
+                  <option value="smile">🙂 Sorriso</option>
+                  <option value="grin">😁 Sorrisão</option>
+                  <option value="tiny">😮 Boquinha redonda</option>
+                  <option value="tongue">😛 Língua de fora</option>
+                  <option value="none">🍃 Sem boca</option>
+                </select></label
+              ><label
+                >Bochechas<select id="skin-cheeks">
+                  <option value="blush">🌸 Coradinhas</option>
+                  <option value="freckles">✨ Sardinhas</option>
+                  <option value="none">🍃 Sem pintura</option>
+                </select></label
+              >
+            </div>
+          </section>
+          <section
+            class="editor-panel"
+            role="tabpanel"
+            id="panel-extras"
+            aria-labelledby="tab-extras"
+            hidden
           >
-          <h3 class="editor-heading">🏳 A tua bandeira</h3>
-          <label
-            >Escolhe uma bandeira<select id="skin-flag">
-              <option value="none">Sem bandeira</option>
-              <option value="pt">Portugal</option>
-              <option value="br">Brasil</option>
-              <option value="gb">Reino Unido</option>
-              <option value="fr">França</option>
-              <option value="de">Alemanha</option>
-              <option value="es">Espanha</option>
-              <option value="pl">Polónia</option>
-              <option value="it">Itália</option>
-              <option value="ua">Ucrânia</option>
-              <option value="us">Estados Unidos</option>
-              <option value="rainbow">Arco-íris</option>
-              <option value="custom">Criar a minha bandeira</option>
-            </select></label
-          ><label
-            >Desenho da bandeira personalizada<select id="skin-flagStyle">
-              <option value="horizontal">☰ Riscas horizontais</option>
-              <option value="vertical">▥ Riscas verticais</option>
-              <option value="cross">✚ Cruz</option>
-            </select></label
+            <h3>✨ Magia da tua cobrinha</h3>
+            <div class="panel-fields">
+              <label
+                >Acessório<select id="skin-hat">
+                  <option value="none">🌱 Sem acessório</option>
+                  <option value="flower">🌸 Florzinha</option>
+                  <option value="crown">👑 Coroa</option>
+                  <option value="bow">🎀 Lacinho</option>
+                  <option value="cap">🧢 Boné</option>
+                </select></label
+              ><label
+                >Rasto mágico<select id="skin-trail">
+                  <option value="none">🍃 Sem rasto</option>
+                  <option value="stars">✨ Estrelinhas</option>
+                  <option value="hearts">💗 Corações</option>
+                  <option value="bubbles">🫧 Bolhinhas</option>
+                </select></label
+              >
+            </div>
+          </section>
+          <section
+            class="editor-panel"
+            role="tabpanel"
+            id="panel-flag"
+            aria-labelledby="tab-flag"
+            hidden
           >
-          <div class="paint-row">
-            <label
-              >Primeira cor da bandeira<input
-                id="skin-flagColorA"
-                type="color"
-                value="#b591ee" /></label
-            ><label
-              >Segunda cor da bandeira<input
-                id="skin-flagColorB"
-                type="color"
-                value="#ffe2a4"
-            /></label>
-          </div>
-          <p class="editor-note">
-            Para usar as tuas cores, escolhe «Criar a minha bandeira». O padrão
-            «Cores da bandeira» também pinta o corpo!
-          </p>
+            <h3>🏳 Bandeira da tua cobrinha</h3>
+            <div class="panel-fields">
+              <label
+                >Escolhe uma bandeira<select id="skin-flag">
+                  <option value="none">Sem bandeira</option>
+                  <option value="pt">Portugal</option>
+                  <option value="br">Brasil</option>
+                  <option value="gb">Reino Unido</option>
+                  <option value="fr">França</option>
+                  <option value="de">Alemanha</option>
+                  <option value="es">Espanha</option>
+                  <option value="pl">Polónia</option>
+                  <option value="it">Itália</option>
+                  <option value="ua">Ucrânia</option>
+                  <option value="us">Estados Unidos</option>
+                  <option value="rainbow">Arco-íris</option>
+                  <option value="custom">Criar a minha bandeira</option>
+                </select></label
+              ><label
+                >Desenho da bandeira personalizada<select id="skin-flagStyle">
+                  <option value="horizontal">☰ Riscas horizontais</option>
+                  <option value="vertical">▥ Riscas verticais</option>
+                  <option value="cross">✚ Cruz</option>
+                </select></label
+              ><label
+                >Primeira cor da bandeira<input
+                  id="skin-flagColorA"
+                  type="color"
+                  value="#b591ee" /></label
+              ><label
+                >Segunda cor da bandeira<input
+                  id="skin-flagColorB"
+                  type="color"
+                  value="#ffe2a4"
+              /></label>
+            </div>
+            <p class="editor-note">
+              Escolhe «Criar a minha bandeira» para usar as tuas cores. O padrão
+              do corpo também pode usar as cores da bandeira.
+            </p>
+          </section>
         </div>
       </div>
       <div class="editor-bottom">
@@ -293,5 +374,6 @@
     <script src="engine.js"></script>
     <script src="skin.js"></script>
     <script src="game.js"></script>
+    <script src="choices.js"></script>
   </body>
 </html>

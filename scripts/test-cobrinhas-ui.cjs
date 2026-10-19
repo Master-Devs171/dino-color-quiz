@@ -18,6 +18,9 @@ class Element {
   setAttribute(k, v) {
     this.attrs[k] = v;
   }
+  getAttribute(k) {
+    return this.attrs[k];
+  }
   appendChild(e) {
     this.children.push(e);
   }
@@ -74,13 +77,18 @@ async function test() {
   const listeners = {},
     store = {};
   const document = {
+    body: new Element(),
     hidden: false,
     getElementById: (id) => {
       assert.ok(elements[id], id);
       return elements[id];
     },
     querySelector: () => elements.garden,
-    createElement: () => new Element(),
+    createElement: () => {
+      const element = new Element();
+      element.getContext = () => ctx;
+      return element;
+    },
     addEventListener: (k, f) => (listeners[k] = f),
   };
   const env = {
@@ -117,8 +125,18 @@ async function test() {
   vm.runInContext(fs.readFileSync(root + "game.js", "utf8"), env);
   await new Promise((resolve) => setImmediate(resolve));
   scheduled(16);
+  const idleDraws = draws;
+  scheduled(18);
+  assert.equal(
+    draws,
+    idleDraws,
+    "menus should not repaint the arena every frame",
+  );
   assert.equal(elements.colors.children.length, 5);
   elements.customize.onclick();
+  elements["tab-face"].onclick();
+  assert.equal(elements["panel-body"].hidden, true);
+  assert.equal(elements["panel-face"].hidden, false);
   assert.equal(elements.wardrobe.open, true);
   elements["skin-color"].value = "#123abc";
   elements["skin-color"].events.input();
@@ -219,6 +237,7 @@ async function test() {
         );
   for (const flagStyle of env.SnakeStyle.options.flagStyle)
     env.SnakeStyle.draw(ctx, sample, { flag: "custom", flagStyle }, 2, true);
+  const beforeFresh=draws;env.SnakeStyle.draw(ctx,sample,{color:'#112233',pattern:'plain'},2,true);const freshCost=draws-beforeFresh;const beforeCached=draws;env.SnakeStyle.draw(ctx,sample,{color:'#112233',pattern:'plain'},2,true);const cachedCost=draws-beforeCached;assert.ok(cachedCost<freshCost*.8,'segment cache must reduce drawing work');
   assert.ok(draws > 1000);
   console.log(
     "UI runtime: editor, preview, guardar/cancelar/repor, pausa/retoma, suspensão, 360px, caras, todas as bandeiras e fim de partida na borda OK.",

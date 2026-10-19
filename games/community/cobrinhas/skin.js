@@ -209,7 +209,38 @@
     ctx.restore();
     ctx.restore();
   }
-  function draw(ctx, s, appearance, time = 0, reduced = false) {
+  const segmentCache = new Map();
+  function segment(color, spot, r) {
+    const key = color + "|" + spot + "|" + r.toFixed(2);
+    if (segmentCache.has(key)) return segmentCache.get(key);
+    const tile = root.document.createElement("canvas");
+    tile.width = tile.height = 80;
+    const c = tile.getContext("2d");
+    c.scale(2, 2);
+    c.translate(20, 18);
+    c.fillStyle = "#63854b18";
+    c.beginPath();
+    c.arc(1, 4, r, 0, 7);
+    c.fill();
+    c.fillStyle = color;
+    c.beginPath();
+    c.arc(0, 0, r, 0, 7);
+    c.fill();
+    if (spot) {
+      c.fillStyle = spot;
+      c.beginPath();
+      c.arc(-3, -2, r * 0.4, 0, 7);
+      c.fill();
+    }
+    c.fillStyle = "#ffffff26";
+    c.beginPath();
+    c.ellipse(-3, -4, r * 0.5, r * 0.27, -0.4, 0, 7);
+    c.fill();
+    if (segmentCache.size >= 256) segmentCache.clear();
+    segmentCache.set(key, tile);
+    return tile;
+  }
+  function draw(ctx, s, appearance, time = 0, reduced = false, view = null) {
     const a = sanitize(appearance),
       body = s.body;
     if (!body.length) return;
@@ -217,15 +248,19 @@
     for (let i = body.length - 1; i >= 0; i--) {
       const p = body[i],
         r = 14 * Math.min(1, 0.4 + (body.length - i) / 12);
-      ctx.fillStyle = "#63854b18";
-      ctx.beginPath();
-      ctx.arc(p.x + 1, p.y + 4, r, 0, 7);
-      ctx.fill();
+      if (
+        view &&
+        (p.x < view.left ||
+          p.x > view.right ||
+          p.y < view.top ||
+          p.y > view.bottom)
+      )
+        continue;
       const flagColors =
         a.flag === "custom"
           ? [a.flagColorA, a.flagColorB]
           : countryColors[a.flag] || [a.color, a.secondary];
-      ctx.fillStyle =
+      const color =
         a.pattern === "flag"
           ? flagColors[Math.floor(i / 5) % flagColors.length]
           : a.pattern === "rainbow"
@@ -233,19 +268,17 @@
             : a.pattern === "stripes" && Math.floor(i / 4) % 2
               ? a.secondary
               : a.color;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, r, 0, 7);
-      ctx.fill();
-      if (a.pattern === "dots" && i % 4 === 0) {
-        ctx.fillStyle = a.secondary;
-        ctx.beginPath();
-        ctx.arc(p.x - 3, p.y - 2, r * 0.4, 0, 7);
-        ctx.fill();
-      }
-      ctx.fillStyle = "#ffffff26";
-      ctx.beginPath();
-      ctx.ellipse(p.x - 3, p.y - 4, r * 0.5, r * 0.27, -0.4, 0, 7);
-      ctx.fill();
+      ctx.drawImage(
+        segment(
+          color,
+          a.pattern === "dots" && i % 4 === 0 ? a.secondary : "",
+          r,
+        ),
+        p.x - 20,
+        p.y - 18,
+        40,
+        40,
+      );
     }
     ctx.save();
     ctx.translate(head.x, head.y);

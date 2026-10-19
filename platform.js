@@ -151,7 +151,7 @@
     };
   }
   async function loadCatalog() {
-    const response = await fetch("./games/catalog.json?v=2", {
+    const response = await fetch("./games/catalog.json?v=3", {
       cache: "no-store",
     });
     if (!response.ok) throw new Error("catalog");

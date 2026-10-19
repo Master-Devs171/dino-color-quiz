@@ -29,6 +29,8 @@
         respawn: 0,
         think: 0,
         foodTarget: null,
+        previousBody: null,
+        previousAngle: angle,
         body: Array.from({ length: 34 }, (_, i) => ({
           x: p.x - Math.cos(angle) * i * GAP,
           y: p.y - Math.sin(angle) * i * GAP,
@@ -95,6 +97,8 @@
           }
           continue;
         }
+        s.previousBody = s.body;
+        s.previousAngle = s.angle;
         s.grace = Math.max(0, s.grace - dt);
         const head = s.body[0];
         let desired = heading;
