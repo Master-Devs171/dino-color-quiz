@@ -5,11 +5,13 @@
   "compatibility_date": "2026-10-19",
   "durable_objects": {
     "bindings": [
-      { "name": "ROOMS", "class_name": "GameRoom" }
+      { "name": "ROOMS", "class_name": "GameRoom" },
+      { "name": "FRIENDS", "class_name": "FriendRegistry" }
     ]
   },
   "migrations": [
-    { "tag": "v1", "new_sqlite_classes": ["GameRoom"] }
+    { "tag": "v1", "new_sqlite_classes": ["GameRoom"] },
+    { "tag": "v2", "new_sqlite_classes": ["FriendRegistry"] }
   ],
   "observability": { "enabled": true }
 }
