@@ -41,3 +41,7 @@ Regras, bordas, crescimento, colisões, ajudas, loja, saldo, prémios únicos e 
 ## Ícones locais (3.0.0)
 
 40 ilustrações SVG originais para navegação, frutas, ajudas e acessórios. Não dependem de fontes de emoji, CDN ou bibliotecas remotas. icons.js partilha os mesmos desenhos com os menus e a arena, mantendo os dados de progresso compatíveis. Todos os SVG constam do manifesto offline.
+
+## Idiomas (3.1.0)
+
+O jogo lê `language` do contexto devolvido por `DinoPlay.ready()`: português de Portugal e do Brasil, inglês, espanhol, francês, alemão e polaco. Aberto diretamente, usa o idioma do navegador; `?lang=en` permite escolher um idioma no endereço. Idiomas desconhecidos usam português. Traduções e ícones estão no pacote offline; não há serviços externos. Os IDs e o progresso guardado não mudam.

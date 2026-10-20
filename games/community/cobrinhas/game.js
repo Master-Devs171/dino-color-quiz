@@ -245,7 +245,10 @@
       return;
     }
     try {
-      await DinoPlay.ready();
+      const context = await DinoPlay.ready();
+      window.GardenI18n?.setLanguage(
+        context?.language || window.navigator?.language,
+      );
       hostReady = true;
       const saved = await DinoPlay.storage.get("best");
       if (Number.isFinite(saved) && saved > best) {
@@ -260,6 +263,7 @@
       }
     } catch {
       /* The game remains playable if the host is unavailable. */
+      window.GardenI18n?.setLanguage(window.navigator?.language);
     }
   }
   const connectionReady = connect();
@@ -585,7 +589,11 @@
         );
         ctx.fill();
         ctx.fillStyle = "#53764a";
-        ctx.fillText("TU", h.x, h.y - 15 - 22 * sizeForScore(s.score));
+        ctx.fillText(
+          window.GardenI18n?.t("TU") || "TU",
+          h.x,
+          h.y - 15 - 22 * sizeForScore(s.score),
+        );
       }
       ctx.globalAlpha = 1;
     }
@@ -624,7 +632,11 @@
     ctx.font = "bold 8px Trebuchet MS,system-ui";
     ctx.textAlign = "center";
     ctx.fillStyle = "#f1deff";
-    ctx.fillText("O TEU JARDIM", x + size / 2, y - 9);
+    ctx.fillText(
+      window.GardenI18n?.t("O TEU JARDIM") || "O TEU JARDIM",
+      x + size / 2,
+      y - 9,
+    );
     ctx.fillStyle = "#321050";
     ctx.beginPath();
     ctx.roundRect(x, y, size, size, 9);
