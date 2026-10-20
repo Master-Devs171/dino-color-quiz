@@ -1,5 +1,7 @@
 (() => {
   const gameCache = "dinoplay-games-v1";
+  const gameCacheName = (id, version) =>
+    `dinoplay-games-v2-${id}-${String(version).replace(/[^0-9.]/g, "")}`;
   let catalog = {
     puzzle: {
       name: "Puzzles de Aventuras",
@@ -34,7 +36,7 @@
         "./assets/three.module.js",
         "./assets/three.core.js",
         "./multiplayer-core.js?v=3",
-        "./multiplayer.js?v=7",
+        "./multiplayer.js?v=8",
       ],
     },
     race: {
@@ -58,13 +60,21 @@
   const categories = {
     all: { icon: "🎮", label: "Todos" },
     learn: { icon: "🧠", label: "Aprender" },
+    puzzle: { icon: "🧩", label: "Puzzles" },
     create: { icon: "🎨", label: "Criar" },
     explore: { icon: "🗺️", label: "Explorar" },
+    action: { icon: "⚡", label: "Ação" },
+    sports: { icon: "⚽", label: "Desporto" },
+    music: { icon: "🎵", label: "Música" },
   };
   const categoryStyle = {
     learn: { icon: "🧩", tone: "sky" },
+    puzzle: { icon: "🧩", tone: "sky" },
     create: { icon: "🧱", tone: "blocks" },
     explore: { icon: "🏙️", tone: "city" },
+    action: { icon: "⚡", tone: "city" },
+    sports: { icon: "⚽", tone: "blocks" },
+    music: { icon: "🎵", tone: "sky" },
   };
   let platform;
   try {
@@ -86,17 +96,18 @@
   if (!host || !originalOpen) return;
   const css = document.createElement("link");
   css.rel = "stylesheet";
-  css.href = "platform.css?v=8";
+  css.href = "platform.css?v=9";
   document.head.appendChild(css);
   brand.innerHTML = "<span>🦖</span> DinoPlay";
   footer.textContent =
     "🔒 Sem anúncios · Sem chat · Progresso guardado neste dispositivo";
   document.title = "DinoPlay";
-  document.querySelector("#updateStatus").textContent = "DinoPlay v4.2";
+  document.querySelector("#updateStatus").textContent = "DinoPlay v4.3";
   host.classList.add("platform-home");
   host.innerHTML = `<div class="dp-head"><div><small>OLÁ, EXPLORADOR!</small><h1>Dino<span>Play</span></h1><p>A tua biblioteca de aventuras</p></div><img class="dp-mascot" src="assets/dinoplay-mascot.png" alt="Dinossauro DinoPlay"></div><div id="dpView"></div><span id="puzzleMenuProgress" hidden></span><span id="blockMenuProgress" hidden></span><nav class="dp-nav"><button data-tab="home" class="active">🏠<small>Início</small></button><button data-tab="library">🎮<small>Biblioteca</small></button><button data-tab="parents">👨‍👩‍👧<small>Pais</small></button></nav>`;
   let tab = "home",
     category = "all",
+    parentPage = "security",
     busy = null,
     parentOpen = false,
     removeConfirm = null,
@@ -131,6 +142,7 @@
     !/^(?:[a-z]+:|\/\/|\/)/i.test(value) &&
     !value.split(/[\\/]/).includes("..");
   const assetPath = (value) => (value.startsWith("./") ? value : `./${value}`);
+  const tr = (value) => window.DinoI18n?.t(value) || value;
   function normalizeGame(game) {
     if (
       !game ||
@@ -156,7 +168,6 @@
   async function loadCatalog(showFeedback = false) {
     if (catalogRefreshBusy) return;
     catalogRefreshBusy = true;
-    const previous = catalog;
     try {
       const response = await fetch(`./games/catalog.json?t=${Date.now()}`, {
         cache: "no-store",
@@ -176,7 +187,7 @@
       platform.installed = platform.installed.filter((id) => catalog[id]);
       savePlatform();
       render();
-      await updateInstalledGames(previous, showFeedback);
+      await updateInstalledGames(showFeedback);
     } finally {
       catalogRefreshBusy = false;
     }
@@ -232,7 +243,7 @@
     return Object.entries(categories)
       .map(
         ([id, item]) =>
-          `<button type="button" data-category="${id}" class="${category === id ? "active" : ""}" aria-pressed="${category === id}">${item.icon} ${item.label}</button>`,
+          `<button type="button" data-category="${id}" class="${category === id ? "active" : ""}" aria-pressed="${category === id}">${item.icon} ${safeText(tr(item.label))}</button>`,
       )
       .join("");
   }
@@ -247,6 +258,33 @@
   }
   function parentSecurityMarkup() {
     return `${parentRecoveryCode ? `<div class="dp-recovery-notice"><b>Guarda este código de recuperação</b><code>${safeText(parentRecoveryCode)}</code><small>É mostrado apenas agora. Guarda-o fora do dispositivo.</small><button id="recoverySaved">JÁ GUARDEI</button></div>` : ""}<div class="dp-pin-settings"><b>🔑 Alterar PIN parental</b><small>Ao alterar o PIN será criado um novo código de recuperação.</small><div><input id="currentParentPin" type="password" inputmode="numeric" maxlength="6" placeholder="PIN atual"><input id="nextParentPin" type="password" inputmode="numeric" maxlength="6" placeholder="Novo PIN"><button id="changeParentPin">ALTERAR</button></div></div>`;
+  }
+  function parentExtrasMarkup() {
+    const rows = Object.values(catalog).flatMap((game) =>
+      (game.extras || []).map(
+        (extra) =>
+          `<div class="dp-extra"><span>${safeText(game.icon)}</span><div><b>${safeText(extra.name)}</b><small>${safeText(game.name)} · ${safeText(extra.description)}</small></div><button type="button" disabled>${safeText(tr("INDISPONÍVEL"))}</button></div>`,
+      ),
+    );
+    return `<div class="dp-extras-info"><b>🛍️ ${safeText(tr("Extras dos jogos"))}</b><p>Compras só podem ser apresentadas e confirmadas nesta Área dos Pais. Os jogos nunca recebem dados de pagamento.</p></div><div class="dp-extras-list">${rows.length ? rows.join("") : `<div class="dp-no-extras">${safeText(tr("Ainda não existem extras disponíveis."))}</div>`}</div><div class="dp-parent-note">🔒 Os pagamentos permanecem desativados até existir validação segura no servidor. Nenhum desbloqueio pago é guardado apenas neste dispositivo.</div>`;
+  }
+  function applyParentPage(view) {
+    const title = view.querySelector(":scope > .dp-section > .dp-title");
+    if (!title) return;
+    const nav = document.createElement("div");
+    nav.className = "dp-parent-pages";
+    nav.innerHTML = [["security", "🔐", "Segurança"], ["friends", "👨‍👩‍👧", "Amigos"], ["games", "🎮", "Jogos"], ["extras", "🛍️", "Extras"]].map(([id, icon, label]) => `<button type="button" data-parent-page="${id}" class="${parentPage === id ? "active" : ""}">${icon} ${safeText(tr(label))}</button>`).join("");
+    title.after(nav);
+    const section = title.parentElement;
+    const groups = {
+      security: section.querySelectorAll(":scope > .dp-recovery-notice, :scope > .dp-pin-settings, :scope > .dp-parent-setting"),
+      friends: section.querySelectorAll(":scope > .dp-child-profile, :scope > .dp-friends"),
+      games: section.querySelectorAll(":scope > .dp-parent-note, :scope > .dp-manage, :scope > .dp-privacy"),
+    };
+    Object.entries(groups).forEach(([id, nodes]) => nodes.forEach((node) => node.classList.toggle("hidden", parentPage !== id)));
+    if (parentPage === "extras") nav.insertAdjacentHTML("afterend", parentExtrasMarkup());
+    if (parentPage === "friends" && !platform.onlineMultiplayerEnabled)
+      nav.insertAdjacentHTML("afterend", '<div class="dp-parent-note">🔒 Ativa primeiro o multiplayer na página Segurança.</div>');
   }
   function render() {
     document.body.classList.add("dp-shell");
@@ -266,7 +304,7 @@
         )}</div></section><div class="dp-safe"><span>🛡️</span><div><b>Diversão segura</b><small>Sem anúncios, sem chat e sem compras reais.</small></div></div>`;
     } else if (tab === "library") {
       const ids = categoryGames(),
-        label = categories[category].label;
+        label = tr(categories[category].label);
       view.innerHTML = `<section class="dp-section"><div class="dp-title"><div><small>ESCOLHIDOS PARA CRIANÇAS</small><h2>Biblioteca</h2></div><span>${platform.installed.length}/${Object.keys(catalog).length} instalados</span></div><div class="dp-chips" role="group" aria-label="Categorias de jogos">${categoryButtons()}</div><div class="dp-category-title"><b>${categories[category].icon} ${label}</b><small>${ids.length} ${ids.length === 1 ? "jogo" : "jogos"}</small></div><div class="dp-grid">${ids.map((id) => card(id, "library")).join("")}</div></section>`;
     } else if (!parentOpen) view.innerHTML = parentLockMarkup();
     else
@@ -281,6 +319,7 @@
         .join(
           "",
         )}</div><div class="dp-privacy"><b>Proteção infantil</b><p>Os jogos não têm anúncios, chat, compras reais nem recolha de dados pessoais da criança.</p></div></section>`;
+    if (tab === "parents" && parentOpen) applyParentPage(view);
     bind();
     startFriendSync();
   }
@@ -296,6 +335,13 @@
       (b) =>
         (b.onclick = () => {
           category = b.dataset.category;
+          render();
+        }),
+    );
+    document.querySelectorAll("[data-parent-page]").forEach(
+      (button) =>
+        (button.onclick = () => {
+          parentPage = button.dataset.parentPage;
           render();
         }),
     );
@@ -556,8 +602,11 @@
     if (busy || installed(id) || !catalog[id]) return;
     busy = id;
     render();
+    const targetName = gameCacheName(id, catalog[id].version);
+    const previousVersion = platform.versions[id];
     try {
-      const cache = await caches.open(gameCache),
+      await caches.delete(targetName);
+      const cache = await caches.open(targetName),
         assets = gameAssets(catalog[id]);
       for (let i = 0; i < assets.length; i++) {
         const response = await fetch(assets[i], { cache: "reload" });
@@ -574,12 +623,16 @@
       window.celebrate?.();
       toast(`${catalog[id].icon} ${catalog[id].name} instalado!`);
     } catch (e) {
+      await caches.delete(targetName);
+      platform.installed = platform.installed.filter((gameId) => gameId !== id);
+      if (previousVersion) platform.versions[id] = previousVersion;
+      else delete platform.versions[id];
       busy = null;
       render();
       toast("Não foi possível instalar. Verifica a ligação à internet.", "bad");
     }
   }
-  async function updateInstalledGames(previous, showFeedback = false) {
+  async function updateInstalledGames(showFeedback = false) {
     const pending = platform.installed.filter(
       (id) =>
         catalog[id] &&
@@ -595,7 +648,7 @@
     let updated = 0;
     for (const id of pending) {
       try {
-        await updateInstalledGame(id, previous[id]);
+        await updateInstalledGame(id);
         updated++;
       } catch (error) {
         console.warn(`DinoPlay: atualização de ${id} adiada.`, error);
@@ -619,38 +672,29 @@
     }
     return false;
   }
-  async function updateInstalledGame(id, previousGame) {
+  async function updateInstalledGame(id) {
     const game = catalog[id],
       assets = gameAssets(game),
-      stageName = `${gameCache}-stage-${id}-${game.version}`,
-      stage = await caches.open(stageName);
+      stageName = gameCacheName(id, game.version),
+      previousVersion = platform.versions[id];
     try {
+      await caches.delete(stageName);
+      const stage = await caches.open(stageName);
       for (const asset of assets) {
         const response = await fetch(asset, { cache: "reload" });
         if (!response.ok) throw new Error(`download-${response.status}`);
         await stage.put(asset, response);
       }
-      const target = await caches.open(gameCache);
-      for (const asset of assets) {
-        const response = await stage.match(asset);
-        if (!response) throw new Error("stage-missing");
-        await target.put(asset, response);
-      }
-      const needed = new Set(
-        platform.installed.flatMap((gameId) =>
-          catalog[gameId] ? gameAssets(catalog[gameId]) : [],
-        ),
-      );
-      if (previousGame)
-        await Promise.all(
-          gameAssets(previousGame)
-            .filter((asset) => !needed.has(asset))
-            .map((asset) => target.delete(asset)),
-        );
+      for (const asset of assets)
+        if (!(await stage.match(asset))) throw new Error("stage-missing");
       platform.versions[id] = game.version;
       savePlatform();
-    } finally {
+      if (previousVersion && previousVersion !== game.version)
+        await caches.delete(gameCacheName(id, previousVersion));
+    } catch (error) {
+      platform.versions[id] = previousVersion;
       await caches.delete(stageName);
+      throw error;
     }
   }
   async function removeGame(id) {
@@ -660,6 +704,7 @@
     savePlatform();
     removeConfirm = null;
     try {
+      await caches.delete(gameCacheName(id, game.version));
       const cache = await caches.open(gameCache),
         needed = new Set(
           platform.installed.flatMap((x) =>
@@ -679,7 +724,7 @@
     return [
       ...new Set([
         ...(game.runtime === "sandbox"
-          ? [assetPath(game.entry), "./sdk/dinoplay-game-sdk.js?v=1"]
+          ? [assetPath(game.entry), "./sdk/dinoplay-game-sdk.js?v=2"]
           : []),
         ...game.assets,
       ]),
@@ -730,7 +775,8 @@
             gameId: id,
             language: document.documentElement.lang || "pt-PT",
             capabilities: {
-              storage: true,
+              storage: (game.permissions || []).includes("storage"),
+              entitlements: (game.permissions || []).includes("entitlements"),
               multiplayer:
                 game.multiplayer === true &&
                 (game.permissions || []).includes("multiplayer") &&
@@ -742,6 +788,8 @@
           return close();
         }
         if (request.action.startsWith("storage:")) {
+          if (!(game.permissions || []).includes("storage"))
+            throw new Error("permission-denied");
           if (!/^[a-zA-Z0-9._-]{1,64}$/.test(key || ""))
             throw new Error("invalid-storage-key");
           const data = readStore();
@@ -765,6 +813,16 @@
               platform.onlineMultiplayerEnabled,
             maxPlayers: 5,
           });
+        if (request.action === "entitlements:status")
+          return reply(request, true, { available: false, owned: [] });
+        if (request.action === "entitlements:has") {
+          if (!(game.permissions || []).includes("entitlements"))
+            throw new Error("permission-denied");
+          const productId = request.payload?.id;
+          if (!(game.extras || []).some((extra) => extra.id === productId))
+            throw new Error("unknown-entitlement");
+          return reply(request, true, false);
+        }
         if (request.action === "multiplayer:open") {
           const enabled =
             game.multiplayer === true &&

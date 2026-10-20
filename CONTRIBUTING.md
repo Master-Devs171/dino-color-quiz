@@ -8,7 +8,7 @@ Uma contribuição de jogo novo pode alterar exclusivamente:
 
 - `games/community/<id>/**` — todos os ficheiros do jogo;
 - `games/catalog.json` — uma única entrada para o jogo;
-- `scripts/test-<id>*.cjs` — testes opcionais do próprio jogo.
+- `scripts/test-<id>*.cjs` ou `.mjs` — testes opcionais do próprio jogo.
 
 Não altere `platform.js`, `app.js`, `sw.js`, `index.html`, o SDK, o controlo parental, o sistema de atualizações, o multiplayer, jogos oficiais ou as versões do DinoPlay. Se o jogo precisar de uma nova capacidade da plataforma, descreva-a no pull request; o mantenedor implementa-a separadamente.
 
@@ -27,6 +27,8 @@ Crie `games/community/<id>/`, usando um identificador em minúsculas, sem espaç
 
 Use apenas HTML, CSS, JavaScript e recursos auditáveis. Binários executáveis, código ofuscado, dependências remotas e ficheiros sem licença são recusados.
 
+São aceites imagens, áudio, vídeo local, fontes e modelos 3D (`glTF`/`GLB`). Cada ficheiro pode ter até 15 MB e o pacote completo até 50 MB, para preservar instalação e funcionamento aceitáveis em telemóveis.
+
 ## 3. Manifesto e catálogo
 
 - Use sempre `runtime: "sandbox"` e `offline: true`.
@@ -35,6 +37,7 @@ Use apenas HTML, CSS, JavaScript e recursos auditáveis. Binários executáveis,
 - Declare apenas `storage` e, quando aprovado, `multiplayer` em `permissions`.
 - Copie para `games/catalog.json` exatamente os mesmos dados públicos do `manifest.json`.
 - Num jogo novo, comece em `1.0.0`. Numa atualização, aumente `MAJOR.MINOR.PATCH`.
+- Escolha uma categoria suportada: `learn`, `puzzle`, `create`, `explore`, `action`, `sports` ou `music`.
 
 Nunca aumente a versão da app nem altere parâmetros de cache. A plataforma deteta o catálogo automaticamente.
 
@@ -43,6 +46,8 @@ Nunca aumente a versão da app nem altere parâmetros de cache. A plataforma det
 Inclua `/sdk/dinoplay-game-sdk.js` no HTML e execute `await DinoPlay.ready()` antes de usar capacidades da plataforma. Use `DinoPlay.storage` para progresso e `DinoPlay.close()` para regressar à biblioteca. Não use `localStorage`, contas próprias ou acesso direto a dados do dispositivo.
 
 Multiplayer só pode usar `DinoPlay.multiplayer`; servidores, códigos, salas, chat ou listas de jogadores próprios são proibidos. Uma contribuição multiplayer exige revisão adicional do protocolo.
+
+Extras pagos seguem obrigatoriamente `docs/MONETIZATION.md`. O jogo declara os extras no manifesto e consulta apenas `DinoPlay.entitlements`; preços, pagamentos, promoções e recibos nunca pertencem ao jogo.
 
 ## 5. Testes antes do envio
 
