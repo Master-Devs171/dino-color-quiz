@@ -2,6 +2,7 @@
 (() => {
   "use strict";
   const map = {
+      "🪙": "coin",
       "👆": "pointer",
       "⭐": "star",
       "🌟": "star",
@@ -79,6 +80,7 @@
       "flower",
       "book",
       "map",
+      "coin",
       "gift",
       "shop",
       "wheel",

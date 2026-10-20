@@ -1345,6 +1345,44 @@ body:not([data-menu="playing"]) .garden-menu button > span {
 }
 
 /* Arena-inspired lobby and option cards. */
+#coin-counter {
+  position: fixed;
+  left: 18px;
+  top: 165px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 90px;
+  padding: 8px 13px;
+  border: 2px solid #ffe982;
+  border-radius: 18px;
+  background: #40306c;
+  color: #fff3a5;
+  font-size: 21px;
+  box-shadow: 0 4px 0 #143964;
+  pointer-events: none;
+}
+#coin-counter .game-icon {
+  width: 32px;
+  height: 32px;
+}
+body:not([data-menu="playing"]) #coin-counter {
+  display: none;
+}
+@media (max-width: 700px) {
+  #coin-counter {
+    left: 12px;
+    top: 166px;
+    font-size: 16px;
+    min-width: 72px;
+    padding: 5px 8px;
+  }
+  #coin-counter .game-icon {
+    width: 25px;
+    height: 25px;
+  }
+  body[data-menu="playing"] #mini-task {top:149px;}
+}
 body:not([data-menu="playing"]) #overlay::before {
   transform: none;
   background-size: 180px 180px;

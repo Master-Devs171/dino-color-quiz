@@ -527,6 +527,20 @@
         );
       }
     }
+    for (const coin of game.coins) {
+      if (
+        coin.cooldown > 0 ||
+        Math.abs(coin.x - camera.x) > width / scale / 2 + 35 ||
+        Math.abs(coin.y - camera.y) > height / scale / 2 + 35
+      )
+        continue;
+      const bob = reducedMotion ? 0 : Math.sin(game.time * 3 + coin.x) * 3;
+      ctx.fillStyle = "#ffe66533";
+      ctx.beginPath();
+      ctx.arc(coin.x, coin.y + bob, 27, 0, Math.PI * 2);
+      ctx.fill();
+      window.GardenIcons?.draw(ctx, "coin", coin.x, coin.y + bob, 48);
+    }
     for (const item of game.powerups) {
       if (
         item.cooldown > 0 ||
@@ -741,6 +755,11 @@
       game.events = events;
       const meals = events.filter((event) => event === "eat").length;
       if (meals) window.GardenJournal?.record("fruit", meals);
+      const coins = events.filter((event) => event === "coin").length;
+      if (coins) {
+        window.GardenJournal?.record("coins", coins);
+        notice("🪙 +" + coins + (coins === 1 ? " moeda" : " moedas"), now);
+      }
       game.player.chomp = Math.max(0, (game.player.chomp || 0) - dt);
       if (events.includes("eat")) game.player.chomp = 0.3;
       trailClock += dt;

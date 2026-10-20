@@ -49,3 +49,7 @@ O jogo lê `language` do contexto devolvido por `DinoPlay.ready()`: português d
 ## Menus e controlos (3.2.0)
 
 Menu com atalhos laterais e cobra em destaque, corpos arredondados, comida maior, resposta mais rápida nas curvas e direção contínua para o cursor. Acelera com Espaço, Shift, clique do rato ou botão tátil. As opções permitem escolher o ritmo e três cenários, guardados no dispositivo. As regras de colisão e os progressos são preservados. A composição inspira-se em jogos de arena de cobras; arte e código permanecem próprios.
+
+## Moedas (3.3.0)
+
+A moeda da loja passa a ser moedas douradas, com ícone SVG local. O saldo das antigas estrelas é preservado. Existem 80 moedas na arena; cada recolha dá uma moeda para gastar na loja, sem alterar a pontuação de fruta. O íman atrai moedas, e as recolhidas reaparecem noutro lugar após 25 segundos. O saldo persiste entre partidas; compras anteriores mantêm-se.

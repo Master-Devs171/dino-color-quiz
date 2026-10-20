@@ -35,7 +35,7 @@ Aventuras|Adventures|Aventuras|Aventures|Abenteuer|Przygody
 O meu álbum|My album|Mi álbum|Mon album|Mein Album|Mój album
 Roda da Sorte|Lucky Wheel|Rueda de la Suerte|Roue de la chance|Glücksrad|Koło szczęścia
 Loja|Shop|Tienda|Boutique|Laden|Sklep
-Troca as tuas estrelas|Spend your stars|Canjea tus estrellas|Échange tes étoiles|Tausche deine Sterne|Wymień gwiazdki
+Troca as tuas moedas|Spend your coins|Canjea tus monedas|Échange tes pièces|Tausche deine Münzen|Wymień monety
 4 skins de oferta|4 free outfits|4 aspectos de regalo|4 tenues offertes|4 kostenlose Outfits|4 darmowe stroje
 Pequenas descobertas|Little discoveries|Pequeños descubrimientos|Petites découvertes|Kleine Entdeckungen|Małe odkrycia
 autocolantes|stickers|pegatinas|autocollants|Sticker|naklejki
@@ -130,7 +130,7 @@ UMA SURPRESA COLORIDA|A COLOURFUL SURPRISE|UNA SORPRESA COLORIDA|UNE SURPRISE CO
 Roda da Sorte!|Lucky Wheel!|¡Rueda de la Suerte!|Roue de la chance !|Glücksrad!|Koło szczęścia!
 Rodar grátis|Spin for free|Girar gratis|Tourner gratuitement|Kostenlos drehen|Zakręć za darmo
 Uma oferta do jardim|A gift from the garden|Un regalo del jardín|Un cadeau du jardin|Ein Geschenk des Gartens|Prezent od ogrodu
-Não custa estrelas.|It costs no stars.|No cuesta estrellas.|Cela ne coûte aucune étoile.|Es kostet keine Sterne.|Nie kosztuje gwiazdek.
+Não custa moedas.|It costs no coins.|No cuesta monedas.|Cela ne coûte aucune pièce.|Es kostet keine Münzen.|Nie kosztuje monet.
 A rodar…|Spinning…|Girando…|Ça tourne…|Dreht sich…|Kręci się…
 Coleção completa!|Collection complete!|¡Colección completa!|Collection complète !|Sammlung komplett!|Kolekcja pełna!
 Uma surpresa a caminho…|A surprise is on its way…|Una sorpresa en camino…|Une surprise arrive…|Eine Überraschung kommt…|Niespodzianka w drodze…
@@ -176,7 +176,7 @@ Nuvem|Cloud|Nube|Nuage|Wolke|Chmurka
 Festa de cores|Colour party|Fiesta de colores|Fête des couleurs|Farbenfest|Święto kolorów
 Festa|Party|Fiesta|Fête|Fest|Święto
 Nível|Level|Nivel|Niveau|Stufe|Poziom
-estrelas|stars|estrellas|étoiles|Sterne|gwiazdki
+moedas|coins|monedas|pièces|Münzen|monety
 descobertas até ao próximo nível|discoveries until the next level|descubrimientos hasta el próximo nivel|découvertes avant le prochain niveau|Entdeckungen bis zur nächsten Stufe|odkryć do kolejnego poziomu
 Recompensa pronta|Reward ready|Recompensa lista|Récompense prête|Belohnung bereit|Nagroda gotowa
 recompensas prontas|rewards ready|recompensas listas|récompenses prêtes|Belohnungen bereit|gotowe nagrody
@@ -204,6 +204,8 @@ Fechar aventuras|Close adventures|Cerrar aventuras|Fermer les aventures|Abenteue
 Arrasta para orientar|Drag to steer|Arrastra para dirigir|Glisse pour diriger|Zum Steuern ziehen|Przeciągnij, aby sterować
 Aventura atual|Current adventure|Aventura actual|Aventure actuelle|Aktuelles Abenteuer|Obecna przygoda
 Ajudas ativas|Active power-ups|Ayudas activas|Bonus actifs|Aktive Hilfen|Aktywne bonusy
+Moedas|Coins|Monedas|Pièces|Münzen|Monety
+moeda|coin|moneda|pièce|Münze|moneta
 Livro de descobertas|Discovery book|Libro de descubrimientos|Livre des découvertes|Entdeckerbuch|Księga odkryć
 Opções do jogo|Game options|Opciones del juego|Options du jeu|Spieloptionen|Opcje gry
 Opções|Options|Opciones|Options|Optionen|Opcje
@@ -233,11 +235,11 @@ pontos. Vamos tentar outra vez?|points. Shall we try again?|puntos. ¿Lo intenta
 está pronta para brincar!|is ready to play!|¡listo para jugar!|est prêt à jouer !|ist spielbereit!|jest gotowy do zabawy!
 já é tua! Podes vesti-la quando quiseres.|is yours! Wear it whenever you like.|¡ya es tuyo! Úsalo cuando quieras.|est à toi ! Porte-le quand tu veux.|gehört dir! Trage es, wann du magst.|jest twój! Załóż go, kiedy chcesz.
 Custa|Costs|Cuesta|Coûte|Kostet|Kosztuje
-estrelas das aventuras. Sem dinheiro real.|adventure stars. No real money.|estrellas de aventuras. Sin dinero real.|étoiles d’aventure. Sans argent réel.|Abenteuersterne. Kein echtes Geld.|gwiazdek z przygód. Bez prawdziwych pieniędzy.
+moedas das aventuras. Sem dinheiro real.|adventure coins. No real money.|monedas de aventuras. Sin dinero real.|pièces d’aventure. Sans argent réel.|Abenteuermünzen. Kein echtes Geld.|monet z przygód. Bez prawdziwych pieniędzy.
 Ganhaste a skin|You won the outfit|Ganaste el aspecto|Tu as gagné la tenue|Du hast das Outfit gewonnen:|Wygrany strój:
 Já ficou guardada.|It has been saved.|Ya está guardado.|Elle est enregistrée.|Es wurde gespeichert.|Zapisano go.
 Boa descoberta! Ganhaste|Great discovery! You earned|¡Buen descubrimiento! Ganaste|Belle découverte ! Tu as gagné|Tolle Entdeckung! Du bekommst|Świetne odkrycie! Nagroda:
-estrelas e o autocolante|stars and the sticker|estrellas y la pegatina|étoiles et l’autocollant|Sterne und den Sticker|gwiazdek i naklejka
+moedas e o autocolante|coins and the sticker|monedas y la pegatina|pièces et l’autocollant|Münzen und den Sticker|monet i naklejka
 e a skin|and the outfit|y el aspecto|et la tenue|und das Outfit|oraz strój
 Recompensa de|Reward for|Recompensa de|Récompense de|Belohnung für|Nagroda za
 4 skins de oferta, sem repetições. As skins que faltam têm a mesma possibilidade de sair.|4 free outfits, no repeats. Each remaining outfit has an equal chance.|4 aspectos gratis, sin repetir. Todos los que faltan tienen la misma probabilidad.|4 tenues offertes, sans doublons. Chaque tenue restante a la même chance.|4 kostenlose Outfits, keine Wiederholungen. Jedes übrige Outfit hat die gleiche Chance.|4 darmowe stroje bez powtórek. Każdy pozostały strój ma taką samą szansę.
@@ -262,7 +264,7 @@ Podes brincar. O progresso desta partida pode não ficar guardado.|You can play.
     "O meu álbum": "Meu álbum",
     autocolantes: "adesivos",
     Autocolantes: "Adesivos",
-    "Troca as tuas estrelas": "Troque suas estrelas",
+    "Troca as tuas moedas": "Troque suas moedas",
     Estás: "Você está",
     "Está mesmo gira!": "Ficou linda!",
     Guarda: "Salve",

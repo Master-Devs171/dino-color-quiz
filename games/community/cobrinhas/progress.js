@@ -134,16 +134,92 @@
     },
   };
   const shop = {
-    mermaid: {name:'Sereia',icon:'🧜‍♀️',price:3,color:'#64d7d3',secondary:'#c5a2ee',headColor:'#64d7d3',pattern:'stripes',hat:'bow',trail:'bubbles'},
-    astronaut: {name:'Astronauta',icon:'🚀',price:5,color:'#b9b4f4',secondary:'#f5f6ff',headColor:'#b9b4f4',pattern:'dots',hat:'cap',trail:'stars'},
-    peach: {name:'Pêssego',icon:'🍑',price:7,color:'#ffb68d',secondary:'#fff0b0',headColor:'#ffb68d',pattern:'stripes',hat:'flower',trail:'hearts'},
-    dragon: {name:'Dragão doce',icon:'🐉',price:9,color:'#82dbab',secondary:'#ffcb68',headColor:'#82dbab',pattern:'dots',hat:'crown',trail:'stars'}
+    mermaid: {
+      name: "Sereia",
+      icon: "🧜‍♀️",
+      price: 3,
+      color: "#64d7d3",
+      secondary: "#c5a2ee",
+      headColor: "#64d7d3",
+      pattern: "stripes",
+      hat: "bow",
+      trail: "bubbles",
+    },
+    astronaut: {
+      name: "Astronauta",
+      icon: "🚀",
+      price: 5,
+      color: "#b9b4f4",
+      secondary: "#f5f6ff",
+      headColor: "#b9b4f4",
+      pattern: "dots",
+      hat: "cap",
+      trail: "stars",
+    },
+    peach: {
+      name: "Pêssego",
+      icon: "🍑",
+      price: 7,
+      color: "#ffb68d",
+      secondary: "#fff0b0",
+      headColor: "#ffb68d",
+      pattern: "stripes",
+      hat: "flower",
+      trail: "hearts",
+    },
+    dragon: {
+      name: "Dragão doce",
+      icon: "🐉",
+      price: 9,
+      color: "#82dbab",
+      secondary: "#ffcb68",
+      headColor: "#82dbab",
+      pattern: "dots",
+      hat: "crown",
+      trail: "stars",
+    },
   };
   const surprises = {
-    berry: {name:'Amora',icon:'🫐',color:'#a49aee',secondary:'#f7caf0',headColor:'#a49aee',pattern:'stripes',hat:'bow',trail:'hearts'},
-    melon: {name:'Melancia',icon:'🍉',color:'#85d9a3',secondary:'#ffd1da',headColor:'#85d9a3',pattern:'dots',hat:'cap',trail:'bubbles'},
-    cloud: {name:'Nuvem',icon:'☁️',color:'#b1ddf5',secondary:'#ffffff',headColor:'#b1ddf5',pattern:'stripes',hat:'flower',trail:'bubbles'},
-    rainbow: {name:'Festa de cores',icon:'🌈',color:'#f4a9cc',secondary:'#fff0a5',headColor:'#f4a9cc',pattern:'rainbow',hat:'crown',trail:'stars'}
+    berry: {
+      name: "Amora",
+      icon: "🫐",
+      color: "#a49aee",
+      secondary: "#f7caf0",
+      headColor: "#a49aee",
+      pattern: "stripes",
+      hat: "bow",
+      trail: "hearts",
+    },
+    melon: {
+      name: "Melancia",
+      icon: "🍉",
+      color: "#85d9a3",
+      secondary: "#ffd1da",
+      headColor: "#85d9a3",
+      pattern: "dots",
+      hat: "cap",
+      trail: "bubbles",
+    },
+    cloud: {
+      name: "Nuvem",
+      icon: "☁️",
+      color: "#b1ddf5",
+      secondary: "#ffffff",
+      headColor: "#b1ddf5",
+      pattern: "stripes",
+      hat: "flower",
+      trail: "bubbles",
+    },
+    rainbow: {
+      name: "Festa de cores",
+      icon: "🌈",
+      color: "#f4a9cc",
+      secondary: "#fff0a5",
+      headColor: "#f4a9cc",
+      pattern: "rainbow",
+      hat: "crown",
+      trail: "stars",
+    },
   };
   const countBits = (n) => {
     let total = 0;
@@ -159,8 +235,17 @@
       const number = (v) =>
         Number.isSafeInteger(v) && v >= 0 ? Math.min(v, 1000000) : 0;
       this.state = {
-        purchased: Array.isArray(s.purchased) ? [...new Set(s.purchased.filter(id => Object.hasOwn(shop,id)))] : [],
-        surprises: Array.isArray(s.surprises) ? [...new Set(s.surprises.filter(id => Object.hasOwn(surprises,id)))] : [],
+        coins: number(s.coins),
+        purchased: Array.isArray(s.purchased)
+          ? [...new Set(s.purchased.filter((id) => Object.hasOwn(shop, id)))]
+          : [],
+        surprises: Array.isArray(s.surprises)
+          ? [
+              ...new Set(
+                s.surprises.filter((id) => Object.hasOwn(surprises, id)),
+              ),
+            ]
+          : [],
         fruit: number(s.fruit),
         outfits: number(s.outfits),
         rounds: number(s.rounds),
@@ -178,8 +263,16 @@
           ? [...new Set(s.claimed.filter((v) => tasks.some((t) => t.id === v)))]
           : [],
       };
-      let budget=tasks.filter(t=>this.state.claimed.includes(t.id)).reduce((n,t)=>n+t.stars,0);
-      this.state.purchased=this.state.purchased.filter(id=>{if(shop[id].price>budget)return false;budget-=shop[id].price;return true;});
+      let budget =
+        this.state.coins +
+        tasks
+          .filter((t) => this.state.claimed.includes(t.id))
+          .reduce((n, t) => n + t.stars, 0);
+      this.state.purchased = this.state.purchased.filter((id) => {
+        if (shop[id].price > budget) return false;
+        budget -= shop[id].price;
+        return true;
+      });
     }
     value(task) {
       return task.metric === "regions"
@@ -189,7 +282,7 @@
           : this.state[task.metric] || 0;
     }
     record(kind, value = 1) {
-      if (kind === "fruit" || kind === "rounds")
+      if (kind === "fruit" || kind === "rounds" || kind === "coins")
         this.state[kind] = Math.min(
           1000000,
           this.state[kind] + Math.max(0, Math.floor(Number(value) || 0)),
@@ -228,21 +321,40 @@
       return task;
     }
     buy(id) {
-      const item = Object.hasOwn(shop,id) && shop[id];
-      if(!item || this.state.purchased.includes(id) || this.stars < item.price) return false;
-      this.state.purchased.push(id); return true;
+      const item = Object.hasOwn(shop, id) && shop[id];
+      if (!item || this.state.purchased.includes(id) || this.stars < item.price)
+        return false;
+      this.state.purchased.push(id);
+      return true;
     }
     spin(random = Math.random) {
-      const remaining = Object.keys(surprises).filter(id => !this.state.surprises.includes(id));
-      if(!remaining.length) return null;
+      const remaining = Object.keys(surprises).filter(
+        (id) => !this.state.surprises.includes(id),
+      );
+      if (!remaining.length) return null;
       const n = Number(random());
-      const index = Number.isFinite(n) ? Math.min(remaining.length-1,Math.max(0,Math.floor(n*remaining.length))) : 0;
-      const id = remaining[index]; this.state.surprises.push(id); return id;
+      const index = Number.isFinite(n)
+        ? Math.min(
+            remaining.length - 1,
+            Math.max(0, Math.floor(n * remaining.length)),
+          )
+        : 0;
+      const id = remaining[index];
+      this.state.surprises.push(id);
+      return id;
     }
+    get coins() {
+      return (
+        this.state.coins +
+        tasks
+          .filter((t) => this.state.claimed.includes(t.id))
+          .reduce((n, t) => n + t.stars, 0) -
+        this.state.purchased.reduce((n, id) => n + shop[id].price, 0)
+      );
+    }
+    // Compatibility for older callers and saves; the currency is now coins.
     get stars() {
-      return tasks
-        .filter((t) => this.state.claimed.includes(t.id))
-        .reduce((n, t) => n + t.stars, 0) - this.state.purchased.reduce((n,id) => n + shop[id].price,0);
+      return this.coins;
     }
     get xp() {
       return (

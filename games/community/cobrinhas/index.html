@@ -42,6 +42,9 @@
     <div id="mini-task" aria-label="Aventura atual"></div>
     <div id="region">🌼 Campo das Flores</div>
     <div id="power-status" aria-label="Ajudas ativas"></div>
+    <div id="coin-counter" aria-label="Moedas">
+      <span>🪙</span><b id="coin-score">0</b>
+    </div>
     <div id="notice" role="status" aria-live="polite"></div>
     <aside id="scoreboard">
       <button id="ranking-toggle" aria-expanded="false" aria-controls="ranking">
@@ -90,7 +93,7 @@
         <div class="welcome-content">
           <div class="journey-summary">
             <span class="level-badge" id="journey-level">🌱 Nível 1</span
-            ><span id="journey-stars">⭐ 0</span>
+            ><span id="journey-stars">🪙 0</span>
             <div class="journey-track"><div id="journey-bar"></div></div>
             <small id="journey-caption"
               >Cada descoberta faz o teu jardim crescer.</small
@@ -145,7 +148,7 @@
               <span>🎡</span><b>Roda da Sorte</b
               ><small>4 skins de oferta</small></button
             ><button id="open-shop">
-              <span>🏪</span><b>Loja</b><small>Troca as tuas estrelas</small>
+              <span>🏪</span><b>Loja</b><small>Troca as tuas moedas</small>
             </button>
           </div>
           <nav class="lobby-tools" aria-label="Opções do jogo">
@@ -404,7 +407,7 @@
       </header>
       <div class="adventure-wallet">
         <span id="wallet-level">🌱 Nível 1</span
-        ><span id="wallet-stars">⭐ 0 estrelas</span>
+        ><span id="wallet-stars">🪙 0 moedas</span>
       </div>
       <nav class="book-tabs" aria-label="Livro de descobertas">
         <button id="show-tasks" aria-pressed="true">🗺️ Aventuras</button
@@ -454,7 +457,7 @@
           </div>
           <div class="wheel-action">
             <button id="spin-wheel">Rodar grátis ✨</button>
-            <p>Uma oferta do jardim 💛<br />Não custa estrelas.</p>
+            <p>Uma oferta do jardim 💛<br />Não custa moedas.</p>
             <p id="wheel-status" role="status" aria-live="polite"></p>
           </div>
           <div id="wheel-collection"></div>

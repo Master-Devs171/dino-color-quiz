@@ -82,6 +82,12 @@
       );
       this.events = [];
       this.time = 0;
+      this.coins = Array.from({ length: 80 }, () => ({
+        ...this.point(),
+        cooldown: 0,
+      }));
+      this.coins[0] = { x: WORLD / 2 + 100, y: WORLD / 2, cooldown: 0 };
+      this.coins[1] = { x: WORLD / 2 + 260, y: WORLD / 2 + 90, cooldown: 0 };
     }
     drop(snake) {
       // Trail positions are already closely spaced: distribute collectible points along it.
@@ -97,6 +103,11 @@
       dt = Math.min(dt, 0.04);
       this.time += dt;
       this.events = [];
+      for (const coin of this.coins)
+        if (coin.cooldown > 0) {
+          coin.cooldown = Math.max(0, coin.cooldown - dt);
+          if (coin.cooldown === 0) Object.assign(coin, this.point());
+        }
       for (const item of this.powerups)
         if (item.cooldown > 0) {
           item.cooldown = Math.max(0, item.cooldown - dt);
@@ -216,6 +227,19 @@
         if (s.body.length < s.targetLength)
           s.body.push({ ...s.body[s.body.length - 1] });
         if (s.id === 0) {
+          for (const coin of this.coins) {
+            if (coin.cooldown > 0) continue;
+            const d = distance(p, coin);
+            if (s.effects.magnet > 0 && d > 0 && d < 185) {
+              const pull = Math.min(d, 300 * dt);
+              coin.x += ((p.x - coin.x) / d) * pull;
+              coin.y += ((p.y - coin.y) / d) * pull;
+            }
+            if (distance(p, coin) < 25) {
+              coin.cooldown = 25;
+              this.events.push("coin");
+            }
+          }
           for (const item of this.powerups)
             if (item.cooldown === 0 && distance(p, item) < 38) {
               s.effects[item.kind] = POWERS[item.kind].duration;
