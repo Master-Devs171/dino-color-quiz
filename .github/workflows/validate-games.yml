@@ -3,17 +3,17 @@ on:
   pull_request:
   push:
     branches: [main]
-    paths: ['games/**','sdk/**','scripts/validate-catalog.mjs']
+    paths: ['games/**','sdk/**','scripts/**','.github/workflows/validate-games.yml']
 permissions:
   contents: read
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
       - if: github.event_name == 'pull_request'
