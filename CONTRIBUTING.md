@@ -54,6 +54,8 @@ node scripts/validate-catalog.mjs
 
 Teste também instalação, modo avião depois de instalado, toque, ecrã pequeno, rotação, suspensão/regresso, botão de fechar, áudio e preservação do progresso. O jogo não pode continuar a gastar CPU ou reproduzir áudio quando estiver oculto.
 
+Execute também `node scripts/scan-community-security.mjs`. Para começar mais depressa, copie `contributor-kit/game-template` e siga `docs/COMMUNITY-QUICKSTART.md`.
+
 ## 6. Pull request e publicação
 
 1. Atualize a sua branch com a `main` antes de abrir ou concluir o pull request.

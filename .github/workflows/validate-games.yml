@@ -22,3 +22,5 @@ jobs:
           TARGET_SHA: ${{ github.event.pull_request.head.sha }}
         run: node scripts/validate-contribution.mjs
       - run: node scripts/validate-catalog.mjs
+      - run: node scripts/scan-community-security.mjs
+      - run: node scripts/run-community-tests.mjs

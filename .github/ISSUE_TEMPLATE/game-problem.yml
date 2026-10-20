@@ -1,0 +1,36 @@
+name: Problema num jogo
+description: Comunicar aos responsáveis um erro ou problema de segurança
+title: "[Jogo] "
+labels: [game-report]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Tipo de problema
+      options: [Erro ou bloqueio, Conteúdo inadequado, Privacidade ou segurança, Acessibilidade, Outro]
+    validations:
+      required: true
+  - type: input
+    id: game
+    attributes:
+      label: Nome e versão do jogo
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: O que aconteceu?
+      description: Não inclua nomes, fotografias, contactos ou outros dados da criança.
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Dispositivo e versão do Android, se souber
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacidade
+      options:
+        - label: Confirmei que o relatório não contém dados pessoais de uma criança.
+          required: true

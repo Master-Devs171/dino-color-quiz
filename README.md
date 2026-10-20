@@ -9,6 +9,9 @@ As contribuições são feitas por pull request e revistas antes de entrarem na 
 - [Formato e SDK dos jogos](docs/GAME-SPEC.md)
 - [Regras de segurança infantil](docs/CHILD-SAFETY.md)
 - [Modelo multiplayer obrigatório](docs/MULTIPLAYER.md)
+- [Início rápido e kit para programadores](docs/COMMUNITY-QUICKSTART.md)
+- [Privacidade para responsáveis](docs/PRIVACY.md)
+- [Política de conteúdo comunitário](docs/CONTENT-POLICY.md)
 - [Esquema do manifesto](games/game.schema.json)
 
 Execute `node scripts/validate-catalog.mjs` antes de enviar a contribuição. O GitHub repete automaticamente essa validação em cada pull request.

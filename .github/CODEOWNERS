@@ -1,0 +1,9 @@
+# Alterações à plataforma e a jogos publicados exigem revisão do mantenedor.
+* @Rjcferreira
+/platform.js @Rjcferreira
+/app.js @Rjcferreira
+/sw.js @Rjcferreira
+/sdk/ @Rjcferreira
+/games/catalog.json @Rjcferreira
+/games/community/ @Rjcferreira
+/cloudflare-multiplayer/ @Rjcferreira

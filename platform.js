@@ -81,17 +81,18 @@
   const host = document.querySelector("#menuScreen"),
     brand = document.querySelector(".brand"),
     footer = document.querySelector("#bestLabel"),
-    originalOpen = window.openGame;
+    originalOpen = window.openGame,
+    parental = window.DinoPlayParental;
   if (!host || !originalOpen) return;
   const css = document.createElement("link");
   css.rel = "stylesheet";
-  css.href = "platform.css?v=7";
+  css.href = "platform.css?v=8";
   document.head.appendChild(css);
   brand.innerHTML = "<span>🦖</span> DinoPlay";
   footer.textContent =
     "🔒 Sem anúncios · Sem chat · Progresso guardado neste dispositivo";
   document.title = "DinoPlay";
-  document.querySelector("#updateStatus").textContent = "DinoPlay v4.1";
+  document.querySelector("#updateStatus").textContent = "DinoPlay v4.2";
   host.classList.add("platform-home");
   host.innerHTML = `<div class="dp-head"><div><small>OLÁ, EXPLORADOR!</small><h1>Dino<span>Play</span></h1><p>A tua biblioteca de aventuras</p></div><img class="dp-mascot" src="assets/dinoplay-mascot.png" alt="Dinossauro DinoPlay"></div><div id="dpView"></div><span id="puzzleMenuProgress" hidden></span><span id="blockMenuProgress" hidden></span><nav class="dp-nav"><button data-tab="home" class="active">🏠<small>Início</small></button><button data-tab="library">🎮<small>Biblioteca</small></button><button data-tab="parents">👨‍👩‍👧<small>Pais</small></button></nav>`;
   let tab = "home",
@@ -102,7 +103,8 @@
     pendingInstall = null,
     friendSyncTimer = null,
     friendSyncBusy = false,
-    catalogRefreshBusy = false;
+    catalogRefreshBusy = false,
+    parentRecoveryCode = "";
   const installed = (id) => platform.installed.includes(id),
     savePlatform = () => {
       let latest = {};
@@ -224,7 +226,7 @@
     const g = catalog[id],
       has = installed(id),
       installing = busy === id;
-    return `<article class="dp-game ${safeText(g.tone)}"><div class="dp-cover"><img src="${safeText(g.cover)}" alt=""><b>${safeText(g.name)}</b></div><div class="dp-game-info"><div><i>${safeText(g.age)}</i><i>⬇ ${safeText(g.size)}</i><i>✓ Offline</i></div><p>${safeText(g.description)}</p><button data-${has ? "play" : "install"}="${safeText(id)}" ${installing ? "disabled" : ""}>${installing ? "A INSTALAR…" : has ? "JOGAR" : "INSTALAR"}</button><div class="dp-install-bar ${installing ? "" : "hidden"}"><span id="install-${safeText(id)}"></span></div></div></article>`;
+    return `<article class="dp-game ${safeText(g.tone)}"><div class="dp-cover"><img src="${safeText(g.cover)}" alt=""><b>${safeText(g.name)}</b></div><div class="dp-game-info"><div><i>${safeText(g.age)}</i><i>⬇ ${safeText(g.size)}</i><i>✓ Offline</i></div><p>${safeText(g.description)}</p><div class="dp-game-actions"><button data-${has ? "play" : "install"}="${safeText(id)}" ${installing ? "disabled" : ""}>${installing ? "A INSTALAR…" : has ? "JOGAR" : "INSTALAR"}</button><button class="details" data-details="${safeText(id)}" aria-label="Informações sobre ${safeText(g.name)}">ⓘ</button></div><div class="dp-install-bar ${installing ? "" : "hidden"}"><span id="install-${safeText(id)}"></span></div></div></article>`;
   }
   function categoryButtons() {
     return Object.entries(categories)
@@ -238,6 +240,13 @@
     return Object.keys(catalog).filter(
       (id) => category === "all" || catalog[id].category === category,
     );
+  }
+  function parentLockMarkup() {
+    const configured = parental?.status().configured;
+    return `<section class="dp-parent-lock"><span>🔒</span><h2>Área dos Pais</h2><p>${pendingInstall ? `Confirma que és adulto para instalar <b>${safeText(catalog[pendingInstall]?.name)}</b>.` : configured ? "Introduz o PIN parental para continuar." : "Cria um PIN parental para proteger instalações, remoções, amizades e multiplayer."}</p>${configured ? '<label for="parentPin">PIN parental</label><input id="parentPin" type="password" inputmode="numeric" maxlength="6" autocomplete="current-password" placeholder="4 a 6 números"><button id="parentUnlock">ENTRAR</button><button id="showRecovery" class="dp-link-button">Usar código de recuperação</button><div id="recoveryBox" class="hidden"><input id="parentRecovery" autocomplete="off" autocapitalize="characters" placeholder="XXXX-XXXX-XXXX"><button id="recoverParent">RECUPERAR ACESSO</button></div>' : '<label for="newParentPin">Novo PIN</label><input id="newParentPin" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password" placeholder="4 a 6 números"><input id="confirmParentPin" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password" placeholder="Repetir PIN"><button id="parentSetup">CRIAR PROTEÇÃO PARENTAL</button>'}<small id="parentError"></small></section>`;
+  }
+  function parentSecurityMarkup() {
+    return `${parentRecoveryCode ? `<div class="dp-recovery-notice"><b>Guarda este código de recuperação</b><code>${safeText(parentRecoveryCode)}</code><small>É mostrado apenas agora. Guarda-o fora do dispositivo.</small><button id="recoverySaved">JÁ GUARDEI</button></div>` : ""}<div class="dp-pin-settings"><b>🔑 Alterar PIN parental</b><small>Ao alterar o PIN será criado um novo código de recuperação.</small><div><input id="currentParentPin" type="password" inputmode="numeric" maxlength="6" placeholder="PIN atual"><input id="nextParentPin" type="password" inputmode="numeric" maxlength="6" placeholder="Novo PIN"><button id="changeParentPin">ALTERAR</button></div></div>`;
   }
   function render() {
     document.body.classList.add("dp-shell");
@@ -259,10 +268,9 @@
       const ids = categoryGames(),
         label = categories[category].label;
       view.innerHTML = `<section class="dp-section"><div class="dp-title"><div><small>ESCOLHIDOS PARA CRIANÇAS</small><h2>Biblioteca</h2></div><span>${platform.installed.length}/${Object.keys(catalog).length} instalados</span></div><div class="dp-chips" role="group" aria-label="Categorias de jogos">${categoryButtons()}</div><div class="dp-category-title"><b>${categories[category].icon} ${label}</b><small>${ids.length} ${ids.length === 1 ? "jogo" : "jogos"}</small></div><div class="dp-grid">${ids.map((id) => card(id, "library")).join("")}</div></section>`;
-    } else if (!parentOpen)
-      view.innerHTML = `<section class="dp-parent-lock"><span>🔒</span><h2>Área dos Pais</h2><p>${pendingInstall ? `Confirma que és adulto para instalar <b>${catalog[pendingInstall].name}</b>.` : "Esta área permite instalar e remover jogos. Resolve a conta para continuar."}</p><label>Quanto é <b>9 + 7</b>?</label><input id="parentAnswer" type="number" inputmode="numeric" placeholder="Resposta"><button id="parentUnlock">ENTRAR</button><small id="parentError"></small></section>`;
+    } else if (!parentOpen) view.innerHTML = parentLockMarkup();
     else
-      view.innerHTML = `<section class="dp-section"><div class="dp-title"><div><small>GESTÃO SEGURA</small><h2>Área dos Pais</h2></div><button id="parentLock">Bloquear</button></div><div class="dp-parent-setting"><span>🌍</span><div><b>Multiplayer pela Internet</b><small>Permite jogar apenas com amigos aprovados pelos dois responsáveis.</small><em>${platform.onlineMultiplayerEnabled ? "Autorizado pelo responsável" : "Bloqueado por predefinição"}</em></div><button type="button" data-online-toggle class="${platform.onlineMultiplayerEnabled ? "on" : "off"}" aria-pressed="${platform.onlineMultiplayerEnabled}">${platform.onlineMultiplayerEnabled ? "ATIVO" : "BLOQUEADO"}</button></div>${platform.onlineMultiplayerEnabled ? `<div class="dp-child-profile"><span>🧒</span><div><b>Perfil da criança</b><small>Usa apenas o primeiro nome ou um apelido. Será visível somente aos amigos autorizados.</small></div><input id="childNicknameInput" maxlength="16" value="${childNickname().replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;")}" placeholder="Nome ou apelido"><button id="childNicknameSave">GUARDAR</button></div><div class="dp-friends"><div class="dp-friends-head"><div><b>Amigos autorizados</b><small>Os códigos só funcionam aqui, uma vez e durante 2 minutos.</small></div><button id="friendCodeCreate">＋ GERAR CÓDIGO</button></div><div id="friendCodeResult" class="hidden"></div><div class="dp-friend-accept"><input id="friendCodeInput" maxlength="11" autocapitalize="none" autocomplete="off" spellcheck="false" placeholder="Código do outro responsável"><button id="friendCodeAccept">ACEITAR AMIZADE</button></div><small id="friendMessage"></small><div class="dp-manage dp-friend-list">${friendRows()}</div></div>` : ""}<div class="dp-parent-note">💾 Remover um jogo liberta os ficheiros offline, mas mantém todo o progresso para uma futura reinstalação.</div><div class="dp-manage">${Object.keys(
+      view.innerHTML = `<section class="dp-section"><div class="dp-title"><div><small>GESTÃO SEGURA</small><h2>Área dos Pais</h2></div><button id="parentLock">Bloquear</button></div>${parentSecurityMarkup()}<div class="dp-parent-setting"><span>🌍</span><div><b>Multiplayer pela Internet</b><small>Permite jogar apenas com amigos aprovados pelos dois responsáveis.</small><em>${platform.onlineMultiplayerEnabled ? "Autorizado pelo responsável" : "Bloqueado por predefinição"}</em></div><button type="button" data-online-toggle class="${platform.onlineMultiplayerEnabled ? "on" : "off"}" aria-pressed="${platform.onlineMultiplayerEnabled}">${platform.onlineMultiplayerEnabled ? "ATIVO" : "BLOQUEADO"}</button></div>${platform.onlineMultiplayerEnabled ? `<div class="dp-child-profile"><span>🧒</span><div><b>Perfil da criança</b><small>Usa apenas o primeiro nome ou um apelido. Será visível somente aos amigos autorizados.</small></div><input id="childNicknameInput" maxlength="16" value="${childNickname().replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;")}" placeholder="Nome ou apelido"><button id="childNicknameSave">GUARDAR</button></div><div class="dp-friends"><div class="dp-friends-head"><div><b>Amigos autorizados</b><small>Os códigos só funcionam aqui, uma vez e durante 2 minutos.</small></div><button id="friendCodeCreate">＋ GERAR CÓDIGO</button></div><div id="friendCodeResult" class="hidden"></div><div class="dp-friend-accept"><input id="friendCodeInput" maxlength="11" autocapitalize="none" autocomplete="off" spellcheck="false" placeholder="Código do outro responsável"><button id="friendCodeAccept">ACEITAR AMIZADE</button></div><small id="friendMessage"></small><div class="dp-manage dp-friend-list">${friendRows()}</div></div>` : ""}<div class="dp-parent-note">💾 Remover um jogo liberta os ficheiros offline, mas mantém todo o progresso para uma futura reinstalação.</div><div class="dp-manage">${Object.keys(
         catalog,
       )
         .map((id) => {
@@ -297,24 +305,86 @@
     document
       .querySelectorAll("[data-install]")
       .forEach((b) => (b.onclick = () => requestInstall(b.dataset.install)));
-    document.querySelector("#parentUnlock")?.addEventListener("click", () => {
-      if (document.querySelector("#parentAnswer").value === "16") {
-        parentOpen = true;
-        if (pendingInstall) {
-          const id = pendingInstall;
-          pendingInstall = null;
-          tab = "library";
-          render();
-          installGame(id);
-        } else {
-          render();
-          window.DinoPlayMultiplayer?.syncFriends()
-            .then(() => parentOpen && render())
-            .catch(() => {});
+    document
+      .querySelectorAll("[data-details]")
+      .forEach((b) => (b.onclick = () => showGameDetails(b.dataset.details)));
+    const finishParentUnlock = () => {
+      parentOpen = true;
+      if (pendingInstall) {
+        const id = pendingInstall;
+        pendingInstall = null;
+        tab = "library";
+        render();
+        installGame(id);
+      } else {
+        render();
+        window.DinoPlayMultiplayer?.syncFriends()
+          .then(() => parentOpen && render())
+          .catch(() => {});
+      }
+    };
+    document.querySelector("#parentSetup")?.addEventListener("click", async () => {
+      const pin = document.querySelector("#newParentPin").value,
+        confirmation = document.querySelector("#confirmParentPin").value,
+        error = document.querySelector("#parentError");
+      if (!parental?.validPin(pin)) {
+        error.textContent = "Escolhe um PIN com 4 a 6 números.";
+        return;
+      }
+      if (pin !== confirmation) {
+        error.textContent = "Os dois PIN não são iguais.";
+        return;
+      }
+      try {
+        parentRecoveryCode = await parental.setup(pin);
+        finishParentUnlock();
+      } catch {
+        error.textContent = "Não foi possível criar o PIN neste dispositivo.";
+      }
+    });
+    document.querySelector("#parentUnlock")?.addEventListener("click", async () => {
+      const error = document.querySelector("#parentError"),
+        button = document.querySelector("#parentUnlock");
+      button.disabled = true;
+      try {
+        if (await parental.verify(document.querySelector("#parentPin").value))
+          finishParentUnlock();
+        else {
+          error.textContent = "PIN incorreto.";
+          button.disabled = false;
         }
-      } else
-        document.querySelector("#parentError").textContent =
-          "Resposta incorreta. Tenta novamente.";
+      } catch (failure) {
+        const seconds = Math.max(1, Math.ceil((failure.retryAfter || 0) / 1000));
+        error.textContent = `Demasiadas tentativas. Espera ${seconds} segundos.`;
+        button.disabled = false;
+      }
+    });
+    document.querySelector("#showRecovery")?.addEventListener("click", () =>
+      document.querySelector("#recoveryBox").classList.toggle("hidden"),
+    );
+    document.querySelector("#recoverParent")?.addEventListener("click", async () => {
+      const ok = await parental.verify(
+        document.querySelector("#parentRecovery").value,
+        true,
+      );
+      if (ok) finishParentUnlock();
+      else document.querySelector("#parentError").textContent = "Código de recuperação inválido.";
+    });
+    document.querySelector("#recoverySaved")?.addEventListener("click", () => {
+      parentRecoveryCode = "";
+      render();
+    });
+    document.querySelector("#changeParentPin")?.addEventListener("click", async () => {
+      const current = document.querySelector("#currentParentPin").value,
+        next = document.querySelector("#nextParentPin").value;
+      if (!parental.validPin(next)) return toast("O novo PIN deve ter 4 a 6 números.", "bad");
+      try {
+        parentRecoveryCode = await parental.change(current, next);
+        render();
+        toast("✅ PIN parental alterado");
+      } catch {
+        toast("PIN atual incorreto.", "bad");
+      }
     });
     document.querySelector("#parentLock")?.addEventListener("click", () => {
       parentOpen = false;
@@ -462,6 +532,25 @@
     pendingInstall = id;
     tab = "parents";
     render();
+  }
+  function showGameDetails(id) {
+    const game = catalog[id];
+    if (!game) return;
+    const has = installed(id),
+      permissions = game.permissions || [],
+      modal = document.createElement("div");
+    modal.className = "dp-details-backdrop";
+    modal.innerHTML = `<section class="dp-details" role="dialog" aria-modal="true" aria-labelledby="gameDetailsTitle"><button class="dp-details-close" aria-label="Fechar">✕</button><img src="${safeText(game.cover)}" alt=""><div><small>${safeText(categories[game.category]?.icon)} ${safeText(categories[game.category]?.label)}</small><h2 id="gameDetailsTitle">${safeText(game.name)}</h2><p>${safeText(game.description)}</p><dl><div><dt>Idade</dt><dd>${safeText(game.age)}</dd></div><div><dt>Versão</dt><dd>${safeText(game.version)}</dd></div><div><dt>Tamanho</dt><dd>${safeText(game.size)}</dd></div><div><dt>Autor</dt><dd>${safeText(game.author || "DinoPlay")}</dd></div><div><dt>Offline</dt><dd>Sim</dd></div><div><dt>Multiplayer</dt><dd>${game.multiplayer ? "Com autorização parental" : "Não"}</dd></div></dl><p class="dp-capabilities">${permissions.includes("storage") ? "💾 Guarda progresso isolado neste dispositivo" : "🧩 Sem armazenamento adicional"}<br>${game.runtime === "sandbox" ? "🛡️ Jogo comunitário executado em área protegida" : "✅ Jogo oficial DinoPlay"}</p><button class="dp-details-action">${has ? "JOGAR" : "INSTALAR"}</button></div></section>`;
+    const close = () => modal.remove();
+    modal.querySelector(".dp-details-close").onclick = close;
+    modal.onclick = (event) => event.target === modal && close();
+    modal.querySelector(".dp-details-action").onclick = () => {
+      close();
+      if (has) window.openGame(id);
+      else requestInstall(id);
+    };
+    document.body.appendChild(modal);
+    modal.querySelector(".dp-details-close").focus();
   }
   async function installGame(id) {
     if (busy || installed(id) || !catalog[id]) return;

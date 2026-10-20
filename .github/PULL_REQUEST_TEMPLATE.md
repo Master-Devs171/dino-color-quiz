@@ -22,6 +22,7 @@
 - [ ] Não alterei `platform.js`, `app.js`, `sw.js`, `index.html`, SDK, controlo parental, atualização ou versões da app.
 - [ ] O `manifest.json` e a entrada no catálogo são equivalentes e cumprem o esquema.
 - [ ] Todos os caminhos e recursos são locais, declarados e licenciados.
+- [ ] Mantive a política CSP do modelo e executei `node scripts/scan-community-security.mjs`.
 - [ ] Não existem anúncios, compras, links externos, telemetria, chat, contas próprias ou recolha de dados.
 - [ ] Uso `runtime: "sandbox"`, `DinoPlay.storage` e `DinoPlay.close()`.
 - [ ] Testei instalação, modo avião, toque, ecrã pequeno, suspensão/regresso e preservação do progresso.
