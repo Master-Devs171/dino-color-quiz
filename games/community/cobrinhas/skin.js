@@ -263,9 +263,9 @@
     const head = body[0];
     const growth =
       s.score === undefined ? 1 : (root.Cobrinhas?.sizeForScore(s.score) ?? 1);
-    for (let i = body.length - 1; i >= 0; i -= 2) {
+    for (let i = body.length - 1; i >= 0; i -= 3) {
       const p = body[i],
-        r = 14 * Math.min(1, 0.78 + (body.length - i) / 16);
+        r = 16 * Math.min(1, 0.9 + (body.length - i) / 28);
       if (
         view &&
         (p.x < view.left ||

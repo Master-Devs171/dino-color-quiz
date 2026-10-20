@@ -20,6 +20,7 @@
   let camera = { x: WORLD / 2, y: WORLD / 2 },
     selected = palette[0],
     gentle = true,
+    arenaTheme = "blue",
     hostReady = false,
     savedBest = 0;
   const colorNames = ["Verdinha", "Lilás", "Tangerina", "Gotinha", "Rosinha"];
@@ -341,6 +342,7 @@
     boost = false;
     stickPointer = null;
     fieldPointer = null;
+    mouseAim = null;
     $("stick").style.transform = "";
   }
   document.addEventListener("visibilitychange", () => {
@@ -350,7 +352,10 @@
     if (running && !paused) pause();
   });
   addEventListener("keydown", (e) => {
-    if (/^(Arrow|Key[WASD])/.test(e.code) || e.code === "Space") {
+    if (
+      /^(Arrow|Key[WASD])/.test(e.code) ||
+      ["Space", "ShiftLeft", "ShiftRight"].includes(e.code)
+    ) {
       if (
         e.target.matches("input,select") ||
         (e.code === "Space" && e.target.matches("button"))
@@ -358,18 +363,21 @@
         return;
       e.preventDefault();
       keys.add(e.code);
+      if (/^(Arrow|Key[WASD])/.test(e.code)) mouseAim = null;
     }
     if (
       e.code === "Escape" &&
       !e.repeat &&
       !wardrobe.open &&
-      !$("adventures").open
+      !$("adventures").open &&
+      !$("game-options").open
     )
       pause();
   });
   addEventListener("keyup", (e) => keys.delete(e.code));
   let fieldPointer = null,
-    stickPointer = null;
+    stickPointer = null,
+    mouseAim = null;
   function point(e) {
     const h = game.player.body[0];
     if (!h) return;
@@ -382,15 +390,24 @@
     fieldPointer = e.pointerId;
     canvas.setPointerCapture(e.pointerId);
     point(e);
+    mouseAim =
+      e.pointerType === "mouse"
+        ? { clientX: e.clientX, clientY: e.clientY }
+        : null;
+    if (e.pointerType === "mouse" && e.button === 0) boost = true;
   };
   canvas.onpointermove = (e) => {
+    if (e.pointerType === "mouse")
+      mouseAim = { clientX: e.clientX, clientY: e.clientY };
     if (e.pointerType === "mouse" || fieldPointer === e.pointerId) point(e);
   };
   canvas.onpointerup = canvas.onpointercancel = () => {
     fieldPointer = null;
+    boost = false;
   };
   const joystick = $("joystick");
   function stick(e) {
+    mouseAim = null;
     const r = joystick.getBoundingClientRect(),
       x = e.clientX - r.left - r.width / 2,
       y = e.clientY - r.top - r.height / 2,
@@ -426,7 +443,12 @@
   }
   function draw() {
     ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = "#168dd5";
+    const theme = {
+      blue: ["#168dd5", "#106fba"],
+      sea: ["#139fc6", "#087eab"],
+      garden: ["#63b88a", "#409b74"],
+    }[arenaTheme];
+    ctx.fillStyle = theme[0];
     ctx.fillRect(0, 0, width, height);
     ctx.save();
     ctx.translate(width / 2, height / 2);
@@ -445,7 +467,7 @@
         y += 160
       ) {
         const offset = Math.sin(x * 0.19 + y * 0.13) * 14;
-        ctx.fillStyle = "#106fba";
+        ctx.fillStyle = theme[1];
         ctx.beginPath();
         ctx.ellipse(
           x + 78,
@@ -501,7 +523,7 @@
           ["apple", "strawberry", "orange", "grapes", "cherry"][f.kind],
           f.x,
           f.y + (reducedMotion ? 0 : Math.sin(game.time * 2 + f.x) * 2),
-          46,
+          54,
         );
       }
     }
@@ -699,11 +721,20 @@
         y =
           Number(keys.has("ArrowDown") || keys.has("KeyS")) -
           Number(keys.has("ArrowUp") || keys.has("KeyW"));
+      if (mouseAim) point(mouseAim);
       if (x || y) heading = Math.atan2(y, x);
       simulationClock += dt;
       const events = [];
       while (simulationClock >= 1 / 60) {
-        game.update(1 / 60, heading, boost || keys.has("Space"), gentle);
+        game.update(
+          1 / 60,
+          heading,
+          boost ||
+            keys.has("Space") ||
+            keys.has("ShiftLeft") ||
+            keys.has("ShiftRight"),
+          gentle,
+        );
         events.push(...game.events);
         simulationClock -= 1 / 60;
       }
@@ -882,6 +913,14 @@
     draw();
   }
   window.GardenBridge = {
+    setOptions(options) {
+      arenaTheme = ["blue", "sea", "garden"].includes(options.theme)
+        ? options.theme
+        : "blue";
+      gentle = options.pace !== "lively";
+      $("gentle").checked = gentle;
+      sceneDirty = true;
+    },
     getAppearance: () => ({ ...appearance }),
     ready: connectionReady,
     async get(key) {

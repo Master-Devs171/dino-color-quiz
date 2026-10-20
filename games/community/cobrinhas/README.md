@@ -45,3 +45,7 @@ Regras, bordas, crescimento, colisões, ajudas, loja, saldo, prémios únicos e 
 ## Idiomas (3.1.0)
 
 O jogo lê `language` do contexto devolvido por `DinoPlay.ready()`: português de Portugal e do Brasil, inglês, espanhol, francês, alemão e polaco. Aberto diretamente, usa o idioma do navegador; `?lang=en` permite escolher um idioma no endereço. Idiomas desconhecidos usam português. Traduções e ícones estão no pacote offline; não há serviços externos. Os IDs e o progresso guardado não mudam.
+
+## Menus e controlos (3.2.0)
+
+Menu com atalhos laterais e cobra em destaque, corpos arredondados, comida maior, resposta mais rápida nas curvas e direção contínua para o cursor. Acelera com Espaço, Shift, clique do rato ou botão tátil. As opções permitem escolher o ritmo e três cenários, guardados no dispositivo. As regras de colisão e os progressos são preservados. A composição inspira-se em jogos de arena de cobras; arte e código permanecem próprios.

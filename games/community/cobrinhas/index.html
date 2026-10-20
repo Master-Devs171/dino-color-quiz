@@ -148,6 +148,10 @@
               <span>🏪</span><b>Loja</b><small>Troca as tuas estrelas</small>
             </button>
           </div>
+          <nav class="lobby-tools" aria-label="Opções do jogo">
+            <button id="open-settings"><span>🎨</span><b>Opções</b></button>
+            <button id="open-background"><span>🌼</span><b>Cenário</b></button>
+          </nav>
           <div class="welcome-foot">
             <span>💛 Sem pressa. Tenta outra vez sempre!</span
             ><small
@@ -462,6 +466,41 @@
         </p>
       </footer>
     </dialog>
+    <dialog id="game-options" aria-labelledby="options-title">
+      <div class="options-heading">
+        <h2 id="options-title">O teu jardim</h2>
+        <button id="options-close" aria-label="Cancelar e fechar">✕</button>
+      </div>
+      <section id="pace-options">
+        <h3>Ritmo da aventura</h3>
+        <p>Escolhe como queres explorar.</p>
+        <div class="option-cards">
+          <button data-pace="calm" aria-pressed="true">Devagarinho</button
+          ><button data-pace="lively" aria-pressed="false">
+            Mais aventura
+          </button>
+        </div>
+        <p>
+          Move o rato, usa as setas ou arrasta o dedo. Para acelerar, mantém
+          Espaço, Shift ou o botão do rato premido.
+        </p>
+      </section>
+      <section id="background-options">
+        <h3>Escolhe o teu cenário</h3>
+        <div class="option-cards">
+          <button data-theme="blue" aria-pressed="true">
+            <span class="theme-swatch theme-blue"></span>Azul do céu
+          </button>
+          <button data-theme="sea" aria-pressed="false">
+            <span class="theme-swatch theme-sea"></span>Mar de bolhinhas
+          </button>
+          <button data-theme="garden" aria-pressed="false">
+            <span class="theme-swatch theme-garden"></span>Jardim verde
+          </button>
+        </div>
+      </section>
+      <p id="options-status" role="status"></p>
+    </dialog>
     <script src="i18n.js"></script>
     <script src="icons.js"></script>
     <script src="engine.js"></script>
@@ -471,5 +510,6 @@
     <script src="choices.js"></script>
     <script src="journey-ui.js"></script>
     <script src="lobby.js"></script>
+    <script src="options.js"></script>
   </body>
 </html>

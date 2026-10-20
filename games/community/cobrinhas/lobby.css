@@ -1343,3 +1343,235 @@ body:not([data-menu="playing"]) .garden-menu button > span {
     height: 58px;
   }
 }
+
+/* Arena-inspired lobby and option cards. */
+body[data-menu="welcome"] .input-help {
+  display: none;
+}
+@media (min-width: 901px) {
+  body[data-menu="welcome"] #overlay {
+    padding: 16px;
+  }
+  body[data-menu="welcome"] #mini-task {
+    display: none;
+  }
+  body[data-menu="playing"] #mini-task {
+    top: 106px;
+  }
+}
+.lobby-tools {
+  display: flex;
+  gap: 20px;
+}
+.lobby-tools button {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 100px;
+  padding: 12px;
+  border: 3px solid #13376b;
+  border-radius: 18px;
+  background: #1d4385;
+  color: white;
+  box-shadow:
+    0 6px 0 #0b5f9f,
+    inset 0 3px 0 #5e8cc5;
+}
+.lobby-tools .game-icon {
+  width: 48px;
+  height: 48px;
+  filter: drop-shadow(0 4px 0 #11376444);
+}
+body[data-menu="welcome"] .lobby-tools {
+  position: absolute;
+  right: 0;
+  top: 112px;
+  flex-direction: column;
+  width: 125px;
+  gap: 36px;
+}
+body[data-menu="playing"] .lobby-tools {
+  display: none;
+}
+#game-options {
+  width: min(680px, calc(100vw - 28px));
+  max-height: 90dvh;
+  overflow: auto;
+  box-sizing: border-box;
+  padding: 26px;
+  border: 5px solid #16396f;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #d9fcff, #9ae4ff);
+  color: #173e72;
+  box-shadow: 0 12px 0 #095d9c;
+}
+#game-options::backdrop {
+  background: #10244dc9;
+}
+.options-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.options-heading h2 {
+  font-size: 28px;
+  margin: 0;
+}
+.options-heading button {
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 3px solid #b4740d;
+  border-radius: 14px;
+  background: linear-gradient(#fff173, #ffc20b);
+  color: #80540e;
+  font-size: 25px;
+  box-shadow: 0 4px 0 #c4820c;
+}
+#game-options h3 {
+  font-size: 22px;
+  margin-top: 28px;
+}
+#game-options p {
+  line-height: 1.65;
+}
+.option-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 14px;
+  margin: 20px 0;
+}
+.option-cards button {
+  min-height: 76px;
+  padding: 14px;
+  border: 3px solid #5298cc;
+  border-radius: 18px;
+  background: #e8fbff;
+  color: #173e72;
+  font-size: 17px;
+  font-weight: 800;
+  box-shadow: 0 5px 0 #6cb5dc;
+}
+.option-cards button[aria-pressed="true"] {
+  border-color: #9e6d16;
+  background: #fff185;
+  box-shadow: 0 5px 0 #d19d25;
+}
+.option-cards button[aria-pressed="true"]::after {
+  content: " ✓";
+}
+.theme-swatch {
+  display: block;
+  height: 66px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  background-color: #168dd5;
+  background-image: radial-gradient(
+    ellipse at center,
+    #106fba 45%,
+    transparent 48%
+  );
+  background-size: 35px 42px;
+}
+.theme-sea {
+  background-color: #139fc6;
+  background-image: radial-gradient(
+    ellipse at center,
+    #087eab 45%,
+    transparent 48%
+  );
+}
+.theme-garden {
+  background-color: #63b88a;
+  background-image: radial-gradient(
+    ellipse at center,
+    #409b74 45%,
+    transparent 48%
+  );
+}
+button:active {
+  transform: translateY(2px);
+}
+@media (min-width: 901px) {
+  body[data-menu="welcome"] .welcome-content {
+    padding: 120px 165px 26px;
+    min-height: 680px;
+    box-sizing: border-box;
+    gap: 18px;
+  }
+  body[data-menu="welcome"] .journey-summary {
+    left: auto;
+    right: 150px;
+    width: min(480px, 65%);
+    top: 0;
+  }
+  body[data-menu="welcome"] h1 {
+    font-size: 30px;
+  }
+  body[data-menu="welcome"] .title-tag,
+  body[data-menu="welcome"] .intro {
+    display: none;
+  }
+  body[data-menu="welcome"] #customize {
+    max-width: 450px;
+    min-height: 150px;
+    margin: 34px 0 28px;
+    border-radius: 22px;
+  }
+  body[data-menu="welcome"] #lobby-snake {
+    max-height: 150px;
+  }
+  body[data-menu="welcome"] #play {
+    margin: 48px 0 12px;
+    width: 360px;
+    min-height: 104px;
+    font-size: 46px;
+  }
+  body[data-menu="welcome"] .garden-menu {
+    top: 70px;
+    width: 125px;
+    gap: 43px;
+  }
+  body[data-menu="welcome"] .garden-menu button {
+    min-height: 95px;
+    border-radius: 18px;
+    padding: 25px 8px 10px;
+  }
+  body[data-menu="welcome"] .garden-menu button b {
+    font-size: 16px;
+  }
+  body[data-menu="welcome"] .garden-menu button small {
+    font-size: 10px;
+  }
+  body[data-menu="welcome"] .garden-menu button > span {
+    top: -30px;
+  }
+}
+@media (max-width: 900px) {
+  body[data-menu="welcome"] .lobby-tools {
+    position: static;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    order: 7;
+    margin: 10px 0;
+    gap: 16px;
+  }
+  .lobby-tools button {
+    flex: 1;
+    max-width: 180px;
+    min-height: 70px;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 14px;
+  }
+  .lobby-tools .game-icon {
+    width: 34px;
+    height: 34px;
+  }
+  #game-options {
+    padding: 20px;
+  }
+}

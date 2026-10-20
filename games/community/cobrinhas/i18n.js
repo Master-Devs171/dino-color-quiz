@@ -205,6 +205,20 @@ Arrasta para orientar|Drag to steer|Arrastra para dirigir|Glisse pour diriger|Zu
 Aventura atual|Current adventure|Aventura actual|Aventure actuelle|Aktuelles Abenteuer|Obecna przygoda
 Ajudas ativas|Active power-ups|Ayudas activas|Bonus actifs|Aktive Hilfen|Aktywne bonusy
 Livro de descobertas|Discovery book|Libro de descubrimientos|Livre des découvertes|Entdeckerbuch|Księga odkryć
+Opções do jogo|Game options|Opciones del juego|Options du jeu|Spieloptionen|Opcje gry
+Opções|Options|Opciones|Options|Optionen|Opcje
+Cenário|Background|Escenario|Décor|Hintergrund|Tło
+O teu jardim|Your garden|Tu jardín|Ton jardin|Dein Garten|Twój ogród
+Ritmo da aventura|Adventure pace|Ritmo de la aventura|Rythme de l’aventure|Abenteuertempo|Tempo przygody
+Escolhe como queres explorar.|Choose how you want to explore.|Elige cómo explorar.|Choisis comment explorer.|Wähle dein Entdeckertempo.|Wybierz, jak chcesz odkrywać.
+Devagarinho|Nice and slow|Despacio|Tout doucement|Ganz gemütlich|Powoli
+Mais aventura|More adventure|Más aventura|Plus d’aventure|Mehr Abenteuer|Więcej przygód
+Move o rato, usa as setas ou arrasta o dedo. Para acelerar, mantém Espaço, Shift ou o botão do rato premido.|Move the mouse, use the arrows or drag your finger. Hold Space, Shift or the mouse button to speed up.|Mueve el ratón, usa las flechas o arrastra el dedo. Mantén Espacio, Shift o el botón del ratón para acelerar.|Bouge la souris, utilise les flèches ou glisse le doigt. Maintiens Espace, Maj ou le bouton de la souris pour accélérer.|Bewege die Maus, nutze die Pfeiltasten oder ziehe den Finger. Halte Leertaste, Umschalt oder die Maustaste zum Beschleunigen.|Poruszaj myszą, używaj strzałek lub przeciągaj palcem. Przytrzymaj Spację, Shift lub przycisk myszy, aby przyspieszyć.
+Escolhe o teu cenário|Choose your background|Elige tu escenario|Choisis ton décor|Wähle deinen Hintergrund|Wybierz swoje tło
+Azul do céu|Sky blue|Azul del cielo|Bleu du ciel|Himmelblau|Błękit nieba
+Mar de bolhinhas|Bubble sea|Mar de burbujas|Mer de bulles|Bläschenmeer|Bąbelkowe morze
+Jardim verde|Green garden|Jardín verde|Jardin vert|Grüner Garten|Zielony ogród
+As opções ficam ativas nesta sessão.|Options stay active for this session.|Las opciones quedan activas en esta sesión.|Les options restent actives pour cette session.|Die Optionen bleiben für diese Sitzung aktiv.|Opcje pozostają aktywne w tej sesji.
 Skins prontas|Ready-made outfits|Aspectos listos|Tenues prêtes|Fertige Outfits|Gotowe stroje
 Docinho|Sweetie|Dulce|Bonbon|Süßchen|Słodziak
 Oceano|Ocean|Océano|Océan|Ozean|Ocean
