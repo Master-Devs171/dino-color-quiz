@@ -2,17 +2,24 @@
 <html lang="pt-PT">
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self' data: blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:"
+    />
     <meta
       name="viewport"
       content="width=device-width,initial-scale=1,viewport-fit=cover"
     />
     <meta name="theme-color" content="#edf4df" />
     <title>Cobrinhas do Jardim</title>
-    <meta name="description" content="Uma aventura de cobrinhas fofinhas: apanha frutas, cresce e personaliza a tua cobrinha!" />
+    <meta
+      name="description"
+      content="Uma aventura de cobrinhas fofinhas: apanha frutas, cresce e personaliza a tua cobrinha!"
+    />
     <meta property="og:title" content="Cobrinhas do Jardim" />
     <meta property="og:image" content="cover.jpg" />
-    <link rel="stylesheet" href="style.css" /><link rel="stylesheet" href="lobby.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="lobby.css" />
   </head>
   <body data-menu="welcome">
     <canvas
@@ -110,8 +117,21 @@
             <div id="colors"></div>
           </fieldset>
           <button class="wardrobe-entry" id="customize">
-            <canvas id="lobby-snake" width="640" height="220" aria-label="A tua cobrinha personalizada"></canvas><b>🎨 Editar cobrinha</b><span>✏️</span></button
-          ><input type="checkbox" id="gentle" checked hidden aria-hidden="true" tabindex="-1" /><button class="primary" id="play">
+            <canvas
+              id="lobby-snake"
+              width="640"
+              height="220"
+              aria-label="A tua cobrinha personalizada"
+            ></canvas
+            ><b>🎨 Editar cobrinha</b><span>✏️</span></button
+          ><input
+            type="checkbox"
+            id="gentle"
+            checked
+            hidden
+            aria-hidden="true"
+            tabindex="-1"
+          /><button class="primary" id="play">
             <span>Jogar!</span><span class="play-arrow">➜</span>
           </button>
           <div class="garden-menu">
@@ -120,8 +140,13 @@
               ><small id="task-ready">Pequenas descobertas</small></button
             ><button id="open-album">
               <span>📒</span><b>O meu álbum</b
-              ><small id="album-count">0 / 8 autocolantes</small>
-            </button><button id="open-wheel"><span>🎡</span><b>Roda da Sorte</b><small>4 skins de oferta</small></button><button id="open-shop"><span>🏪</span><b>Loja</b><small>Troca as tuas estrelas</small></button>
+              ><small id="album-count">0 / 8 autocolantes</small></button
+            ><button id="open-wheel">
+              <span>🎡</span><b>Roda da Sorte</b
+              ><small>4 skins de oferta</small></button
+            ><button id="open-shop">
+              <span>🏪</span><b>Loja</b><small>Troca as tuas estrelas</small>
+            </button>
           </div>
           <div class="welcome-foot">
             <span>💛 Sem pressa. Tenta outra vez sempre!</span
@@ -380,18 +405,55 @@
       <nav class="book-tabs" aria-label="Livro de descobertas">
         <button id="show-tasks" aria-pressed="true">🗺️ Aventuras</button
         ><button id="show-album" aria-pressed="false">📒 Autocolantes</button
-        ><button id="show-gifts" aria-pressed="false">
-          🎁 Skins especiais
-        </button><button id="show-shop" aria-pressed="false">🏪 Loja</button><button id="show-wheel" aria-pressed="false">🎡 Roda da Sorte</button>
+        ><button id="show-gifts" aria-pressed="false">🎁 Skins especiais</button
+        ><button id="show-shop" aria-pressed="false">🏪 Loja</button
+        ><button id="show-wheel" aria-pressed="false">🎡 Roda da Sorte</button>
       </nav>
       <div class="book-scroll">
         <div id="task-list"></div>
         <div id="sticker-list" hidden></div>
-        <div id="gift-list" hidden></div><div id="shop-list" hidden></div>
+        <div id="gift-list" hidden></div>
+        <div id="shop-list" hidden></div>
         <section id="wheel-panel" hidden aria-label="Roda da Sorte">
-          <div class="wheel-copy"><small>UMA SURPRESA COLORIDA</small><h3>Roda da Sorte!</h3><p>4 skins de oferta, sem repetições. As skins que faltam têm a mesma possibilidade de sair.</p></div>
-          <div class="wheel-stage"><span class="wheel-pointer" aria-hidden="true"><svg viewBox="0 0 76 108"><defs><linearGradient id="pin-gold" x2="0" y2="1"><stop stop-color="#fff596"/><stop offset=".45" stop-color="#ffcf17"/><stop offset="1" stop-color="#ff9d00"/></linearGradient></defs><path d="M38 104C33 104 3 52 3 37A35 35 0 0 1 73 37C73 52 43 104 38 104Z" fill="url(#pin-gold)" stroke="#d98a04" stroke-width="3"/><circle cx="38" cy="36" r="11" fill="#e38e0b"/></svg></span><div id="prize-wheel" aria-hidden="true"><span>🫐<b>Amora</b></span><span>🍉<b>Melancia</b></span><span>☁️<b>Nuvem</b></span><span>🌈<b>Festa</b></span></div></div>
-          <div class="wheel-action"><button id="spin-wheel">Rodar grátis ✨</button><p>Uma oferta do jardim 💛<br />Não custa estrelas.</p><p id="wheel-status" role="status" aria-live="polite"></p></div><div id="wheel-collection"></div>
+          <div class="wheel-copy">
+            <small>UMA SURPRESA COLORIDA</small>
+            <h3>Roda da Sorte!</h3>
+            <p>
+              4 skins de oferta, sem repetições. As skins que faltam têm a mesma
+              possibilidade de sair.
+            </p>
+          </div>
+          <div class="wheel-stage">
+            <span class="wheel-pointer" aria-hidden="true"
+              ><svg viewBox="0 0 76 108">
+                <defs>
+                  <linearGradient id="pin-gold" x2="0" y2="1">
+                    <stop stop-color="#fff596" />
+                    <stop offset=".45" stop-color="#ffcf17" />
+                    <stop offset="1" stop-color="#ff9d00" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M38 104C33 104 3 52 3 37A35 35 0 0 1 73 37C73 52 43 104 38 104Z"
+                  fill="url(#pin-gold)"
+                  stroke="#d98a04"
+                  stroke-width="3"
+                />
+                <circle cx="38" cy="36" r="11" fill="#e38e0b" /></svg
+            ></span>
+            <div id="prize-wheel" aria-hidden="true">
+              <span>🫐<b>Amora</b></span
+              ><span>🍉<b>Melancia</b></span
+              ><span>☁️<b>Nuvem</b></span
+              ><span>🌈<b>Festa</b></span>
+            </div>
+          </div>
+          <div class="wheel-action">
+            <button id="spin-wheel">Rodar grátis ✨</button>
+            <p>Uma oferta do jardim 💛<br />Não custa estrelas.</p>
+            <p id="wheel-status" role="status" aria-live="polite"></p>
+          </div>
+          <div id="wheel-collection"></div>
         </section>
       </div>
       <footer class="book-footer">
@@ -400,11 +462,13 @@
         </p>
       </footer>
     </dialog>
+    <script src="icons.js"></script>
     <script src="engine.js"></script>
     <script src="progress.js"></script>
     <script src="skin.js"></script>
     <script src="game.js"></script>
     <script src="choices.js"></script>
-    <script src="journey-ui.js"></script><script src="lobby.js"></script>
+    <script src="journey-ui.js"></script>
+    <script src="lobby.js"></script>
   </body>
 </html>

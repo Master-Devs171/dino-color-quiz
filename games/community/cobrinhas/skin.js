@@ -222,8 +222,22 @@
     c.beginPath();
     c.arc(1, 4, r, 0, 7);
     c.fill();
-    const shading=c.createRadialGradient?.(-r*.35,-r*.4,1,0,0,r);
-    if(shading?.addColorStop){shading.addColorStop(0,color);shading.addColorStop(.6,color);shading.addColorStop(1,"#"+[1,3,5].map(i=>Math.round(parseInt(color.slice(i,i+2),16)*.6).toString(16).padStart(2,"0")).join(""));}
+    const shading = c.createRadialGradient?.(-r * 0.35, -r * 0.4, 1, 0, 0, r);
+    if (shading?.addColorStop) {
+      shading.addColorStop(0, color);
+      shading.addColorStop(0.6, color);
+      shading.addColorStop(
+        1,
+        "#" +
+          [1, 3, 5]
+            .map((i) =>
+              Math.round(parseInt(color.slice(i, i + 2), 16) * 0.6)
+                .toString(16)
+                .padStart(2, "0"),
+            )
+            .join(""),
+      );
+    }
     c.fillStyle = shading?.addColorStop ? shading : color;
     c.beginPath();
     c.arc(0, 0, r, 0, 7);
@@ -247,7 +261,8 @@
       body = s.body;
     if (!body.length) return;
     const head = body[0];
-    const growth = s.score === undefined ? 1 : (root.Cobrinhas?.sizeForScore(s.score) ?? 1);
+    const growth =
+      s.score === undefined ? 1 : (root.Cobrinhas?.sizeForScore(s.score) ?? 1);
     for (let i = body.length - 1; i >= 0; i -= 2) {
       const p = body[i],
         r = 14 * Math.min(1, 0.78 + (body.length - i) / 16);
@@ -399,22 +414,18 @@
     if (a.hat !== "none") {
       ctx.save();
       ctx.translate(head.x, head.y - 19 * growth);
-      ctx.scale(growth,growth);
+      ctx.scale(growth, growth);
       ctx.rotate(reduced ? 0 : Math.sin(time * 3) * 0.07);
       ctx.font = "23px serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText(
-        { flower: "🌸", crown: "👑", bow: "🎀", cap: "🧢" }[a.hat],
-        0,
-        0,
-      );
+      root.GardenIcons?.draw(ctx, a.hat, 0, 0, 30);
       ctx.restore();
     }
     if (a.flag !== "none") {
       ctx.save();
       ctx.translate(head.x, head.y);
-      ctx.scale(growth,growth);
+      ctx.scale(growth, growth);
       flag(ctx, a, time, reduced);
       ctx.restore();
     }

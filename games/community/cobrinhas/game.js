@@ -1,6 +1,7 @@
 (() => {
   "use strict";
-  const { Garden, WORLD, palette, POWERS, zoomForScore, sizeForScore } = Cobrinhas;
+  const { Garden, WORLD, palette, POWERS, zoomForScore, sizeForScore } =
+    Cobrinhas;
   const game = new Garden(),
     canvas = document.querySelector("canvas"),
     ctx = canvas.getContext("2d");
@@ -207,17 +208,19 @@
     c.restore();
     c.font = "22px serif";
     c.textAlign = "center";
-    c.fillText("🌼", 80, 290);
-    c.fillText("🍓", 490, 95);
+    window.GardenIcons?.draw(c, "flower", 80, 290, 30);
+    window.GardenIcons?.draw(c, "strawberry", 490, 95, 30);
     if (draft.trail !== "none") {
       c.fillStyle = draft.secondary;
       c.font = "20px serif";
       for (let i = 0; i < 5; i++) {
         c.globalAlpha = 1 - i / 6;
-        c.fillText(
-          { stars: "✦", hearts: "♥", bubbles: "○" }[draft.trail],
+        window.GardenIcons?.draw(
+          c,
+          { stars: "star", hearts: "heart", bubbles: "cloud" }[draft.trail],
           70 - i * 10,
           190 + Math.sin(i + (reducedMotion ? 0 : t)) * 12,
+          20,
         );
       }
       c.globalAlpha = 1;
@@ -294,7 +297,9 @@
     if (!running) {
       $("round-result").hidden = true;
       game.reset();
-      scale = Math.max(0.42, Math.min(0.95, Math.min(width, height) / 650)) * zoomForScore(0);
+      scale =
+        Math.max(0.42, Math.min(0.95, Math.min(width, height) / 650)) *
+        zoomForScore(0);
       window.GardenJournal?.record("rounds", 1);
       heading = 0;
       running = true;
@@ -435,8 +440,19 @@
         y < Math.min(WORLD, camera.y + height / scale / 2);
         y += 160
       ) {
-        const offset=Math.sin(x*.19+y*.13)*14;
-        ctx.fillStyle='#106fba';ctx.beginPath();ctx.ellipse(x+78,y+80+offset,62,73,Math.sin(x+y)*.25,0,Math.PI*2);ctx.fill();
+        const offset = Math.sin(x * 0.19 + y * 0.13) * 14;
+        ctx.fillStyle = "#106fba";
+        ctx.beginPath();
+        ctx.ellipse(
+          x + 78,
+          y + 80 + offset,
+          62,
+          73,
+          Math.sin(x + y) * 0.25,
+          0,
+          Math.PI * 2,
+        );
+        ctx.fill();
       }
     ctx.strokeStyle = "#ffca67";
     ctx.lineWidth = 18;
@@ -476,21 +492,48 @@
         ctx.fill();
       } else {
         ctx.fillStyle = "#ffffff";
-        ctx.fillText(
-          fruits[f.kind],
+        window.GardenIcons?.draw(
+          ctx,
+          ["apple", "strawberry", "orange", "grapes", "cherry"][f.kind],
           f.x,
           f.y + (reducedMotion ? 0 : Math.sin(game.time * 2 + f.x) * 2),
+          46,
         );
       }
     }
-    for(const item of game.powerups){
-      if(item.cooldown>0 || Math.abs(item.x-camera.x)>width/scale/2+45 || Math.abs(item.y-camera.y)>height/scale/2+45)continue;
-      const bob=reducedMotion?0:Math.sin(game.time*2+item.x)*4;
-      ctx.fillStyle='#37dcf155';ctx.strokeStyle='#99faff';ctx.lineWidth=3;ctx.beginPath();ctx.arc(item.x,item.y+bob,29,0,Math.PI*2);ctx.fill();ctx.stroke();
-      ctx.fillStyle='#ffffffbb';ctx.beginPath();ctx.ellipse(item.x-10,item.y-16+bob,8,4,-.6,0,7);ctx.fill();ctx.font='30px serif';ctx.fillStyle='#fff';ctx.fillText(POWERS[item.kind].icon,item.x,item.y+bob+3);
+    for (const item of game.powerups) {
+      if (
+        item.cooldown > 0 ||
+        Math.abs(item.x - camera.x) > width / scale / 2 + 45 ||
+        Math.abs(item.y - camera.y) > height / scale / 2 + 45
+      )
+        continue;
+      const bob = reducedMotion ? 0 : Math.sin(game.time * 2 + item.x) * 4;
+      ctx.fillStyle = "#37dcf155";
+      ctx.strokeStyle = "#99faff";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(item.x, item.y + bob, 29, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = "#ffffffbb";
+      ctx.beginPath();
+      ctx.ellipse(item.x - 10, item.y - 16 + bob, 8, 4, -0.6, 0, 7);
+      ctx.fill();
+      ctx.font = "30px serif";
+      ctx.fillStyle = "#fff";
+      window.GardenIcons?.draw(ctx, item.kind, item.x, item.y + bob + 3, 40);
     }
-    const activeHead=game.player.body[0];
-    if(activeHead && game.player.effects.magnet>0){ctx.strokeStyle='#72efff55';ctx.lineWidth=2;ctx.setLineDash([7,12]);ctx.beginPath();ctx.arc(activeHead.x,activeHead.y,185,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);}
+    const activeHead = game.player.body[0];
+    if (activeHead && game.player.effects.magnet > 0) {
+      ctx.strokeStyle = "#72efff55";
+      ctx.lineWidth = 2;
+      ctx.setLineDash([7, 12]);
+      ctx.beginPath();
+      ctx.arc(activeHead.x, activeHead.y, 185, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
     for (const s of [...game.snakes.slice(1), game.player]) {
       if (!s.body.length) continue;
       ctx.globalAlpha = s.grace > 0 ? 0.55 : 1;
@@ -533,7 +576,13 @@
         ctx.font = "bold 10px Trebuchet MS,system-ui";
         ctx.fillStyle = "#fffef0";
         ctx.beginPath();
-        ctx.roundRect(h.x - 16, h.y - 24 - 22 * sizeForScore(s.score), 32, 17, 8);
+        ctx.roundRect(
+          h.x - 16,
+          h.y - 24 - 22 * sizeForScore(s.score),
+          32,
+          17,
+          8,
+        );
         ctx.fill();
         ctx.fillStyle = "#53764a";
         ctx.fillText("TU", h.x, h.y - 15 - 22 * sizeForScore(s.score));
@@ -546,7 +595,13 @@
       ctx.beginPath();
       if (p.type === "hearts" || p.type === "stars") {
         ctx.font = 13 * p.life + 4 + "px serif";
-        ctx.fillText(p.type === "hearts" ? "♥" : "✦", p.x, p.y);
+        window.GardenIcons?.draw(
+          ctx,
+          p.type === "hearts" ? "heart" : "star",
+          p.x,
+          p.y,
+          13 * p.life + 4,
+        );
       } else {
         ctx.arc(p.x, p.y, (p.type === "bubbles" ? 7 : 3) * p.life, 0, 7);
         if (p.type === "bubbles") {
@@ -591,8 +646,13 @@
       (width / scale / WORLD) * size,
       (height / scale / WORLD) * size,
     );
-    ctx.fillStyle='#e5d9f1';
-    for(let i=0;i<game.food.length;i+=9){const f=game.food[i];ctx.beginPath();ctx.arc(x+f.x/WORLD*size,y+f.y/WORLD*size,1.3,0,7);ctx.fill();}
+    ctx.fillStyle = "#e5d9f1";
+    for (let i = 0; i < game.food.length; i += 9) {
+      const f = game.food[i];
+      ctx.beginPath();
+      ctx.arc(x + (f.x / WORLD) * size, y + (f.y / WORLD) * size, 1.3, 0, 7);
+      ctx.fill();
+    }
     for (const s of game.snakes)
       if (s.body.length) {
         ctx.fillStyle = s.id === 0 ? "#b5ff5c" : s.color;
@@ -694,7 +754,17 @@
           });
         }
       }
-      for(const kind of Object.keys(POWERS)) if(game.events.includes('power:'+kind))notice(POWERS[kind].icon+' '+POWERS[kind].name+' · '+POWERS[kind].duration+' segundos!',now);
+      for (const kind of Object.keys(POWERS))
+        if (game.events.includes("power:" + kind))
+          notice(
+            POWERS[kind].icon +
+              " " +
+              POWERS[kind].name +
+              " · " +
+              POWERS[kind].duration +
+              " segundos!",
+            now,
+          );
       if (game.events.includes("border")) {
         running = false;
         paused = false;
@@ -720,7 +790,18 @@
       }
       if (now > hudAt) {
         hudAt = now + 500;
-        $('power-status').textContent=Object.entries(POWERS).filter(([kind])=>game.player.effects[kind]>0).map(([kind,info])=>info.icon+' '+info.name+' '+Math.ceil(game.player.effects[kind])+'s').join(' · ');
+        $("power-status").textContent = Object.entries(POWERS)
+          .filter(([kind]) => game.player.effects[kind] > 0)
+          .map(
+            ([kind, info]) =>
+              info.icon +
+              " " +
+              info.name +
+              " " +
+              Math.ceil(game.player.effects[kind]) +
+              "s",
+          )
+          .join(" · ");
         const head = game.player.body[0];
         if (head)
           window.GardenJournal?.record(
@@ -772,8 +853,8 @@
     const targetScale =
       Math.max(0.42, Math.min(0.95, Math.min(width, height) / 650)) *
       zoomForScore(game.player.score) *
-      (game.player.effects.vision>0 ? 0.84 : 1) *
-      (boost || game.player.effects.speed>0 ? 0.91 : 1);
+      (game.player.effects.vision > 0 ? 0.84 : 1) *
+      (boost || game.player.effects.speed > 0 ? 0.91 : 1);
     scale += (targetScale - scale) * (1 - Math.exp(-dt * 3));
     const h = game.player.body[0];
     if (h) {
