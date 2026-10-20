@@ -9,6 +9,10 @@ Obrigado por ajudar a construir uma biblioteca infantil segura.
 5. Teste em telemóvel, modo avião, ecrã pequeno e após suspender/retomar a app.
 6. Abra um pull request preenchendo a lista de verificação.
 
+## Atualizações automáticas
+
+Sempre que alterar ficheiros de um jogo já publicado, aumente obrigatoriamente o campo `version` do jogo em `games/catalog.json` seguindo `MAJOR.MINOR.PATCH`. Depois de o pull request ser aprovado e publicado, o DinoPlay deteta essa versão e atualiza automaticamente todas as instalações desse jogo. Se algum download falhar, a versão anterior continua disponível e a app volta a tentar mais tarde.
+
 Ao contribuir, confirma que possui direitos sobre todo o código e recursos, indica uma licença e aceita as regras de `docs/CHILD-SAFETY.md`, `docs/GAME-SPEC.md` e `docs/MULTIPLAYER.md`.
 
 Não inclua segredos, serviços pagos, dependências remotas, anúncios, rastreadores ou conteúdo gerado a partir de dados pessoais de crianças.

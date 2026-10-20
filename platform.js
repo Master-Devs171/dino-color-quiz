@@ -91,7 +91,7 @@
   footer.textContent =
     "🔒 Sem anúncios · Sem chat · Progresso guardado neste dispositivo";
   document.title = "DinoPlay";
-  document.querySelector("#updateStatus").textContent = "DinoPlay v4.0";
+  document.querySelector("#updateStatus").textContent = "DinoPlay v4.1";
   host.classList.add("platform-home");
   host.innerHTML = `<div class="dp-head"><div><small>OLÁ, EXPLORADOR!</small><h1>Dino<span>Play</span></h1><p>A tua biblioteca de aventuras</p></div><img class="dp-mascot" src="assets/dinoplay-mascot.png" alt="Dinossauro DinoPlay"></div><div id="dpView"></div><span id="puzzleMenuProgress" hidden></span><span id="blockMenuProgress" hidden></span><nav class="dp-nav"><button data-tab="home" class="active">🏠<small>Início</small></button><button data-tab="library">🎮<small>Biblioteca</small></button><button data-tab="parents">👨‍👩‍👧<small>Pais</small></button></nav>`;
   let tab = "home",
@@ -101,7 +101,8 @@
     removeConfirm = null,
     pendingInstall = null,
     friendSyncTimer = null,
-    friendSyncBusy = false;
+    friendSyncBusy = false,
+    catalogRefreshBusy = false;
   const installed = (id) => platform.installed.includes(id),
     savePlatform = () => {
       let latest = {};
@@ -150,24 +151,33 @@
       assets: game.assets.map(assetPath),
     };
   }
-  async function loadCatalog() {
-    const response = await fetch("./games/catalog.json?v=1", {
-      cache: "no-store",
-    });
-    if (!response.ok) throw new Error("catalog");
-    const data = await response.json();
-    if (data.catalogVersion !== 1 || !Array.isArray(data.games))
-      throw new Error("catalog-version");
-    const next = {};
-    data.games.forEach((item) => {
-      const game = normalizeGame(item);
-      if (next[game.id]) throw new Error("duplicate-game");
-      next[game.id] = game;
-    });
-    if (!Object.keys(next).length) throw new Error("empty-catalog");
-    catalog = next;
-    platform.installed = platform.installed.filter((id) => catalog[id]);
-    savePlatform();
+  async function loadCatalog(showFeedback = false) {
+    if (catalogRefreshBusy) return;
+    catalogRefreshBusy = true;
+    const previous = catalog;
+    try {
+      const response = await fetch(`./games/catalog.json?t=${Date.now()}`, {
+        cache: "no-store",
+      });
+      if (!response.ok) throw new Error("catalog");
+      const data = await response.json();
+      if (data.catalogVersion !== 1 || !Array.isArray(data.games))
+        throw new Error("catalog-version");
+      const next = {};
+      data.games.forEach((item) => {
+        const game = normalizeGame(item);
+        if (next[game.id]) throw new Error("duplicate-game");
+        next[game.id] = game;
+      });
+      if (!Object.keys(next).length) throw new Error("empty-catalog");
+      catalog = next;
+      platform.installed = platform.installed.filter((id) => catalog[id]);
+      savePlatform();
+      render();
+      await updateInstalledGames(previous, showFeedback);
+    } finally {
+      catalogRefreshBusy = false;
+    }
   }
   function friendRows() {
     const ids = friendIds(),
@@ -480,6 +490,80 @@
       toast("Não foi possível instalar. Verifica a ligação à internet.", "bad");
     }
   }
+  async function updateInstalledGames(previous, showFeedback = false) {
+    const pending = platform.installed.filter(
+      (id) =>
+        catalog[id] &&
+        isNewerVersion(catalog[id].version, platform.versions[id]),
+    );
+    if (!pending.length) {
+      if (showFeedback) toast("✅ Jogos e biblioteca atualizados");
+      return;
+    }
+    toast(
+      `⬇ A atualizar ${pending.length} ${pending.length === 1 ? "jogo" : "jogos"}…`,
+    );
+    let updated = 0;
+    for (const id of pending) {
+      try {
+        await updateInstalledGame(id, previous[id]);
+        updated++;
+      } catch (error) {
+        console.warn(`DinoPlay: atualização de ${id} adiada.`, error);
+      }
+    }
+    render();
+    if (updated === pending.length)
+      toast(`✅ ${updated === 1 ? "Jogo atualizado" : `${updated} jogos atualizados`}`);
+    else if (updated)
+      toast(`✅ ${updated} atualizado(s) · os restantes serão tentados depois`);
+    else
+      toast("Não foi possível atualizar os jogos agora. A versão anterior foi mantida.", "bad");
+  }
+  function isNewerVersion(next, current) {
+    if (!current) return true;
+    const a = String(next).split(".").map(Number),
+      b = String(current).split(".").map(Number);
+    for (let i = 0; i < 3; i++) {
+      const difference = (a[i] || 0) - (b[i] || 0);
+      if (difference) return difference > 0;
+    }
+    return false;
+  }
+  async function updateInstalledGame(id, previousGame) {
+    const game = catalog[id],
+      assets = gameAssets(game),
+      stageName = `${gameCache}-stage-${id}-${game.version}`,
+      stage = await caches.open(stageName);
+    try {
+      for (const asset of assets) {
+        const response = await fetch(asset, { cache: "reload" });
+        if (!response.ok) throw new Error(`download-${response.status}`);
+        await stage.put(asset, response);
+      }
+      const target = await caches.open(gameCache);
+      for (const asset of assets) {
+        const response = await stage.match(asset);
+        if (!response) throw new Error("stage-missing");
+        await target.put(asset, response);
+      }
+      const needed = new Set(
+        platform.installed.flatMap((gameId) =>
+          catalog[gameId] ? gameAssets(catalog[gameId]) : [],
+        ),
+      );
+      if (previousGame)
+        await Promise.all(
+          gameAssets(previousGame)
+            .filter((asset) => !needed.has(asset))
+            .map((asset) => target.delete(asset)),
+        );
+      platform.versions[id] = game.version;
+      savePlatform();
+    } finally {
+      await caches.delete(stageName);
+    }
+  }
   async function removeGame(id) {
     const game = catalog[id];
     platform.installed = platform.installed.filter((x) => x !== id);
@@ -655,8 +739,17 @@
   );
   themeObserver.observe(host, { attributes: true, attributeFilter: ["class"] });
   render();
+  window.DinoPlayRefreshCatalog = (showFeedback = false) =>
+    loadCatalog(showFeedback).catch(() => {
+      if (showFeedback)
+        toast("Não foi possível procurar novos jogos agora.", "bad");
+    });
+  window.addEventListener("online", () => window.DinoPlayRefreshCatalog());
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) window.DinoPlayRefreshCatalog();
+  });
+  setInterval(() => window.DinoPlayRefreshCatalog(), 15 * 60 * 1000);
   loadCatalog()
-    .then(render)
     .catch(() =>
       console.warn("DinoPlay: catálogo externo indisponível; catálogo interno ativo."),
     );

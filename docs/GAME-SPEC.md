@@ -2,6 +2,8 @@
 
 Cada jogo comunitário vive numa pasta própria em `games/community/<id>/` e fornece um manifesto compatível com `games/game.schema.json`.
 
+O campo `version` é também o sinal de atualização. Qualquer alteração publicada ao jogo deve aumentar a versão; o catálogo é consultado ao abrir a app, ao regressar ao primeiro plano, quando a Internet volta e de 15 em 15 minutos. Jogos já instalados são atualizados automaticamente através de uma área temporária, para que uma falha não substitua a versão funcional.
+
 ## Execução
 
 - `runtime: "native"` é reservado aos jogos oficiais revistos juntamente com a plataforma.

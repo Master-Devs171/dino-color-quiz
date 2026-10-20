@@ -21,6 +21,7 @@ Execute `node scripts/validate-catalog.mjs` antes de enviar a contribuição. O 
 - O armazenamento é separado por jogo e limitado a 256 KB.
 - O multiplayer fica bloqueado por predefinição e só funciona com amizades aprovadas pelos dois responsáveis, até cinco jogadores e sem salas públicas.
 - A biblioteca continua a funcionar offline depois de cada jogo ser instalado.
+- Contribuições aprovadas aparecem automaticamente no catálogo; jogos instalados recebem novas versões sem reinstalação manual e conservam a versão anterior se o download falhar.
 
 ## Jogar e instalar
 
