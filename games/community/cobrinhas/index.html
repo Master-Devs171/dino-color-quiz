@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#edf4df" />
+    <title>Cobrinhas do Jardim</title>
+    <meta name="description" content="Uma aventura de cobrinhas fofinhas: apanha frutas, cresce e personaliza a tua cobrinha!" />
+    <meta property="og:title" content="Cobrinhas do Jardim" />
+    <meta property="og:image" content="cover.jpg" />
+    <link rel="stylesheet" href="style.css" /><link rel="stylesheet" href="lobby.css" />
+  </head>
+  <body data-menu="welcome">
+    <canvas
+      tabindex="0"
+      id="garden"
+      aria-label="Arena de cobrinhas. Usa as setas ou arrasta o dedo para orientar a tua cobrinha."
+    ></canvas>
+    <header>
+      <div class="score">
+        <span class="hud-icon">🍓</span>
+        <div><small>AS TUAS FRUTINHAS</small><b id="score">0</b></div>
+      </div>
+      <div class="record">
+        <span>🌟</span>
+        <div><small>O TEU RECORDE</small><b id="best">0</b></div>
+      </div>
+      <button id="edit-snake" aria-label="Personalizar a cobrinha">🎨</button
+      ><button id="pause" aria-label="Pausar">Ⅱ</button>
+    </header>
+    <div id="mini-task" aria-label="Aventura atual"></div>
+    <div id="region">🌼 Campo das Flores</div>
+    <div id="power-status" aria-label="Ajudas ativas"></div>
+    <div id="notice" role="status" aria-live="polite"></div>
+    <aside id="scoreboard">
+      <button id="ranking-toggle" aria-expanded="false" aria-controls="ranking">
+        🌼 Amigos <span>⌄</span>
+      </button>
+      <div class="ranking-title">
+        <span>🌼</span>
+        <div>
+          <b>Amigos do jardim</b><small>Uma aventura com o computador</small>
+        </div>
+      </div>
+      <div id="ranking"></div>
+      <div class="garden-badge"><i></i> 13 cobrinhas a explorar</div>
+    </aside>
+    <div class="controls">
+      <div class="steer-wrap">
+        <div id="joystick" aria-label="Arrasta para orientar">
+          <span class="joystick-arrow up">⌃</span
+          ><span class="joystick-arrow down">⌄</span
+          ><span class="joystick-arrow left">‹</span
+          ><span class="joystick-arrow right">›</span><span id="stick"></span>
+        </div>
+        <small>Vamos por aqui!</small>
+      </div>
+      <button id="boost"><span>⚡</span><small>Acelerar</small></button>
+    </div>
+    <div id="overlay">
+      <section class="welcome">
+        <div class="welcome-art">
+          <div class="art-brand">
+            <span>🌱</span> DinoPlay <span class="brand-dot">●</span>
+          </div>
+          <div class="art-caption">
+            Pequenas cobrinhas.<br />Grandes descobertas.
+          </div>
+          <img
+            src="garden-friends.svg"
+            alt="Uma cobrinha verde sorridente num jardim com flores e frutas"
+            class="friends-art"
+          />
+          <div class="art-sticker">100%<br /><b>diversão!</b></div>
+          <div class="art-footer">
+            <span>🌼</span> Um jardim à tua espera <span>🌼</span>
+          </div>
+        </div>
+        <div class="welcome-content">
+          <div class="journey-summary">
+            <span class="level-badge" id="journey-level">🌱 Nível 1</span
+            ><span id="journey-stars">⭐ 0</span>
+            <div class="journey-track"><div id="journey-bar"></div></div>
+            <small id="journey-caption"
+              >Cada descoberta faz o teu jardim crescer.</small
+            >
+          </div>
+          <h2 class="pause-title">Uma pausinha ☁️</h2>
+          <div id="round-result" role="status" hidden></div>
+          <div class="title-tag">🌼 UM MUNDO DE DESCOBERTAS 🌼</div>
+          <h1>
+            Cobrinhas <br />do
+            <span
+              >Jardim<svg viewBox="0 0 190 13" aria-hidden="true">
+                <path d="M4 9Q90-3 185 7" /></svg></span
+            ><span class="title-flower">✿</span>
+          </h1>
+          <p class="intro">
+            Um bocadinho de fruta,<br />um montão de aventura!
+          </p>
+
+          <fieldset>
+            <legend>
+              Qual é a tua cobrinha? <span id="color-name">Verdinha</span>
+            </legend>
+            <div id="colors"></div>
+          </fieldset>
+          <button class="wardrobe-entry" id="customize">
+            <canvas id="lobby-snake" width="640" height="220" aria-label="A tua cobrinha personalizada"></canvas><b>🎨 Editar cobrinha</b><span>✏️</span></button
+          ><input type="checkbox" id="gentle" checked hidden aria-hidden="true" tabindex="-1" /><button class="primary" id="play">
+            <span>Jogar!</span><span class="play-arrow">➜</span>
+          </button>
+          <div class="garden-menu">
+            <button id="open-adventures">
+              <span>🎁</span><b>Aventuras</b
+              ><small id="task-ready">Pequenas descobertas</small></button
+            ><button id="open-album">
+              <span>📒</span><b>O meu álbum</b
+              ><small id="album-count">0 / 8 autocolantes</small>
+            </button><button id="open-wheel"><span>🎡</span><b>Roda da Sorte</b><small>4 skins de oferta</small></button><button id="open-shop"><span>🏪</span><b>Loja</b><small>Troca as tuas estrelas</small></button>
+          </div>
+          <div class="welcome-foot">
+            <span>💛 Sem pressa. Tenta outra vez sempre!</span
+            ><small
+              >Sem Internet · Sem anúncios · Adversárias do computador</small
+            >
+          </div>
+        </div>
+      </section>
+      <div class="input-help">
+        <span>🌿 A borda elimina a cobra</span><i>·</i
+        ><span>👆 Arrasta para virar</span><i>·</i><span>⌨ Setas ou WASD</span
+        ><i>·</i><span>⚡ Espaço para acelerar</span>
+      </div>
+    </div>
+    <dialog id="wardrobe" aria-labelledby="wardrobe-title">
+      <div class="editor-top">
+        <div>
+          <small>O TEU ATELIÊ DE CORES</small>
+          <h2 id="wardrobe-title">Uma cobrinha só tua! ✨</h2>
+        </div>
+        <button id="editor-close" aria-label="Cancelar e fechar">✕</button>
+      </div>
+      <div class="editor-grid" id="editor-scroll">
+        <div class="preview-wrap">
+          <canvas
+            id="skin-preview"
+            width="600"
+            height="360"
+            aria-label="Pré-visualização animada da tua cobrinha"
+          ></canvas
+          ><span>Feita à tua maneira 💛</span>
+          <p>As cores e os acessórios não alteram as regras.</p>
+        </div>
+        <div class="editor-options">
+          <div
+            class="editor-tabs"
+            role="tablist"
+            aria-label="Personalizar a cobrinha"
+          >
+            <button
+              id="tab-body"
+              type="button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="panel-body"
+              tabindex="0"
+            >
+              <span>🍬</span>Corpo</button
+            ><button
+              id="tab-face"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="panel-face"
+              tabindex="-1"
+            >
+              <span>😊</span>Cara</button
+            ><button
+              id="tab-extras"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="panel-extras"
+              tabindex="-1"
+            >
+              <span>✨</span>Magia</button
+            ><button
+              id="tab-flag"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="panel-flag"
+              tabindex="-1"
+            >
+              <span>🏳</span>Bandeira
+            </button>
+          </div>
+          <section
+            class="editor-panel"
+            role="tabpanel"
+            id="panel-body"
+            aria-labelledby="tab-body"
+          >
+            <h3>🍬 Corpo da tua cobrinha</h3>
+            <div class="panel-fields">
+              <label
+                >Cor do corpo<input
+                  id="skin-color"
+                  type="color"
+                  value="#78c85d" /></label
+              ><label
+                >Cor do padrão<input
+                  id="skin-secondary"
+                  type="color"
+                  value="#ffe2a4" /></label
+              ><label
+                >Padrão<select id="skin-pattern">
+                  <option value="plain">🍃 Uma só cor</option>
+                  <option value="stripes">🍬 Riscas coloridas</option>
+                  <option value="dots">🫧 Pintinhas</option>
+                  <option value="rainbow">🌈 Arco-íris</option>
+                  <option value="flag">🏳 Cores da bandeira</option>
+                </select></label
+              >
+            </div>
+          </section>
+          <section
+            class="editor-panel"
+            role="tabpanel"
+            id="panel-face"
+            aria-labelledby="tab-face"
+            hidden
+          >
+            <h3>😊 Cara da tua cobrinha</h3>
+            <div class="panel-fields">
+              <label
+                >Cor da cara<input
+                  type="color"
+                  id="skin-headColor"
+                  value="#78c85d" /></label
+              ><label
+                >Cor dos olhos<input
+                  type="color"
+                  id="skin-eyeColor"
+                  value="#344d40" /></label
+              ><label
+                >Cor das bochechas<input
+                  type="color"
+                  id="skin-cheekColor"
+                  value="#efa6a3" /></label
+              ><label
+                >Olhinhos<select id="skin-eyes">
+                  <option value="classic">👀 Curiosos</option>
+                  <option value="big">🥹 Grandalhões</option>
+                  <option value="happy">😊 Sorridentes</option>
+                  <option value="sleepy">😌 Sonhadores</option>
+                  <option value="wink">😉 A piscar o olho</option>
+                  <option value="stars">⭐ Estrelinhas</option>
+                  <option value="glasses">😎 Óculos de sol</option>
+                </select></label
+              ><label
+                >Boquinha<select id="skin-mouth">
+                  <option value="smile">🙂 Sorriso</option>
+                  <option value="grin">😁 Sorrisão</option>
+                  <option value="tiny">😮 Boquinha redonda</option>
+                  <option value="tongue">😛 Língua de fora</option>
+                  <option value="none">🍃 Sem boca</option>
+                </select></label
+              ><label
+                >Bochechas<select id="skin-cheeks">
+                  <option value="blush">🌸 Coradinhas</option>
+                  <option value="freckles">✨ Sardinhas</option>
+                  <option value="none">🍃 Sem pintura</option>
+                </select></label
+              >
+            </div>
+          </section>
+          <section
+            class="editor-panel"
+            role="tabpanel"
+            id="panel-extras"
+            aria-labelledby="tab-extras"
+            hidden
+          >
+            <h3>✨ Magia da tua cobrinha</h3>
+            <div class="panel-fields">
+              <label
+                >Acessório<select id="skin-hat">
+                  <option value="none">🌱 Sem acessório</option>
+                  <option value="flower">🌸 Florzinha</option>
+                  <option value="crown">👑 Coroa</option>
+                  <option value="bow">🎀 Lacinho</option>
+                  <option value="cap">🧢 Boné</option>
+                </select></label
+              ><label
+                >Rasto mágico<select id="skin-trail">
+                  <option value="none">🍃 Sem rasto</option>
+                  <option value="stars">✨ Estrelinhas</option>
+                  <option value="hearts">💗 Corações</option>
+                  <option value="bubbles">🫧 Bolhinhas</option>
+                </select></label
+              >
+            </div>
+          </section>
+          <section
+            class="editor-panel"
+            role="tabpanel"
+            id="panel-flag"
+            aria-labelledby="tab-flag"
+            hidden
+          >
+            <h3>🏳 Bandeira da tua cobrinha</h3>
+            <div class="panel-fields">
+              <label
+                >Escolhe uma bandeira<select id="skin-flag">
+                  <option value="none">Sem bandeira</option>
+                  <option value="pt">Portugal</option>
+                  <option value="br">Brasil</option>
+                  <option value="gb">Reino Unido</option>
+                  <option value="fr">França</option>
+                  <option value="de">Alemanha</option>
+                  <option value="es">Espanha</option>
+                  <option value="pl">Polónia</option>
+                  <option value="it">Itália</option>
+                  <option value="ua">Ucrânia</option>
+                  <option value="us">Estados Unidos</option>
+                  <option value="rainbow">Arco-íris</option>
+                  <option value="custom">Criar a minha bandeira</option>
+                </select></label
+              ><label
+                >Desenho da bandeira personalizada<select id="skin-flagStyle">
+                  <option value="horizontal">☰ Riscas horizontais</option>
+                  <option value="vertical">▥ Riscas verticais</option>
+                  <option value="cross">✚ Cruz</option>
+                </select></label
+              ><label
+                >Primeira cor da bandeira<input
+                  id="skin-flagColorA"
+                  type="color"
+                  value="#b591ee" /></label
+              ><label
+                >Segunda cor da bandeira<input
+                  id="skin-flagColorB"
+                  type="color"
+                  value="#ffe2a4"
+              /></label>
+            </div>
+            <p class="editor-note">
+              Escolhe «Criar a minha bandeira» para usar as tuas cores. O padrão
+              do corpo também pode usar as cores da bandeira.
+            </p>
+          </section>
+        </div>
+      </div>
+      <div class="editor-bottom">
+        <button id="skin-random">🎲 Surpreende-me!</button
+        ><button id="skin-reset">↺ Recomeçar o visual</button
+        ><button class="primary" id="skin-save">Está mesmo gira! ✓</button>
+      </div>
+      <p id="skin-save-status" role="status"></p>
+    </dialog>
+    <script src="../../../sdk/dinoplay-game-sdk.js"></script>
+    <dialog id="adventures" aria-labelledby="adventures-title">
+      <header class="adventure-top">
+        <div>
+          <small>O TEU CANTINHO DE DESCOBERTAS</small>
+          <h2 id="adventures-title">Pequenas aventuras 🌼</h2>
+        </div>
+        <button id="adventures-close" aria-label="Fechar aventuras">✕</button>
+      </header>
+      <div class="adventure-wallet">
+        <span id="wallet-level">🌱 Nível 1</span
+        ><span id="wallet-stars">⭐ 0 estrelas</span>
+      </div>
+      <nav class="book-tabs" aria-label="Livro de descobertas">
+        <button id="show-tasks" aria-pressed="true">🗺️ Aventuras</button
+        ><button id="show-album" aria-pressed="false">📒 Autocolantes</button
+        ><button id="show-gifts" aria-pressed="false">
+          🎁 Skins especiais
+        </button><button id="show-shop" aria-pressed="false">🏪 Loja</button><button id="show-wheel" aria-pressed="false">🎡 Roda da Sorte</button>
+      </nav>
+      <div class="book-scroll">
+        <div id="task-list"></div>
+        <div id="sticker-list" hidden></div>
+        <div id="gift-list" hidden></div><div id="shop-list" hidden></div>
+        <section id="wheel-panel" hidden aria-label="Roda da Sorte">
+          <div class="wheel-copy"><small>UMA SURPRESA COLORIDA</small><h3>Roda da Sorte!</h3><p>4 skins de oferta, sem repetições. As skins que faltam têm a mesma possibilidade de sair.</p></div>
+          <div class="wheel-stage"><span class="wheel-pointer" aria-hidden="true"><svg viewBox="0 0 76 108"><defs><linearGradient id="pin-gold" x2="0" y2="1"><stop stop-color="#fff596"/><stop offset=".45" stop-color="#ffcf17"/><stop offset="1" stop-color="#ff9d00"/></linearGradient></defs><path d="M38 104C33 104 3 52 3 37A35 35 0 0 1 73 37C73 52 43 104 38 104Z" fill="url(#pin-gold)" stroke="#d98a04" stroke-width="3"/><circle cx="38" cy="36" r="11" fill="#e38e0b"/></svg></span><div id="prize-wheel" aria-hidden="true"><span>🫐<b>Amora</b></span><span>🍉<b>Melancia</b></span><span>☁️<b>Nuvem</b></span><span>🌈<b>Festa</b></span></div></div>
+          <div class="wheel-action"><button id="spin-wheel">Rodar grátis ✨</button><p>Uma oferta do jardim 💛<br />Não custa estrelas.</p><p id="wheel-status" role="status" aria-live="polite"></p></div><div id="wheel-collection"></div>
+        </section>
+      </div>
+      <footer class="book-footer">
+        <p id="reward-status" role="status">
+          O progresso fica à tua espera. Continua quando quiseres 💛
+        </p>
+      </footer>
+    </dialog>
+    <script src="engine.js"></script>
+    <script src="progress.js"></script>
+    <script src="skin.js"></script>
+    <script src="game.js"></script>
+    <script src="choices.js"></script>
+    <script src="journey-ui.js"></script><script src="lobby.js"></script>
+  </body>
+</html>
