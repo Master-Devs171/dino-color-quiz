@@ -9,6 +9,9 @@ As contribuições são feitas por pull request e revistas antes de entrarem na 
 - [Formato e SDK dos jogos](docs/GAME-SPEC.md)
 - [Regras de segurança infantil](docs/CHILD-SAFETY.md)
 - [Modelo multiplayer obrigatório](docs/MULTIPLAYER.md)
+- [Início rápido e kit para programadores](docs/COMMUNITY-QUICKSTART.md)
+- [Privacidade para responsáveis](docs/PRIVACY.md)
+- [Política de conteúdo comunitário](docs/CONTENT-POLICY.md)
 - [Esquema do manifesto](games/game.schema.json)
 
 Execute `node scripts/validate-catalog.mjs` antes de enviar a contribuição. O GitHub repete automaticamente essa validação em cada pull request.
@@ -21,6 +24,7 @@ Execute `node scripts/validate-catalog.mjs` antes de enviar a contribuição. O 
 - O armazenamento é separado por jogo e limitado a 256 KB.
 - O multiplayer fica bloqueado por predefinição e só funciona com amizades aprovadas pelos dois responsáveis, até cinco jogadores e sem salas públicas.
 - A biblioteca continua a funcionar offline depois de cada jogo ser instalado.
+- Contribuições aprovadas aparecem automaticamente no catálogo; jogos instalados recebem novas versões sem reinstalação manual e conservam a versão anterior se o download falhar.
 
 ## Jogar e instalar
 
