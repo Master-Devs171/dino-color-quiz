@@ -1,4 +1,4 @@
-import {readFile,access} from 'node:fs/promises';
+import {readFile,access,readdir} from 'node:fs/promises';
 import {resolve,dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
@@ -22,4 +22,15 @@ for(const game of data.games){
   if(game.multiplayer&&game.runtime==='sandbox'&&!game.permissions.includes('multiplayer'))fail(`${game.id}: permissão multiplayer`);
   for(const path of [game.cover,...game.assets,...(game.runtime==='sandbox'?[game.entry]:[])])await access(resolve(root,path.split('?')[0])).catch(()=>fail(`${game.id}: ficheiro em falta ${path}`));
 }
+const communityRoot=resolve(root,'games/community');
+const communityFolders=await readdir(communityRoot,{withFileTypes:true}).catch(()=>[]);
+const publicFields=['id','name','version','runtime','entry','category','age','cover','description','size','multiplayer','offline','assets','permissions','license','author'];
+for(const folder of communityFolders.filter(entry=>entry.isDirectory())){
+  const manifest=JSON.parse(await readFile(resolve(communityRoot,folder.name,'manifest.json'),'utf8').catch(()=>fail(`${folder.name}: manifest.json em falta ou inválido`)));
+  if(manifest.id!==folder.name)fail(`${folder.name}: o id do manifesto deve coincidir com a pasta`);
+  const catalogGame=data.games.find(game=>game.id===manifest.id);
+  if(!catalogGame)fail(`${manifest.id}: jogo ausente do catálogo`);
+  for(const field of publicFields)if(JSON.stringify(catalogGame[field]??null)!==JSON.stringify(manifest[field]??null))fail(`${manifest.id}: campo ${field} difere entre manifesto e catálogo`);
+}
+for(const game of data.games.filter(game=>game.runtime==='sandbox'))if(!communityFolders.some(folder=>folder.isDirectory()&&folder.name===game.id))fail(`${game.id}: pasta comunitária em falta`);
 console.log(`DinoPlay: ${data.games.length} jogos validados com sucesso.`);

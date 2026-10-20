@@ -1,18 +1,68 @@
 # Contribuir com jogos para DinoPlay
 
-Obrigado por ajudar a construir uma biblioteca infantil segura.
+Este guia descreve o processo completo. Um visto verde do GitHub significa apenas que os testes automáticos passaram; o jogo só fica disponível depois de revisão humana, merge na `main` e publicação do GitHub Pages.
 
-1. Crie uma pasta `games/community/<id>/` usando apenas HTML, CSS, JavaScript e recursos locais.
-2. Crie o manifesto e valide-o contra `games/game.schema.json`.
-3. Use `runtime: "sandbox"` e o SDK em `sdk/dinoplay-game-sdk.js`.
-4. Adicione o jogo a `games/catalog.json`.
-5. Teste em telemóvel, modo avião, ecrã pequeno e após suspender/retomar a app.
-6. Abra um pull request preenchendo a lista de verificação.
+## 1. Ficheiros permitidos
 
-## Atualizações automáticas
+Uma contribuição de jogo novo pode alterar exclusivamente:
 
-Sempre que alterar ficheiros de um jogo já publicado, aumente obrigatoriamente o campo `version` do jogo em `games/catalog.json` seguindo `MAJOR.MINOR.PATCH`. Depois de o pull request ser aprovado e publicado, o DinoPlay deteta essa versão e atualiza automaticamente todas as instalações desse jogo. Se algum download falhar, a versão anterior continua disponível e a app volta a tentar mais tarde.
+- `games/community/<id>/**` — todos os ficheiros do jogo;
+- `games/catalog.json` — uma única entrada para o jogo;
+- `scripts/test-<id>*.cjs` — testes opcionais do próprio jogo.
 
-Ao contribuir, confirma que possui direitos sobre todo o código e recursos, indica uma licença e aceita as regras de `docs/CHILD-SAFETY.md`, `docs/GAME-SPEC.md` e `docs/MULTIPLAYER.md`.
+Não altere `platform.js`, `app.js`, `sw.js`, `index.html`, o SDK, o controlo parental, o sistema de atualizações, o multiplayer, jogos oficiais ou as versões do DinoPlay. Se o jogo precisar de uma nova capacidade da plataforma, descreva-a no pull request; o mantenedor implementa-a separadamente.
 
-Não inclua segredos, serviços pagos, dependências remotas, anúncios, rastreadores ou conteúdo gerado a partir de dados pessoais de crianças.
+Uma atualização de jogo existente segue a mesma regra e só pode alterar a pasta, a entrada de catálogo e os testes desse jogo.
+
+## 2. Estrutura obrigatória
+
+Crie `games/community/<id>/`, usando um identificador em minúsculas, sem espaços, por exemplo `cobrinhas-do-jardim`. A pasta deve conter:
+
+- `index.html` como entrada;
+- `manifest.json` compatível com `games/game.schema.json`;
+- código e recursos locais;
+- `LICENSE` com a licença do código e dos recursos;
+- `README.md` com controlos, objetivo, autoria e origem dos recursos;
+- uma capa horizontal legível na biblioteca.
+
+Use apenas HTML, CSS, JavaScript e recursos auditáveis. Binários executáveis, código ofuscado, dependências remotas e ficheiros sem licença são recusados.
+
+## 3. Manifesto e catálogo
+
+- Use sempre `runtime: "sandbox"` e `offline: true`.
+- `entry`, `cover` e cada item de `assets` devem estar dentro de `games/community/<id>/`, exceto o SDK oficial.
+- Inclua todos os ficheiros necessários em `assets`.
+- Declare apenas `storage` e, quando aprovado, `multiplayer` em `permissions`.
+- Copie para `games/catalog.json` exatamente os mesmos dados públicos do `manifest.json`.
+- Num jogo novo, comece em `1.0.0`. Numa atualização, aumente `MAJOR.MINOR.PATCH`.
+
+Nunca aumente a versão da app nem altere parâmetros de cache. A plataforma deteta o catálogo automaticamente.
+
+## 4. Integração com DinoPlay
+
+Inclua `/sdk/dinoplay-game-sdk.js` no HTML e execute `await DinoPlay.ready()` antes de usar capacidades da plataforma. Use `DinoPlay.storage` para progresso e `DinoPlay.close()` para regressar à biblioteca. Não use `localStorage`, contas próprias ou acesso direto a dados do dispositivo.
+
+Multiplayer só pode usar `DinoPlay.multiplayer`; servidores, códigos, salas, chat ou listas de jogadores próprios são proibidos. Uma contribuição multiplayer exige revisão adicional do protocolo.
+
+## 5. Testes antes do envio
+
+Execute:
+
+```text
+node scripts/validate-catalog.mjs
+```
+
+Teste também instalação, modo avião depois de instalado, toque, ecrã pequeno, rotação, suspensão/regresso, botão de fechar, áudio e preservação do progresso. O jogo não pode continuar a gastar CPU ou reproduzir áudio quando estiver oculto.
+
+## 6. Pull request e publicação
+
+1. Atualize a sua branch com a `main` antes de abrir ou concluir o pull request.
+2. Abra o pull request e preencha toda a lista de verificação.
+3. O GitHub valida caminhos, manifesto, recursos e catálogo. Verde significa apenas “tecnicamente válido”.
+4. Um mantenedor revê segurança infantil, licenças, funcionamento e conteúdo.
+5. Só o merge na `main` significa “aceite”.
+6. O GitHub Pages publica o merge. Depois disso, jogos novos aparecem na biblioteca; versões superiores de jogos instalados são atualizadas automaticamente.
+
+Se houver conflitos, o pull request não está aprovado para publicação. Atualize a branch sem substituir ficheiros atuais da plataforma.
+
+Ao contribuir, confirma que possui direitos sobre todo o conteúdo e aceita `docs/CHILD-SAFETY.md`, `docs/GAME-SPEC.md`, `docs/MULTIPLAYER.md` e `docs/REVIEW-PUBLISHING.md`.

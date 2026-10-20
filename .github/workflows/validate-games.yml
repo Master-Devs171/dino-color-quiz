@@ -1,7 +1,6 @@
 name: Validar jogos DinoPlay
 on:
   pull_request:
-    paths: ['games/**','sdk/**','scripts/validate-catalog.mjs']
   push:
     branches: [main]
     paths: ['games/**','sdk/**','scripts/validate-catalog.mjs']
@@ -12,7 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          TARGET_SHA: ${{ github.event.pull_request.head.sha }}
+        run: node scripts/validate-contribution.mjs
       - run: node scripts/validate-catalog.mjs
