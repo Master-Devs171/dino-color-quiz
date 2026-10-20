@@ -1345,6 +1345,10 @@ body:not([data-menu="playing"]) .garden-menu button > span {
 }
 
 /* Arena-inspired lobby and option cards. */
+body:not([data-menu="playing"]) #overlay::before {
+  transform: none;
+  background-size: 180px 180px;
+}
 body[data-menu="welcome"] .input-help {
   display: none;
 }
