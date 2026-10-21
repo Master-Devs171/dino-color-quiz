@@ -42,3 +42,5 @@ body[data-menu="welcome"] .menu-action-status #open-settings>span,body[data-menu
 .boutique::before,#adventures::before{background-image:none}
 body:is([data-menu="paused"],[data-menu="end"]) #overlay{background:#102947f5}
 @media(max-width:600px){body[data-menu="welcome"] .menu-brand{top:25%}}
+body[data-menu="playing"] header .score,body[data-menu="playing"] header .record,body[data-menu="playing"] #scoreboard,body[data-menu="playing"] #power-status,body[data-menu="playing"] #mini-task,body[data-menu="playing"] #coin-counter{background:#102a48ed;border:1px solid #628bb5;color:#eaf4ff;box-shadow:0 4px 15px #04132933}
+body[data-menu="playing"] .input-help{background:#102a48e8;color:#e2effb;border:1px solid #628bb5;border-radius:10px}
