@@ -23,4 +23,7 @@ jobs:
         run: node scripts/validate-contribution.mjs
       - run: node scripts/validate-catalog.mjs
       - run: node scripts/scan-community-security.mjs
+      - run: node scripts/test-platform-contracts.mjs
+      - run: node scripts/test-i18n.mjs
+      - run: node scripts/test-multiplayer-presence.mjs
       - run: node scripts/run-community-tests.mjs

@@ -12,6 +12,7 @@ O multiplayer é um serviço da plataforma, não uma funcionalidade independente
 - Máximo de cinco participantes.
 - Sem chat, salas públicas, pesquisa ou QR Code.
 - Sessões não continuam quando a aplicação está fechada.
+- A presença usa heartbeat e, ao restabelecer uma ligação, o fecho atrasado da ligação anterior não pode marcar a nova sessão como offline.
 
 ## Integração
 

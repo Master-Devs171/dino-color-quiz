@@ -16,6 +16,18 @@ O campo `version` é também o sinal de atualização. Qualquer alteração publ
 
 O jogo inclui `sdk/dinoplay-game-sdk.js`, chama `await DinoPlay.ready()` e recebe apenas contexto aprovado: idioma, identificador do jogo e capacidades disponíveis. Dados persistentes usam `DinoPlay.storage`; nunca `localStorage` como contrato público.
 
+### Idioma do jogo
+
+Cada jogo mantém as suas próprias traduções. A DinoPlay comunica a preferência do utilizador para o jogo abrir logo no idioma certo:
+
+```js
+const context = await DinoPlay.ready();
+const language = context.language; // por exemplo: pt-PT, pt-BR, en, fr, de, es ou pl
+const pack = translations[language] || translations.en;
+```
+
+O mesmo valor fica disponível em `DinoPlay.language` depois de `ready()`. A plataforma não traduz textos do jogo: o autor controla integralmente o vocabulário, áudio e conteúdo de cada idioma. Todos os jogos com vários idiomas devem incluir inglês e usá-lo como fallback quando ainda não existir uma tradução para o idioma escolhido.
+
 O armazenamento é isolado por jogo, limitado a 256 KB e deve conter apenas progresso do jogo. Não pode guardar nome, contactos, localização, identificadores publicitários ou qualquer dado pessoal.
 
 ## Multiplayer

@@ -24,6 +24,9 @@ Nunca utilize `localStorage`, `fetch`, WebSocket, cookies, formulários, links e
 ```text
 node scripts/validate-catalog.mjs
 node scripts/scan-community-security.mjs
+node scripts/test-platform-contracts.mjs
+node scripts/test-i18n.mjs
+node scripts/run-community-tests.mjs
 ```
 
 Abra a raiz do DinoPlay através de um servidor HTTP local, instale o jogo pela biblioteca e teste-o dentro do sandbox. Abrir diretamente o `index.html` não testa a integração.
