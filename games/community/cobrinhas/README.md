@@ -63,3 +63,5 @@ Movimento: a cauda segue o percurso real da cabeça por distância percorrida, i
 4.1.0 — Oficina por cartões (corpo, olhos, boca e acessórios); loja com melhorias, reações, efeitos de eliminação e bandeiras. Reações aparecem com E ou botão; efeitos são cosméticos, ativados quando uma cobra do computador choca com a tua. Escolhas e compras são guardadas; moedas apenas do jogo.
 
 4.2.0 — Crescimento contínuo sem limite fixo de segmentos/grossura; bónus repetidos somam duração. WASD/setas/rato orientam; clique esquerdo, Shift e Espaço aceleram (fontes independentes). Menos raízes quadradas repetidas no percurso e colisões.
+
+4.3.0 — Menu principal com botões laterais, nível/moedas no topo, cobra ao centro e botão Jogar em baixo. Presente/Receber usam aventuras concluídas; Moedas grátis abre objetivos com prémios, sem anúncios. Ícones PNG locais de [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji), licença MIT em menu-icons/LICENSE.txt; roda e cobra usam os gráficos existentes.

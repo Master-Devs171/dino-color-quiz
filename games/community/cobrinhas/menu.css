@@ -1,0 +1,741 @@
+/* Arcade home screen. Other dialogs and gameplay keep their existing layouts. */
+.menu-top,
+.menu-claim,
+.menu-collection,
+.menu-action-status {
+  display: none;
+}
+body[data-menu="welcome"] #overlay {
+  padding: 0;
+  overflow: hidden;
+  background: radial-gradient(
+    ellipse at 51% 48%,
+    #00c8ef 0%,
+    #009ff0 52%,
+    #0560ba 100%
+  );
+}
+body[data-menu="welcome"] #overlay::before {
+  opacity: 0.075;
+  transform: none;
+}
+body[data-menu="welcome"] .welcome {
+  width: 100%;
+  height: 100dvh;
+  min-height: 0;
+  margin: 0;
+}
+body[data-menu="welcome"] .welcome-content {
+  display: block;
+  position: relative;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+}
+body[data-menu="welcome"] .welcome-content > h1,
+body[data-menu="welcome"] .title-tag,
+body[data-menu="welcome"] .intro,
+body[data-menu="welcome"] .welcome-content > fieldset,
+body[data-menu="welcome"] .journey-summary,
+body[data-menu="welcome"] .welcome-foot {
+  display: none;
+}
+body[data-menu="welcome"] .menu-top {
+  position: absolute;
+  top: 2.6%;
+  right: 11%;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 62px;
+}
+body[data-menu="welcome"] .menu-level {
+  display: flex;
+  align-items: center;
+  background: #442365;
+  border-radius: 30px;
+  height: 38px;
+  min-width: 175px;
+  color: white;
+  font-weight: 900;
+  gap: 20px;
+}
+body[data-menu="welcome"] .menu-level-badge {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 61px;
+  height: 61px;
+  flex-shrink: 0;
+  margin-left: -7px;
+}
+body[data-menu="welcome"] .menu-level-badge img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+body[data-menu="welcome"] .menu-level-badge b {
+  position: relative;
+  font-size: 29px;
+  color: white;
+  text-shadow:
+    0 2px 1px #814408,
+    -1px -1px 0 #814408,
+    1px 1px 0 #814408;
+}
+body[data-menu="welcome"] .menu-xp {
+  padding-right: 27px;
+  font-size: 17px;
+  white-space: nowrap;
+}
+body[data-menu="welcome"] .menu-wallet {
+  display: flex;
+  align-items: center;
+  position: relative;
+  border: 3px solid #291641;
+  border-radius: 10px;
+  background: #442365;
+  color: white;
+  height: 43px;
+  min-width: 180px;
+  padding: 0 45px 0 39px;
+  font-size: 28px;
+  font-weight: 900;
+  box-shadow: 0 4px 0 #063c7d;
+}
+body[data-menu="welcome"] .menu-wallet > img {
+  position: absolute;
+  left: -23px;
+  top: -16px;
+  width: 67px;
+  height: 67px;
+}
+body[data-menu="welcome"] .menu-wallet b {
+  min-width: 60px;
+  text-align: center;
+}
+body[data-menu="welcome"] .menu-plus {
+  position: absolute;
+  right: -13px;
+  top: -7px;
+  width: 43px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: 2px solid #e99a13;
+  border-radius: 11px;
+  background: linear-gradient(#fff678, #ffcf12);
+  color: #99610d;
+  font-size: 35px;
+  box-shadow: 0 4px 0 #bc780b;
+}
+body[data-menu="welcome"] .garden-menu {
+  position: absolute;
+  left: 0.9%;
+  top: 9.3%;
+  bottom: 19.4%;
+  width: 8.7%;
+  min-width: 105px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+}
+body[data-menu="welcome"] .garden-menu button {
+  min-height: 0;
+  height: 13.1%;
+  position: relative;
+  padding: 23px 3px 5px;
+  border: 2px solid #071c40;
+  border-radius: 12px;
+  background: #17396e;
+  box-shadow:
+    0 4px 0 #0870a2,
+    inset 0 2px 0 #3b5a8e;
+  flex: none;
+  overflow: visible;
+  color: white;
+  width: 100%;
+}
+body[data-menu="welcome"] .garden-menu button > span {
+  position: absolute;
+  top: -48px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
+  display: block;
+  filter: drop-shadow(0 3px 1px #075b9644);
+}
+body[data-menu="welcome"] .garden-menu button > span img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+body[data-menu="welcome"] .garden-menu button > span .game-icon {
+  width: 75px;
+  height: 75px;
+}
+body[data-menu="welcome"] .garden-menu button b {
+  font-size: clamp(14px, 1.4vw, 27px);
+  white-space: nowrap;
+  display: block;
+  line-height: 1.15;
+  margin-top: 5px;
+  text-shadow: 0 2px 1px #061a3c77;
+}
+body[data-menu="welcome"] .garden-menu button small {
+  display: none;
+}
+body[data-menu="welcome"] .menu-claim {
+  position: absolute;
+  display: block;
+  left: 10.4%;
+  top: 7.2%;
+  border: 2px solid #2d9707;
+  border-radius: 9px;
+  background: linear-gradient(#79ff43, #39ca0b);
+  color: white;
+  text-shadow: 0 2px 1px #237a12;
+  box-shadow: 0 4px 0 #137818;
+  padding: 5px 18px;
+  font-size: 20px;
+  font-weight: 900;
+  min-height: 36px;
+}
+body[data-menu="welcome"] .menu-claim[hidden] {
+  display: none;
+}
+body[data-menu="welcome"] #customize {
+  position: absolute;
+  left: 37.5%;
+  top: 33.5%;
+  width: 25.3%;
+  height: 14.3%;
+  min-height: 0;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 5px solid #154575;
+  border-radius: 17px;
+  background: #6edcf4;
+  box-shadow: inset 0 0 24px #2da5d940;
+  overflow: visible;
+  display: block;
+}
+body[data-menu="welcome"] #lobby-snake {
+  position: static;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  display: block;
+  object-fit: contain;
+}
+body[data-menu="welcome"] #customize > b {
+  position: absolute;
+  top: calc(100% + 9px);
+  left: -20%;
+  width: 140%;
+  text-align: center;
+  color: white;
+  font-size: clamp(17px, 1.65vw, 32px);
+  font-weight: 1000;
+  line-height: 1.1;
+  text-shadow:
+    -2px -2px 0 #163847,
+    2px -2px 0 #163847,
+    -2px 2px 0 #163847,
+    2px 2px 0 #163847;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+body[data-menu="welcome"] #customize > span {
+  position: absolute;
+  right: 10%;
+  top: -100%;
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 83px;
+  background: #a2eaffd9;
+  border: 0;
+  border-radius: 45px 45px 45px 0;
+  box-shadow: none;
+  color: #6fdb17;
+  text-shadow:
+    1px 1px 0 #327208,
+    -1px -1px 0 #327208;
+  font-size: 54px;
+  line-height: 1;
+  transform: rotate(-3deg);
+}
+body[data-menu="welcome"] #play {
+  position: absolute;
+  left: 38.5%;
+  top: 72.4%;
+  width: 23.4%;
+  height: 16.5%;
+  min-height: 0;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 4px solid #b98f19;
+  border-radius: 26px;
+  background: linear-gradient(
+    #fff15c 0%,
+    #ffdb20 43%,
+    #ffbd0d 44%,
+    #f2a308 100%
+  );
+  box-shadow:
+    0 8px 0 #99570c,
+    0 13px 0 #145277,
+    inset 0 4px 0 #fff8a1;
+  color: white;
+  font-size: clamp(34px, 5vw, 85px);
+  font-weight: 1000;
+  text-shadow:
+    0 4px 0 #974418,
+    -2px 0 0 #974418,
+    2px 0 0 #974418;
+}
+body[data-menu="welcome"] #play .play-arrow {
+  display: none;
+}
+body[data-menu="welcome"] .menu-chest {
+  position: absolute;
+  left: 25.5%;
+  top: 76.3%;
+  width: 9.5%;
+  height: 16.5%;
+  border: 0;
+  background: none;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  box-shadow: none;
+  border-radius: 12px;
+}
+body[data-menu="welcome"] .menu-chest > span {
+  position: static;
+  display: block;
+  width: 105px;
+  height: 95px;
+  filter: grayscale(0.7) drop-shadow(0 3px 1px #036bb5);
+  line-height: 1;
+}
+body[data-menu="welcome"] .menu-chest > span img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+body[data-menu="welcome"] .menu-chest b {
+  font-size: 14px;
+  background: #17396e;
+  border-radius: 7px;
+  padding: 4px 10px;
+  white-space: nowrap;
+  line-height: 1.1;
+  margin: 0;
+}
+body[data-menu="welcome"] .menu-chest small {
+  font-size: 11px;
+  background: #17396e;
+  padding: 2px 9px;
+  border-radius: 0 0 7px 7px;
+  line-height: 1;
+}
+body[data-menu="welcome"] .menu-collection {
+  position: absolute;
+  display: block;
+  left: 66.5%;
+  top: 76.5%;
+  min-width: 70px;
+  min-height: 60px;
+  padding: 10px;
+  color: #713c19;
+  font-size: 19px;
+  font-weight: 900;
+  border: 3px solid #fff3ab;
+  border-radius: 17px;
+  background: linear-gradient(#ffe864, #ffb91b);
+  transform: rotate(-8deg);
+  box-shadow: 0 4px 0 #b36d17;
+}
+body[data-menu="welcome"] .lobby-tools {
+  position: absolute;
+  right: 0.4%;
+  top: 3%;
+  width: 9%;
+  min-width: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+  margin: 0;
+  justify-content: initial;
+  order: initial;
+}
+body[data-menu="welcome"] .lobby-tools button {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  max-width: none;
+  min-height: 0;
+  height: 104px;
+  padding: 0 0 5px;
+  color: white;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  font-size: 17px;
+  border-radius: 12px;
+}
+body[data-menu="welcome"] .lobby-tools button > span {
+  position: static;
+  width: 76px;
+  height: 76px;
+  display: block;
+  line-height: 1;
+}
+body[data-menu="welcome"] .lobby-tools button > span img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+body[data-menu="welcome"] #open-background {
+  background: #17396e;
+  border: 2px solid #071c40;
+  border-radius: 13px;
+  height: 62px;
+  margin-top: 30px;
+}
+body[data-menu="welcome"] #open-background > span {
+  position: absolute;
+  bottom: 35px;
+  width: 90px;
+  height: 90px;
+}
+body[data-menu="welcome"] #open-background > b {
+  z-index: 1;
+  margin-top: 0;
+}
+body[data-menu="welcome"] button:focus-visible {
+  outline: 4px solid white;
+  outline-offset: 5px;
+}
+@media (min-width: 1500px) {
+  body[data-menu="welcome"] .menu-top {
+    height: 80px;
+    gap: 40px;
+  }
+  body[data-menu="welcome"] .menu-level {
+    min-width: 270px;
+    height: 52px;
+  }
+  body[data-menu="welcome"] .menu-level-badge {
+    width: 85px;
+    height: 85px;
+  }
+  body[data-menu="welcome"] .menu-level-badge b {
+    font-size: 40px;
+  }
+  body[data-menu="welcome"] .menu-xp {
+    font-size: 23px;
+  }
+  body[data-menu="welcome"] .menu-wallet {
+    height: 59px;
+    font-size: 42px;
+    min-width: 265px;
+    padding-left: 70px;
+  }
+  body[data-menu="welcome"] .menu-wallet > img {
+    width: 94px;
+    height: 94px;
+    left: -25px;
+    top: -21px;
+  }
+  body[data-menu="welcome"] .menu-plus {
+    width: 59px;
+    height: 62px;
+    font-size: 48px;
+  }
+  body[data-menu="welcome"] .garden-menu button {
+    padding-top: 35px;
+  }
+  body[data-menu="welcome"] .garden-menu button > span {
+    width: 115px;
+    height: 115px;
+    top: -65px;
+  }
+  body[data-menu="welcome"] .garden-menu button > span .game-icon {
+    width: 110px;
+    height: 110px;
+  }
+  body[data-menu="welcome"] #customize > span {
+    width: 120px;
+    height: 130px;
+    font-size: 80px;
+  }
+  body[data-menu="welcome"] .lobby-tools button {
+    height: 145px;
+    font-size: 25px;
+  }
+  body[data-menu="welcome"] .lobby-tools button > span {
+    width: 110px;
+    height: 110px;
+  }
+  body[data-menu="welcome"] #open-background {
+    height: 90px;
+    margin-top: 45px;
+  }
+  body[data-menu="welcome"] #open-background > span {
+    width: 140px;
+    height: 140px;
+    bottom: 45px;
+  }
+  body[data-menu="welcome"] .menu-chest > span {
+    width: 160px;
+    height: 140px;
+  }
+  body[data-menu="welcome"] .menu-chest b {
+    font-size: 20px;
+  }
+  body[data-menu="welcome"] .menu-chest small {
+    font-size: 16px;
+  }
+  body[data-menu="welcome"] .menu-claim {
+    font-size: 28px;
+    padding: 6px 25px;
+  }
+}
+@media (max-width: 700px) {
+  body[data-menu="welcome"] .menu-top {
+    top: 12px;
+    left: 14px;
+    right: 65px;
+    justify-content: space-between;
+    gap: 10px;
+    height: 42px;
+  }
+  body[data-menu="welcome"] .menu-level {
+    min-width: 110px;
+    height: 30px;
+    gap: 3px;
+  }
+  body[data-menu="welcome"] .menu-level-badge {
+    width: 44px;
+    height: 44px;
+  }
+  body[data-menu="welcome"] .menu-level-badge b {
+    font-size: 22px;
+  }
+  body[data-menu="welcome"] .menu-xp {
+    font-size: 12px;
+    padding-right: 12px;
+  }
+  body[data-menu="welcome"] .menu-wallet {
+    height: 32px;
+    min-width: 100px;
+    padding: 0 20px 0 25px;
+    font-size: 20px;
+  }
+  body[data-menu="welcome"] .menu-wallet b {
+    min-width: 35px;
+  }
+  body[data-menu="welcome"] .menu-wallet > img {
+    width: 44px;
+    height: 44px;
+    left: -13px;
+    top: -9px;
+  }
+  body[data-menu="welcome"] .menu-plus {
+    width: 28px;
+    height: 33px;
+    font-size: 26px;
+    right: -11px;
+    top: -3px;
+  }
+  body[data-menu="welcome"] .lobby-tools {
+    right: 6px;
+    top: 10px;
+    width: 47px;
+    min-width: 0;
+    gap: 26px;
+  }
+  body[data-menu="welcome"] .lobby-tools button {
+    height: 48px;
+    font-size: 10px;
+  }
+  body[data-menu="welcome"] .lobby-tools button > span {
+    width: 37px;
+    height: 37px;
+  }
+  body[data-menu="welcome"] #open-background {
+    height: 34px;
+    margin-top: 25px;
+    font-size: 10px;
+  }
+  body[data-menu="welcome"] #open-background > span {
+    width: 47px;
+    height: 47px;
+    bottom: 18px;
+  }
+  body[data-menu="welcome"] .garden-menu {
+    left: 10px;
+    top: 19%;
+    bottom: 17%;
+    width: 82px;
+    min-width: 0;
+  }
+  body[data-menu="welcome"] .garden-menu button {
+    height: 57px;
+    padding: 18px 2px 4px;
+    border-radius: 10px;
+  }
+  body[data-menu="welcome"] .garden-menu button > span {
+    width: 58px;
+    height: 58px;
+    top: -33px;
+  }
+  body[data-menu="welcome"] .garden-menu button > span .game-icon {
+    width: 54px;
+    height: 54px;
+  }
+  body[data-menu="welcome"] .garden-menu button b {
+    font-size: 12px;
+    white-space: normal;
+    margin-top: 6px;
+  }
+  body[data-menu="welcome"] .menu-claim {
+    left: 96px;
+    top: 17.5%;
+    font-size: 12px;
+    padding: 4px 9px;
+    min-height: 28px;
+  }
+  body[data-menu="welcome"] #customize {
+    left: 29%;
+    top: 34%;
+    width: 54%;
+    height: 12%;
+    border-width: 3px;
+    border-radius: 13px;
+  }
+  body[data-menu="welcome"] #customize > b {
+    font-size: 14px;
+    top: calc(100% + 9px);
+  }
+  body[data-menu="welcome"] #customize > span {
+    width: 47px;
+    height: 51px;
+    font-size: 37px;
+    top: -75%;
+    right: 7%;
+  }
+  body[data-menu="welcome"] #play {
+    left: 29%;
+    top: 68%;
+    width: 56%;
+    height: 12%;
+    font-size: 40px;
+    border-radius: 20px;
+    border-width: 3px;
+  }
+  body[data-menu="welcome"] .menu-chest {
+    left: 35%;
+    top: 84%;
+    width: 32%;
+    height: 12%;
+  }
+  body[data-menu="welcome"] .menu-chest > span {
+    width: 65px;
+    height: 55px;
+  }
+  body[data-menu="welcome"] .menu-chest b {
+    font-size: 12px;
+  }
+  body[data-menu="welcome"] .menu-chest small {
+    font-size: 10px;
+  }
+  body[data-menu="welcome"] .menu-collection {
+    left: 72%;
+    top: 87%;
+    min-width: 60px;
+    min-height: 45px;
+    font-size: 15px;
+    padding: 6px;
+  }
+}
+@media (max-height: 500px) and (min-width: 701px) {
+  body[data-menu="welcome"] .garden-menu button > span {
+    width: 55px;
+    height: 55px;
+    top: -29px;
+  }
+  body[data-menu="welcome"] .garden-menu button > span .game-icon {
+    width: 54px;
+    height: 54px;
+  }
+  body[data-menu="welcome"] .garden-menu button {
+    padding-top: 13px;
+  }
+  body[data-menu="welcome"] .garden-menu button b {
+    font-size: 12px;
+  }
+  body[data-menu="welcome"] .menu-top {
+    top: 8px;
+    transform: scale(0.75);
+    transform-origin: top right;
+  }
+  body[data-menu="welcome"] .lobby-tools {
+    transform: scale(0.7);
+    transform-origin: top right;
+    gap: 16px;
+  }
+  body[data-menu="welcome"] .menu-chest > span {
+    width: 65px;
+    height: 55px;
+  }
+  body[data-menu="welcome"] .menu-chest b {
+    font-size: 10px;
+  }
+  body[data-menu="welcome"] #customize > span {
+    width: 50px;
+    height: 55px;
+    font-size: 38px;
+  }
+  body[data-menu="welcome"] #play {
+    font-size: 38px;
+    border-radius: 18px;
+  }
+  body[data-menu="welcome"] .menu-claim {
+    font-size: 14px;
+    min-height: 28px;
+  }
+}
+body[data-menu="welcome"] .welcome {
+  max-width: none;
+  max-height: none;
+}
+body[data-menu="welcome"] #customize {
+  max-width: none;
+  max-height: none;
+}
+body[data-menu="welcome"] .lobby-tools button{min-width:0}
+body:not([data-menu="welcome"]) .menu-chest{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px;background:#193c78;color:white;border:2px solid #102b55;border-radius:14px}
+body:not([data-menu="welcome"]) .menu-chest>span img{width:34px;height:34px}

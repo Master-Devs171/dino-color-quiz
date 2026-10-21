@@ -4,6 +4,12 @@
   const languages = ["pt-PT", "pt-BR", "en", "es", "fr", "de", "pl"];
   // Portuguese | English | Spanish | French | German | Polish
   const rows = `
+Presente|Gift|Regalo|Cadeau|Geschenk|Prezent
+Moedas grátis|Free coins|Monedas gratis|Pièces gratuites|Kostenlose Münzen|Darmowe monety
+Completa aventuras|Complete adventures|Completa aventuras|Termine des aventures|Schließe Abenteuer ab|Ukończ przygody
+EDITAR COBRINHA|EDIT SNAKE|EDITAR SERPIENTE|MODIFIER LE SERPENT|SCHLANGE BEARBEITEN|EDYTUJ WĘŻA
+Moedas — abrir loja|Coins — open shop|Monedas — abrir tienda|Pièces — ouvrir la boutique|Münzen — Laden öffnen|Monety — otwórz sklep
+Receber recompensa de uma aventura concluída|Collect a completed adventure reward|Recibir recompensa de una aventura completada|Récupérer la récompense d’une aventure terminée|Belohnung für ein abgeschlossenes Abenteuer abholen|Odbierz nagrodę za ukończoną przygodę
 Clique esquerdo / Shift / Espaço para acelerar|Left click / Shift / Space to boost|Clic izquierdo / Mayús / Espacio para acelerar|Clic gauche / Maj / Espace pour accélérer|Linksklick / Umschalt / Leertaste für Tempo|Lewy przycisk / Shift / Spacja: przyspieszenie
 Rato / WASD / setas para virar|Mouse / WASD / arrows to steer|Ratón / WASD / flechas para girar|Souris / WASD / flèches pour tourner|Maus / WASD / Pfeiltasten zum Steuern|Mysz / WASD / strzałki: sterowanie
 Jogar!|Play!|¡Jugar!|Jouer !|Spielen!|Graj!
