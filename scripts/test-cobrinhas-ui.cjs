@@ -213,6 +213,41 @@ async function test() {
   elements.play.onclick();
   assert.equal(elements["round-result"].hidden, true);
   assert.equal(elements.overlay.hidden, true);
+  // Holding an accelerator must stop on release; touch steering must not boost.
+  let requestedBoost = false;
+  const update = arena.update.bind(arena);
+  arena.update = (dt, heading, boost, gentle) => {
+    requestedBoost = boost;
+    return update(dt, heading, boost, gentle);
+  };
+  const keyboard = {
+    code: "ShiftLeft",
+    target: new Element(),
+    preventDefault() {},
+  };
+  listeners.keydown(keyboard);
+  scheduled(4034);
+  assert.equal(requestedBoost, true);
+  listeners.keyup(keyboard);
+  scheduled(4068);
+  assert.equal(requestedBoost, false);
+  const pointer = {
+    pointerId: 1,
+    pointerType: "mouse",
+    button: 0,
+    clientX: 300,
+    clientY: 300,
+  };
+  elements.garden.onpointerdown(pointer);
+  scheduled(4102);
+  assert.equal(requestedBoost, true);
+  elements.garden.onpointerup();
+  scheduled(4136);
+  assert.equal(requestedBoost, false);
+  elements.garden.onpointerdown({ ...pointer, pointerType: "touch" });
+  scheduled(4170);
+  assert.equal(requestedBoost, false);
+  elements.garden.onpointercancel();
   document.hidden = true;
   listeners.visibilitychange();
   assert.equal(elements.overlay.hidden, false);
@@ -237,8 +272,44 @@ async function test() {
         );
   for (const flagStyle of env.SnakeStyle.options.flagStyle)
     env.SnakeStyle.draw(ctx, sample, { flag: "custom", flagStyle }, 2, true);
-  const beforeFresh=draws;env.SnakeStyle.draw(ctx,sample,{color:'#112233',pattern:'plain'},2,true);const freshCost=draws-beforeFresh;const beforeCached=draws;env.SnakeStyle.draw(ctx,sample,{color:'#112233',pattern:'plain'},2,true);const cachedCost=draws-beforeCached;assert.ok(cachedCost<freshCost*.8,'segment cache must reduce drawing work');
+  const beforeFresh = draws;
+  env.SnakeStyle.draw(
+    ctx,
+    sample,
+    { color: "#112233", pattern: "plain" },
+    2,
+    true,
+  );
+  const freshCost = draws - beforeFresh;
+  const beforeCached = draws;
+  env.SnakeStyle.draw(
+    ctx,
+    sample,
+    { color: "#112233", pattern: "plain" },
+    2,
+    true,
+  );
+  const cachedCost = draws - beforeCached;
+  assert.ok(
+    cachedCost < freshCost * 0.8,
+    "segment cache must reduce drawing work",
+  );
   assert.ok(draws > 1000);
+  for (const texture of [
+    "round",
+    "carrot",
+    "chocolate",
+    "corn",
+    "kitten",
+    "ice",
+  ]) {
+    assert.equal(env.SnakeStyle.sanitize({ texture }).texture, texture);
+    env.SnakeStyle.draw(ctx, sample, { texture }, 0, true);
+  }
+  assert.equal(
+    env.SnakeStyle.sanitize({ texture: "invalid" }).texture,
+    "round",
+  );
   console.log(
     "UI runtime: editor, preview, guardar/cancelar/repor, pausa/retoma, suspensão, 360px, caras, todas as bandeiras e fim de partida na borda OK.",
   );

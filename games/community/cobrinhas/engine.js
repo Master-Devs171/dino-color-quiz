@@ -5,10 +5,16 @@
     RADIUS = 13;
   const FOOD_COUNT = 1000,
     FOOD_LIMIT = 1800;
-  const POWERS = {magnet: {icon:"🧲",name:"Íman",duration:12},vision:{icon:"🔭",name:"Binóculos",duration:12},speed:{icon:"👟",name:"Sapatos velozes",duration:8}};
+  const POWERS = {
+    magnet: { icon: "🧲", name: "Íman", duration: 12 },
+    vision: { icon: "🔭", name: "Binóculos", duration: 12 },
+    speed: { icon: "👟", name: "Sapatos velozes", duration: 8 },
+  };
   const palette = ["#78c85d", "#b591ee", "#ffb752", "#58cddd", "#ef8db4"];
-  const sizeForScore = score => 1.2 + 1.2 * (1 - Math.exp(-Math.max(0, Number(score) || 0) / 250));
-  const zoomForScore = score => Math.max(0.7, 1.65 / Math.sqrt(1 + Math.max(0, Number(score) || 0) / 300));
+  const sizeForScore = (score) =>
+    1.2 + 1.2 * (1 - Math.exp(-Math.max(0, Number(score) || 0) / 250));
+  const zoomForScore = (score) =>
+    Math.max(0.7, 1.65 / Math.sqrt(1 + Math.max(0, Number(score) || 0) / 300));
   const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
   class Garden {
     constructor(random = Math.random) {
@@ -27,7 +33,7 @@
         angle,
         color: palette[id % palette.length],
         score: 0,
-        effects: {magnet:0,vision:0,speed:0},
+        effects: { magnet: 0, vision: 0, speed: 0 },
         targetLength: 12,
         grace: 2,
         respawn: 0,
@@ -42,6 +48,8 @@
       };
     }
     reset() {
+      this.upgrades ??= { magnet: 0, vision: 0, speed: 0, coins: 0 };
+      this.roundStats = { maxScore: 0, knockouts: 0, coins: 0 };
       this.player = this.makeSnake(0, { x: WORLD / 2, y: WORLD / 2 });
       this.snakes = [this.player];
       for (let i = 1; i <= 12; i++) {
@@ -62,10 +70,26 @@
         value: 1,
         kind: Math.floor(this.random() * 5),
       }));
-      this.powerups = Array.from({length:24},(_,i)=>({...this.point(),kind:Object.keys(POWERS)[i%3],cooldown:0}));
-      ['magnet','vision','speed'].forEach((kind,i)=>Object.assign(this.powerups[i],{kind,x:WORLD/2+160+i*180,y:WORLD/2}));
+      this.powerups = Array.from({ length: 24 }, (_, i) => ({
+        ...this.point(),
+        kind: Object.keys(POWERS)[i % 3],
+        cooldown: 0,
+      }));
+      ["magnet", "vision", "speed"].forEach((kind, i) =>
+        Object.assign(this.powerups[i], {
+          kind,
+          x: WORLD / 2 + 160 + i * 180,
+          y: WORLD / 2,
+        }),
+      );
       this.events = [];
       this.time = 0;
+      this.coins = Array.from({ length: 80 }, () => ({
+        ...this.point(),
+        cooldown: 0,
+      }));
+      this.coins[0] = { x: WORLD / 2 + 100, y: WORLD / 2, cooldown: 0 };
+      this.coins[1] = { x: WORLD / 2 + 260, y: WORLD / 2 + 90, cooldown: 0 };
     }
     drop(snake) {
       // Trail positions are already closely spaced: distribute collectible points along it.
@@ -73,7 +97,7 @@
         if (i % 3 === 0) this.food.push({ ...p, value: 3, kind: 5 });
       });
       snake.body = [];
-      snake.effects = {magnet:0,vision:0,speed:0};
+      snake.effects = { magnet: 0, vision: 0, speed: 0 };
       snake.respawn = snake.id === 0 ? 1.8 : 3;
       this.events.push(snake.id === 0 ? "retry" : "drop");
     }
@@ -81,7 +105,16 @@
       dt = Math.min(dt, 0.04);
       this.time += dt;
       this.events = [];
-      for(const item of this.powerups) if(item.cooldown>0){item.cooldown=Math.max(0,item.cooldown-dt);if(item.cooldown===0)Object.assign(item,this.point());}
+      for (const coin of this.coins)
+        if (coin.cooldown > 0) {
+          coin.cooldown = Math.max(0, coin.cooldown - dt);
+          if (coin.cooldown === 0) Object.assign(coin, this.point());
+        }
+      for (const item of this.powerups)
+        if (item.cooldown > 0) {
+          item.cooldown = Math.max(0, item.cooldown - dt);
+          if (item.cooldown === 0) Object.assign(item, this.point());
+        }
       for (const s of this.snakes) {
         if (!s.body.length) {
           s.respawn -= dt;
@@ -105,7 +138,8 @@
           }
           continue;
         }
-        for(const kind of Object.keys(POWERS)) s.effects[kind]=Math.max(0,s.effects[kind]-dt);
+        for (const kind of Object.keys(POWERS))
+          s.effects[kind] = Math.max(0, s.effects[kind] - dt);
         s.previousBody = s.body;
         s.previousAngle = s.angle;
         s.grace = Math.max(0, s.grace - dt);
@@ -158,10 +192,11 @@
           Math.sin(desired - s.angle),
           Math.cos(desired - s.angle),
         );
-        s.angle += Math.max(-3.2 * dt, Math.min(3.2 * dt, turn));
+        const turnRate = s.id === 0 ? 4.8 : 3.2;
+        s.angle += Math.max(-turnRate * dt, Math.min(turnRate * dt, turn));
         const speed =
           (s.id === 0 ? (gentle ? 105 : 140) : gentle ? 86 : 118) *
-          (s.id === 0 && (boost || s.effects.speed>0) ? 1.55 : 1);
+          (s.id === 0 && (boost || s.effects.speed > 0) ? 1.55 : 1);
         const p = {
           x: head.x + Math.cos(s.angle) * speed * dt,
           y: head.y + Math.sin(s.angle) * speed * dt,
@@ -180,22 +215,70 @@
           continue;
         }
         const old = s.body;
+        // Sample travelled distance along the head's trail. A constraint chain
+        // can settle into a static tail during tight circles; a trail cannot.
+        if (!s.path || distance(s.path[0], head) > 0.01)
+          s.path = old.map((point) => ({ ...point }));
+        s.path.unshift(p);
         s.body = [p];
-        // Maintain constant body spacing, independent of frame rate.
-        let anchor = p;
-        for (let i = 1; i < old.length; i++) {
-          const d = distance(anchor, old[i]) || 1;
-          anchor = {
-            x: anchor.x + ((old[i].x - anchor.x) * GAP) / d,
-            y: anchor.y + ((old[i].y - anchor.y) * GAP) / d,
-          };
-          s.body.push(anchor);
+        const length = Math.max(
+          old.length,
+          Math.min(s.targetLength, old.length + 1),
+        );
+        let segment = 0,
+          travelled = 0;
+        for (let i = 1; i < length; i++) {
+          const target = i * GAP;
+          while (
+            segment < s.path.length - 2 &&
+            travelled + distance(s.path[segment], s.path[segment + 1]) < target
+          ) {
+            travelled += distance(s.path[segment], s.path[segment + 1]);
+            segment++;
+          }
+          const a = s.path[segment],
+            b = s.path[segment + 1] || a,
+            d = distance(a, b),
+            t = d ? Math.min(1, (target - travelled) / d) : 0;
+          s.body.push({ x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t });
         }
-        if (s.body.length < s.targetLength)
-          s.body.push({ ...s.body[s.body.length - 1] });
-        if(s.id===0){
-          for(const item of this.powerups) if(item.cooldown===0 && distance(p,item)<38){s.effects[item.kind]=POWERS[item.kind].duration;item.cooldown=20;this.events.push('power:'+item.kind);}
-          if(s.effects.magnet>0) for(const f of this.food){const d=distance(p,f);if(d>0 && d<185){const pull=Math.min(d,300*dt);f.x+=(p.x-f.x)/d*pull;f.y+=(p.y-f.y)/d*pull;}}
+        s.path.length = Math.min(s.path.length, segment + 3);
+        if (s.id === 0) {
+          for (const coin of this.coins) {
+            if (coin.cooldown > 0) continue;
+            const d = distance(p, coin);
+            if (
+              s.effects.magnet > 0 &&
+              d > 0 &&
+              d < 185 + this.upgrades.magnet * 10
+            ) {
+              const pull = Math.min(d, 300 * dt);
+              coin.x += ((p.x - coin.x) / d) * pull;
+              coin.y += ((p.y - coin.y) / d) * pull;
+            }
+            if (distance(p, coin) < 25) {
+              coin.cooldown = 25;
+              const value = 1 + Math.floor(this.upgrades.coins / 2);
+              for (let n = 0; n < value; n++) this.events.push("coin");
+              this.roundStats.coins += value;
+            }
+          }
+          for (const item of this.powerups)
+            if (item.cooldown === 0 && distance(p, item) < 38) {
+              s.effects[item.kind] =
+                POWERS[item.kind].duration + this.upgrades[item.kind] * 2;
+              item.cooldown = 20;
+              this.events.push("power:" + item.kind);
+            }
+          if (s.effects.magnet > 0)
+            for (const f of this.food) {
+              const d = distance(p, f);
+              if (d > 0 && d < 185 + this.upgrades.magnet * 10) {
+                const pull = Math.min(d, 300 * dt);
+                f.x += ((p.x - f.x) / d) * pull;
+                f.y += ((p.y - f.y) / d) * pull;
+              }
+            }
         }
         for (let i = this.food.length - 1; i >= 0; i--)
           if (distance(p, this.food[i]) < 25) {
@@ -212,14 +295,25 @@
           for (const other of this.snakes)
             if (other !== s && other.body.length && !other.grace) {
               if (
-                other.body.some((p) => distance(s.body[0], p) < RADIUS * 0.825 * (sizeForScore(s.score) + sizeForScore(other.score)))
+                other.body.some(
+                  (p) =>
+                    distance(s.body[0], p) <
+                    RADIUS *
+                      0.825 *
+                      (sizeForScore(s.score) + sizeForScore(other.score)),
+                )
               ) {
                 hit.add(s);
+                if (s.id !== 0 && other.id === 0) this.roundStats.knockouts++;
                 break;
               }
             }
         }
       hit.forEach((s) => this.drop(s));
+      this.roundStats.maxScore = Math.max(
+        this.roundStats.maxScore,
+        this.player.score,
+      );
       let missing =
         FOOD_COUNT - this.food.reduce((n, f) => n + (f.kind !== 5 ? 1 : 0), 0);
       while (missing-- > 0)
@@ -234,6 +328,16 @@
       }
     }
   }
-  root.Cobrinhas = { Garden, WORLD, RADIUS, palette, FOOD_COUNT, FOOD_LIMIT, POWERS, sizeForScore, zoomForScore };
+  root.Cobrinhas = {
+    Garden,
+    WORLD,
+    RADIUS,
+    palette,
+    FOOD_COUNT,
+    FOOD_LIMIT,
+    POWERS,
+    sizeForScore,
+    zoomForScore,
+  };
   if (typeof module !== "undefined") module.exports = root.Cobrinhas;
 })(typeof window === "undefined" ? globalThis : window);
