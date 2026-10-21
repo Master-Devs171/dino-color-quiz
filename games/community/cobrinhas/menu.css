@@ -745,3 +745,12 @@ body[data-menu="welcome"] #customize>span{display:none}
 
 /* Hide the album and skins shortcuts on the main menu. */
 body[data-menu="welcome"] .menu-chest,body[data-menu="welcome"] .menu-collection{display:none}
+/* Play invitation: gentle pulse and a clipped sweep of light. */
+body[data-menu="welcome"] #play{isolation:isolate;overflow:hidden;animation:play-invite 3.2s ease-in-out infinite;transform-origin:center}
+body[data-menu="welcome"] #play>span{position:relative;z-index:1}
+body[data-menu="welcome"] #play::after{content:"";position:absolute;inset:-50% auto -50% -65%;width:38%;background:linear-gradient(90deg,transparent,#fffbc899,transparent);transform:skewX(-18deg) translateX(0);pointer-events:none;animation:play-shine 4.4s ease-in-out infinite;z-index:2}
+body[data-menu="welcome"] #play:hover{animation-play-state:paused;filter:brightness(1.08)}
+body[data-menu="welcome"] #play:active{animation:none;transform:translateY(4px) scale(.98)}
+@keyframes play-invite{0%,100%{transform:scale(1);filter:brightness(1)}50%{transform:scale(1.035);filter:brightness(1.08)}}
+@keyframes play-shine{0%,50%{left:-65%;opacity:0}55%{opacity:.85}78%{left:130%;opacity:.85}79%,100%{left:130%;opacity:0}}
+@media(prefers-reduced-motion:reduce){body[data-menu="welcome"] #play,body[data-menu="welcome"] #play::after{animation:none}body[data-menu="welcome"] #play::after{display:none}}
