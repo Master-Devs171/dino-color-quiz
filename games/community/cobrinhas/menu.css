@@ -739,3 +739,7 @@ body[data-menu="welcome"] #customize {
 body[data-menu="welcome"] .lobby-tools button{min-width:0}
 body:not([data-menu="welcome"]) .menu-chest{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px;background:#193c78;color:white;border:2px solid #102b55;border-radius:14px}
 body:not([data-menu="welcome"]) .menu-chest>span img{width:34px;height:34px}
+
+/* Keep the snake preview free of the decorative plus bubble. */
+body[data-menu="welcome"] #customize>span{display:none}
+
