@@ -50,6 +50,7 @@
     reset() {
       this.upgrades ??= { magnet: 0, vision: 0, speed: 0, coins: 0 };
       this.roundStats = { maxScore: 0, knockouts: 0, coins: 0 };
+      this.knockoutPosition = null;
       this.player = this.makeSnake(0, { x: WORLD / 2, y: WORLD / 2 });
       this.snakes = [this.player];
       for (let i = 1; i <= 12; i++) {
@@ -304,7 +305,10 @@
                 )
               ) {
                 hit.add(s);
-                if (s.id !== 0 && other.id === 0) this.roundStats.knockouts++;
+                if (s.id !== 0 && other.id === 0) {
+                  this.roundStats.knockouts++;
+                  this.knockoutPosition = { ...s.body[0] };
+                }
                 break;
               }
             }

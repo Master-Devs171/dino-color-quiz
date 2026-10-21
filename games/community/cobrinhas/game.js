@@ -565,6 +565,7 @@
       window.GardenIcons?.draw(ctx, item.kind, item.x, item.y + bob + 3, 40);
     }
     const activeHead = game.player.body[0];
+    window.GardenBoutique?.draw(ctx, game, activeHead);
     if (activeHead && game.player.effects.magnet > 0) {
       ctx.strokeStyle = "#72efff55";
       ctx.lineWidth = 2;

@@ -41,6 +41,8 @@ assert.equal(
 assert.ok(player.body.length, "player survives bot hitting its body");
 assert.ok(g.food.some((f) => f.kind === 5 && f.value === 3));
 assert.ok(g.events.includes("drop"));
+assert.equal(g.roundStats.knockouts,1);
+assert.ok(Math.abs(g.knockoutPosition.x-1100)<2 && Math.abs(g.knockoutPosition.y-1186)<2, "cosmetic effect uses defeated snake position");
 const retry = new Garden();
 retry.player.body = Array.from({ length: 34 }, (_, i) => ({
   x: 1200 - i * 8,

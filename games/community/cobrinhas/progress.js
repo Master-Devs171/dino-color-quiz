@@ -296,6 +296,16 @@
     for (let i = 0; i < 4; i++) total += (n >> i) & 1;
     return total;
   };
+  const cosmetics = {
+    cheer: 100,
+    love: 100,
+    wow: 100,
+    win: 100,
+    bubble: 200,
+    frost: 200,
+    sparkle: 200,
+    sunshine: 200,
+  };
   class Book {
     constructor(saved) {
       this.restore(saved);
@@ -306,6 +316,21 @@
         Number.isSafeInteger(v) && v >= 0 ? Math.min(v, 1000000) : 0;
       this.state = {
         coins: number(s.coins),
+        cosmetics: Array.isArray(s.cosmetics)
+          ? [
+              ...new Set(
+                s.cosmetics.filter((id) => Object.hasOwn(cosmetics, id)),
+              ),
+            ]
+          : [],
+        reaction: ["none", "cheer", "love", "wow", "win"].includes(s.reaction)
+          ? s.reaction
+          : "none",
+        knockout: ["none", "bubble", "frost", "sparkle", "sunshine"].includes(
+          s.knockout,
+        )
+          ? s.knockout
+          : "none",
         wheelReady: s.wheelReady !== false,
         upgrades: Object.fromEntries(
           upgradeKeys.map((key) => [
@@ -358,6 +383,24 @@
         this.state.upgrades[key] = level;
         budget -= level * 150;
       }
+      this.state.cosmetics = this.state.cosmetics.filter((id) => {
+        if (cosmetics[id] > budget) return false;
+        budget -= cosmetics[id];
+        return true;
+      });
+      for (const key of ["reaction", "knockout"])
+        if (!this.state.cosmetics.includes(this.state[key]))
+          this.state[key] = "none";
+    }
+    buyCosmetic(id) {
+      if (
+        !Object.hasOwn(cosmetics, id) ||
+        this.state.cosmetics.includes(id) ||
+        this.coins < cosmetics[id]
+      )
+        return false;
+      this.state.cosmetics.push(id);
+      return true;
     }
     value(task) {
       return task.metric === "regions"
@@ -457,6 +500,7 @@
           .filter((t) => this.state.claimed.includes(t.id))
           .reduce((n, t) => n + t.stars, 0) -
         this.state.purchased.reduce((n, id) => n + shop[id].price, 0) -
+        this.state.cosmetics.reduce((n, id) => n + cosmetics[id], 0) -
         upgradeKeys.reduce((n, key) => n + this.state.upgrades[key] * 150, 0)
       );
     }
@@ -486,6 +530,7 @@
   }
   root.GardenProgress = {
     Book,
+    cosmetics,
     tasks,
     skins,
     shop,
