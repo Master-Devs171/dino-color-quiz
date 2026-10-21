@@ -306,6 +306,10 @@
     sparkle: 200,
     sunshine: 200,
   };
+  const timedGifts = {
+    small: { amount: 400, interval: 300000 },
+    large: { amount: 300, interval: 3600000 },
+  };
   class Book {
     constructor(saved) {
       this.restore(saved);
@@ -316,6 +320,33 @@
         Number.isSafeInteger(v) && v >= 0 ? Math.min(v, 1000000) : 0;
       this.state = {
         coins: number(s.coins),
+        giftTimes: Object.fromEntries(
+          Object.keys(timedGifts).map((id) => [
+            id,
+            Number.isSafeInteger(s.giftTimes?.[id]) && s.giftTimes[id] >= 0
+              ? s.giftTimes[id]
+              : 0,
+          ]),
+        ),
+        profile: {
+          name:
+            typeof s.profile?.name === "string"
+              ? s.profile.name.trim().slice(0, 24) || "Explorador"
+              : "Explorador",
+          bestScore: Math.max(
+            0,
+            Math.min(1e9, Math.floor(Number(s.profile?.bestScore) || 0)),
+          ),
+          bestSurvival: Math.max(
+            0,
+            Math.min(1e9, Number(s.profile?.bestSurvival) || 0),
+          ),
+          totalSeconds: Math.max(
+            0,
+            Math.min(1e9, Number(s.profile?.totalSeconds) || 0),
+          ),
+          kills: number(s.profile?.kills),
+        },
         cosmetics: Array.isArray(s.cosmetics)
           ? [
               ...new Set(
@@ -409,7 +440,30 @@
           ? this.state.styles.length
           : this.state[task.metric] || 0;
     }
+    claimGift(id, now = Date.now()) {
+      const gift = timedGifts[id];
+      if (
+        !gift ||
+        !Number.isSafeInteger(now) ||
+        now < 0 ||
+        now < this.state.giftTimes[id] ||
+        now > Number.MAX_SAFE_INTEGER - gift.interval
+      )
+        return null;
+      this.state.giftTimes[id] = now + gift.interval;
+      this.record("coins", gift.amount);
+      return { ...gift, readyAt: this.state.giftTimes[id] };
+    }
     record(kind, value = 1) {
+      if (kind === "session") {
+        const p = this.state.profile;
+        const safe = (v) => Math.max(0, Math.min(1e9, Number(v) || 0));
+        p.totalSeconds += Math.min(1, safe(value.seconds));
+        p.bestScore = Math.max(p.bestScore, Math.floor(safe(value.score)));
+        p.bestSurvival = Math.max(p.bestSurvival, safe(value.survival));
+        p.kills = Math.min(1e9, p.kills + Math.floor(safe(value.kills)));
+        return;
+      }
       if (kind === "rounds") this.state.wheelReady = true;
       if (kind === "fruit" || kind === "rounds" || kind === "coins")
         this.state[kind] = Math.min(
@@ -530,6 +584,7 @@
   }
   root.GardenProgress = {
     Book,
+    timedGifts,
     cosmetics,
     tasks,
     skins,

@@ -16,6 +16,7 @@
     best = 0,
     boost = false,
     mouseBoost = false,
+    boostPointer = null,
     last = 0,
     toastUntil = 0;
   let camera = { x: WORLD / 2, y: WORLD / 2 },
@@ -303,6 +304,7 @@
     if (!running) {
       $("round-result").hidden = true;
       game.reset();
+      window.GardenExtras?.startRound();
       scale =
         Math.max(0.42, Math.min(0.95, Math.min(width, height) / 650)) *
         zoomForScore(0);
@@ -342,9 +344,11 @@
     keys.clear();
     boost = false;
     mouseBoost = false;
+    boostPointer = null;
     stickPointer = null;
     fieldPointer = null;
     mouseAim = null;
+    window.GardenControls?.end();
     $("stick").style.transform = "";
   }
   document.addEventListener("visibilitychange", () => {
@@ -394,6 +398,7 @@
     fieldPointer = e.pointerId;
     canvas.focus({ preventScroll: true });
     canvas.setPointerCapture(e.pointerId);
+    if (e.pointerType !== "mouse" && window.GardenControls?.start(e)) return;
     point(e);
     mouseAim =
       e.pointerType === "mouse"
@@ -402,6 +407,7 @@
     if (e.pointerType === "mouse" && e.button === 0) mouseBoost = true;
   };
   canvas.onpointermove = (e) => {
+    if (e.pointerType !== "mouse" && window.GardenControls?.move(e)) return;
     if (e.pointerType === "mouse") {
       if (typeof e.buttons === "number") mouseBoost = Boolean(e.buttons & 1);
       mouseAim = { clientX: e.clientX, clientY: e.clientY };
@@ -412,12 +418,17 @@
     canvas.onpointercancel =
     canvas.onlostpointercapture =
       () => {
+        window.GardenControls?.end();
         fieldPointer = null;
         boost = false;
         mouseBoost = false;
       };
   addEventListener("pointerup", (e) => {
     if (e.pointerType === "mouse" && e.button === 0) mouseBoost = false;
+    if (e.pointerId === boostPointer) {
+      boost = false;
+      boostPointer = null;
+    }
   });
   canvas.oncontextmenu = (e) => {
     if (running && !paused) e.preventDefault();
@@ -447,10 +458,12 @@
     $("stick").style.transform = "";
   };
   $("boost").onpointerdown = (e) => {
+    boostPointer = e.pointerId;
     boost = true;
     $("boost").setPointerCapture(e.pointerId);
   };
   $("boost").onpointerup = $("boost").onpointercancel = () => {
+    boostPointer = null;
     boost = false;
   };
   function notice(text, now) {
@@ -468,7 +481,8 @@
     ctx.fillStyle = theme[0];
     ctx.fillRect(0, 0, width, height);
     ctx.save();
-    ctx.translate(width / 2, height / 2);
+    const shake = window.GardenExtras?.cameraOffset() || { x: 0, y: 0 };
+    ctx.translate(width / 2 + shake.x, height / 2 + shake.y);
     ctx.scale(scale, scale);
     ctx.translate(-camera.x, -camera.y);
     const left = Math.max(0, camera.x - width / scale / 2),
@@ -772,6 +786,7 @@
         simulationClock -= 1 / 60;
       }
       game.events = events;
+      window.GardenExtras?.tick(game, events);
       const meals = events.filter((event) => event === "eat").length;
       if (meals) window.GardenJournal?.record("fruit", meals);
       const coins = events.filter((event) => event === "coin").length;
@@ -969,6 +984,12 @@
     draw();
   }
   window.GardenBridge = {
+    steer(angle) {
+      if (Number.isFinite(angle)) {
+        heading = angle;
+        mouseAim = null;
+      }
+    },
     applyUpgrades(levels) {
       for (const key of ["magnet", "vision", "speed", "coins"])
         game.upgrades[key] = Math.max(

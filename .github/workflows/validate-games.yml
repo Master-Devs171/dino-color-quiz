@@ -3,7 +3,6 @@ on:
   pull_request:
   push:
     branches: [main]
-    paths: ['games/**','sdk/**','scripts/**','.github/workflows/validate-games.yml']
 permissions:
   contents: read
 jobs:
@@ -27,3 +26,4 @@ jobs:
       - run: node scripts/test-i18n.mjs
       - run: node scripts/test-multiplayer-presence.mjs
       - run: node scripts/run-community-tests.mjs
+      - run: node scripts/validate-play-release.mjs

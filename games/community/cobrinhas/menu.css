@@ -745,4 +745,3 @@ body[data-menu="welcome"] #customize>span{display:none}
 
 /* Hide the album and skins shortcuts on the main menu. */
 body[data-menu="welcome"] .menu-chest,body[data-menu="welcome"] .menu-collection{display:none}
-

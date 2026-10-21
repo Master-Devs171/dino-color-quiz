@@ -29,4 +29,6 @@ Execute `node scripts/validate-catalog.mjs` antes de enviar a contribuição. O 
 
 ## Jogar e instalar
 
-Abra [DinoPlay](https://rjcferreira.github.io/dino-color-quiz/) no Chrome do Android e escolha **Instalar aplicação**. A PWA verifica atualizações ao abrir e através do botão de atualização.
+A versão web está disponível em [DinoPlay](https://rjcferreira.github.io/dino-color-quiz/). A aplicação Android para a Google Play usa Capacitor, inclui a biblioteca essencial no próprio pacote e não é apenas um atalho para o site.
+
+Para preparar o projeto Android, execute `cd mobile`, `npm install` e `npm run sync`. As instruções de compilação e publicação estão em [mobile/README.md](mobile/README.md) e [docs/GOOGLE-PLAY-RELEASE.md](docs/GOOGLE-PLAY-RELEASE.md).

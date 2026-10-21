@@ -91,10 +91,13 @@
     xp.textContent = (book.xp % 50) + " / 50";
     wallet.querySelector("b").textContent = book.coins;
     const count = book.ready().length;
-    ready.hidden = count === 0;
+    const giftReady = window.GardenExtras?.giftReady?.();
+    ready.hidden = giftReady === undefined ? count === 0 : !giftReady;
     ready.setAttribute(
       "aria-label",
-      "Receber recompensa de uma aventura concluída",
+      giftReady === undefined
+        ? "Receber recompensa de uma aventura concluída"
+        : "Ver presentes disponíveis",
     );
     album.querySelector("small").textContent =
       book.state.claimed.length + " / " + GardenProgress.tasks.length;

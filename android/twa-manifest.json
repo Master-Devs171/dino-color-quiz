@@ -1,0 +1,45 @@
+{
+  "packageId": "io.github.rjcferreira.dinoplay",
+  "host": "rjcferreira.github.io",
+  "name": "DinoPlay",
+  "launcherName": "DinoPlay",
+  "display": "standalone",
+  "themeColor": "#32BFE8",
+  "themeColorDark": "#123B5A",
+  "navigationColor": "#FFFFFF",
+  "navigationColorDark": "#101827",
+  "navigationDividerColor": "#00000000",
+  "navigationDividerColorDark": "#00000000",
+  "backgroundColor": "#E8F8FF",
+  "enableNotifications": false,
+  "startUrl": "/dino-color-quiz/?app=dinoplay",
+  "iconUrl": "https://rjcferreira.github.io/dino-color-quiz/dinoplay-v23-512.png",
+  "maskableIconUrl": "https://rjcferreira.github.io/dino-color-quiz/dinoplay-v23-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "./upload-keystore.jks",
+    "alias": "dinoplay-upload"
+  },
+  "appVersion": "1.0.0",
+  "appVersionCode": 1,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://rjcferreira.github.io/dino-color-quiz/dinoplay-v23.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": false,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://rjcferreira.github.io/dino-color-quiz/",
+  "minSdkVersion": 26,
+  "orientation": "default",
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "displayOverride": [
+    "standalone"
+  ]
+}

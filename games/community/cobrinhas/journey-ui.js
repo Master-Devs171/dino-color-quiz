@@ -319,6 +319,14 @@
   for (const id of ["tasks", "album", "gifts", "shop", "wheel"])
     $("show-" + id).onclick = () => switchView(id);
   window.GardenJournal = {
+    session(value) {
+      if (!loaded) {
+        queued.push(["session", value]);
+        return;
+      }
+      book.record("session", value);
+      save();
+    },
     get book() {
       return book;
     },

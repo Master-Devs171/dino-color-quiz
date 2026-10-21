@@ -1,0 +1,11 @@
+{
+  "appId": "io.github.rjcferreira.dinoplay",
+  "appName": "DinoPlay",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": false,
+    "backgroundColor": "#e8f8ff",
+    "loggingBehavior": "none",
+    "webContentsDebuggingEnabled": false
+  }
+}
