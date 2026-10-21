@@ -66,7 +66,7 @@
     {
       "id": "cobrinhas",
       "name": "Cobrinhas do Jardim",
-      "version": "4.4.2",
+      "version": "4.4.3",
       "runtime": "sandbox",
       "entry": "games/community/cobrinhas/index.html",
       "category": "explore",

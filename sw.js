@@ -1,4 +1,4 @@
-const CACHE='dinoplay-core-v87';
+const CACHE='dinoplay-core-v88';
 const FILES=['./','./index.html','./style.css?v=15','./world.css?v=31','./platform.css?v=10','./game-runtime.css?v=1','./platform.js?v=19','./language.css?v=1','./i18n.js?v=5','./parental.js?v=1','./multiplayer-core.js?v=3','./multiplayer.js?v=8','./app.js?v=69','./games/catalog.json?v=1','./sdk/dinoplay-game-sdk.js?v=2','./version.json','./dinoplay-v23.webmanifest','./dinoplay-v23-192.png','./dinoplay-v23-512.png','./assets/dinoplay-mascot.png','./assets/dinoplay-puzzles.png','./assets/dinoplay-blocks.png','./assets/dinoplay-city.png','./assets/flags/pt.svg','./assets/flags/br.svg','./assets/flags/gb.svg','./assets/flags/fr.svg','./assets/flags/de.svg','./assets/flags/es.svg','./assets/flags/pl.svg'];
 FILES.push('./privacy.html','./about.html');
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting())));
