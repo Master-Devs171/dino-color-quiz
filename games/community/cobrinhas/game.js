@@ -333,7 +333,7 @@
     clearInput();
     overlay.hidden = !paused;
     uiMode(paused ? "paused" : "playing");
-    $("play").querySelector("span").textContent = "Continuar";
+    $("play").querySelector("span").textContent = "Continuar a brincar";
     $("pause").textContent = paused ? "▶" : "Ⅱ";
     $("pause").setAttribute("aria-label", paused ? "Continuar" : "Pausar");
     if (!paused) canvas.focus({ preventScroll: true });
@@ -474,7 +474,7 @@
   function draw() {
     ctx.clearRect(0, 0, width, height);
     const theme = {
-      blue: ["#2475a4", "#1b608e"],
+      blue: ["#168dd5", "#106fba"],
       sea: ["#139fc6", "#087eab"],
       garden: ["#63b88a", "#409b74"],
     }[arenaTheme];

@@ -23,9 +23,6 @@
     span.replaceChildren(art(name));
     b.querySelector("b").textContent = label;
   };
-  const brand = make("div", undefined, "menu-brand");
-  brand.append(make("strong", "COBRINHAS"), make("span", "DO JARDIM"));
-  content.append(brand);
   change("open-adventures", "wrapped_gift", "Presente");
   change("open-shop", "convenience_store", "Loja");
   const album = $("open-album");

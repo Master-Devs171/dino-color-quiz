@@ -67,6 +67,3 @@ Movimento: a cauda segue o percurso real da cabeça por distância percorrida, i
 4.3.0 — Menu principal com botões laterais, nível/moedas no topo, cobra ao centro e botão Jogar em baixo. Presente/Receber usam aventuras concluídas; Moedas grátis abre objetivos com prémios, sem anúncios. Ícones PNG locais de [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji), licença MIT em menu-icons/LICENSE.txt; roda e cobra usam os gráficos existentes.
 
 4.4.0 — Presentes temporizados (400 moedas/5 min e 300/hora), preferências de música/som/câmara, quatro modos de toque, ajuda/créditos e perfil editável com estatísticas registadas. Áudio sintetizado original, sem ficheiros externos. Progresso e contagens guardados; os temporizadores continuam fora do jogo.
-
-## 4.5.0 — Visual arcade
-Azul profundo, detalhes ciano/menta, painéis simplificados e tipografia mais sóbria. Textos de pontuação, classificação, pausa e continuação mais diretos. Mantém os controlos, progresso e conteúdo do jogo.

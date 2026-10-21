@@ -13,9 +13,9 @@ Receber recompensa de uma aventura concluída|Collect a completed adventure rewa
 Clique esquerdo / Shift / Espaço para acelerar|Left click / Shift / Space to boost|Clic izquierdo / Mayús / Espacio para acelerar|Clic gauche / Maj / Espace pour accélérer|Linksklick / Umschalt / Leertaste für Tempo|Lewy przycisk / Shift / Spacja: przyspieszenie
 Rato / WASD / setas para virar|Mouse / WASD / arrows to steer|Ratón / WASD / flechas para girar|Souris / WASD / flèches pour tourner|Maus / WASD / Pfeiltasten zum Steuern|Mysz / WASD / strzałki: sterowanie
 Jogar!|Play!|¡Jugar!|Jouer !|Spielen!|Graj!
-Continuar|Keep playing|Seguir jugando|Continuer à jouer|Weiterspielen|Graj dalej
+Continuar a brincar|Keep playing|Seguir jugando|Continuer à jouer|Weiterspielen|Graj dalej
 Voltar a jogar!|Play again!|¡Jugar otra vez!|Rejouer !|Noch mal spielen!|Zagraj ponownie!
-Pausa|A little break|Una pausa|Une petite pause|Eine kleine Pause|Mała przerwa
+Uma pausinha|A little break|Una pausa|Une petite pause|Eine kleine Pause|Mała przerwa
 Cobrinhas|Little Snakes|Serpientitas|Petits serpents|Kleine Schlangen|Małe węże
 do|of the|del|du|im|w
 Jardim|Garden|Jardín|Jardin|Garten|ogrodzie
@@ -23,13 +23,13 @@ Cobrinhas do Jardim|Garden Snakes|Serpientitas del Jardín|Petits serpents du ja
 UM MUNDO DE DESCOBERTAS|A WORLD OF DISCOVERIES|UN MUNDO DE DESCUBRIMIENTOS|UN MONDE DE DÉCOUVERTES|EINE WELT VOLLER ENTDECKUNGEN|ŚWIAT ODKRYĆ
 Um bocadinho de fruta,|A little fruit,|Un poquito de fruta,|Un peu de fruits,|Ein bisschen Obst,|Trochę owoców,
 um montão de aventura!|a whole lot of adventure!|¡un montón de aventuras!|plein d’aventures !|ganz viel Abenteuer!|mnóstwo przygód!
-PONTUAÇÃO|YOUR FRUIT|TUS FRUTAS|TES FRUITS|DEINE FRÜCHTE|TWOJE OWOCE
+AS TUAS FRUTINHAS|YOUR FRUIT|TUS FRUTAS|TES FRUITS|DEINE FRÜCHTE|TWOJE OWOCE
 O TEU RECORDE|YOUR BEST|TU RÉCORD|TON RECORD|DEIN REKORD|TWÓJ REKORD
-Classificação|Garden friends|Amigos del jardín|Amis du jardin|Gartenfreunde|Przyjaciele ogrodu
+Amigos do jardim|Garden friends|Amigos del jardín|Amis du jardin|Gartenfreunde|Przyjaciele ogrodu
 Amigos|Friends|Amigos|Amis|Freunde|Przyjaciele
-Adversários do computador|An adventure with computer snakes|Una aventura con serpientes del ordenador|Une aventure avec des serpents de l’ordinateur|Ein Abenteuer mit Computerschlangen|Przygoda z wężami komputera
+Uma aventura com o computador|An adventure with computer snakes|Una aventura con serpientes del ordenador|Une aventure avec des serpents de l’ordinateur|Ein Abenteuer mit Computerschlangen|Przygoda z wężami komputera
 cobrinhas a explorar|snakes exploring|serpientes explorando|serpents en exploration|Schlangen unterwegs|węży odkrywających ogród
-Controlos|This way!|¡Por aquí!|Par ici !|Hier entlang!|Tędy!
+Vamos por aqui!|This way!|¡Por aquí!|Par ici !|Hier entlang!|Tędy!
 Acelerar|Speed up|Acelerar|Accélérer|Beschleunigen|Przyspiesz
 Qual é a tua cobrinha?|Which snake is yours?|¿Cuál es tu serpiente?|Quel est ton serpent ?|Welche Schlange gehört dir?|Który wąż jest twój?
 A tua criação|Your creation|Tu creación|Ta création|Deine Kreation|Twoje dzieło
@@ -300,7 +300,7 @@ Podes brincar. O progresso desta partida pode não ficar guardado.|You can play.
     );
   }
   Object.assign(packs["pt-BR"], {
-    "PONTUAÇÃO": "SUAS FRUTINHAS",
+    "AS TUAS FRUTINHAS": "SUAS FRUTINHAS",
     "O TEU RECORDE": "SEU RECORDE",
     "Qual é a tua cobrinha?": "Qual é a sua cobrinha?",
     "A tua criação": "Sua criação",
