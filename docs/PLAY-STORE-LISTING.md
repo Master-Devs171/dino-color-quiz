@@ -58,9 +58,18 @@ Some online features require an Internet connection. Installed games that suppor
 - Website: https://rjcferreira.github.io/dino-color-quiz/
 - Email de suporte: **PREENCHER ANTES DA SUBMISSÃO**.
 
-## Materiais gráficos pendentes
+## Materiais gráficos
 
 - Ícone: `dinoplay-v23-512.png` (512×512; fazer revisão visual final).
 - Feature graphic: `assets/google-play-feature-graphic.png` (1024×500, sem transparência).
-- Pelo menos duas capturas reais num telefone Android.
+- Capturas reais da aplicação Android (1080×1920):
+  - `assets/play-store/screenshots/01-home.png`
+  - `assets/play-store/screenshots/02-library.png`
+  - `assets/play-store/screenshots/03-parental.png`
 - Não usar imagens que prometam jogos ou funções ainda indisponíveis.
+
+## Pendente antes de submeter
+
+- Preencher e verificar o email público de suporte.
+- Confirmar que o ícone e a feature graphic correspondem à versão submetida.
+- Rever todas as declarações da Play Console na conta do proprietário.

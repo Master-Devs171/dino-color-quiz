@@ -7,7 +7,7 @@ const output=resolve(root,'mobile','www');
 const rootFiles=[
   'index.html','about.html','privacy.html','dinoplay-v23.webmanifest','version.json',
   'dinoplay-v23-192.png','dinoplay-v23-512.png','style.css','world.css','racer.css',
-  'language.css','game-runtime.css','app.js','platform.js','parental.js','i18n.js',
+  'language.css','game-runtime.css','platform.css','app.js','platform.js','parental.js','i18n.js',
   'multiplayer-core.js','multiplayer.js','racer.js','sw.js'
 ];
 const directories=['assets','games','sdk'];
@@ -25,4 +25,5 @@ await writeFile(appPath,app);
 
 const copied=await readdir(output);
 if(!copied.includes('index.html'))throw new Error('index.html não foi copiado');
+if(!copied.includes('platform.css'))throw new Error('platform.css não foi copiado');
 console.log(`DinoPlay Android: ${copied.length} entradas preparadas em mobile/www.`);
