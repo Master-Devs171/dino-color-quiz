@@ -23,8 +23,9 @@
     span.replaceChildren(art(name));
     b.querySelector("b").textContent = label;
   };
-  change("open-adventures", "wrapped_gift", "Presente");
-  change("open-shop", "convenience_store", "Loja");
+  change("open-adventures", "arcade_gift", "Presente");
+  change("open-shop", "arcade_shop", "Loja");
+  $("open-wheel").querySelector("span").replaceChildren(art("arcade_wheel"));
   const album = $("open-album");
   content.append(album);
   album.classList.add("menu-chest");
@@ -33,7 +34,7 @@
   const coins = make("button", undefined, "menu-free-coins");
   coins.id = "free-coins";
   const coinArt = make("span");
-  coinArt.append(art("coin"));
+  coinArt.append(art("arcade_coins"));
   coins.append(
     coinArt,
     make("b", "Moedas grátis"),
