@@ -53,3 +53,9 @@ Menu com atalhos laterais e cobra em destaque, corpos arredondados, comida maior
 ## Moedas (3.3.0)
 
 A moeda da loja passa a ser moedas douradas, com ícone SVG local. O saldo das antigas estrelas é preservado. Existem 80 moedas na arena; cada recolha dá uma moeda para gastar na loja, sem alterar a pontuação de fruta. O íman atrai moedas, e as recolhidas reaparecem noutro lugar após 25 segundos. O saldo persiste entre partidas; compras anteriores mantêm-se.
+
+## Painéis arcade (4.0.0)
+
+Roda gratuita com oito prémios em moedas (100, 600, 5000, 400, 500, 10, 200 e 1000), uma oferta por partida sem apostas, anúncios ou pagamentos. Enquanto houver, desbloqueia também uma das quatro skins de oferta antigas. Laboratório com 22 opções, filtros de raridade e pré-visualizações usando o renderizador do jogo; novas texturas de chocolate, milho, cenoura, gelo e gatinho. Resultado de cada eliminação com estatísticas reais, repetir/menu e quatro melhorias até nível 10 por 150 moedas cada (duração dos poderes, alcance do íman e valor das moedas). Compras, melhorias e rotação disponível são guardadas. Mantém os saldos e skins anteriores. A composição segue as referências fornecidas; desenhos e código próprios.
+
+Movimento: a cauda segue o percurso real da cabeça por distância percorrida, incluindo voltas de 360° repetidas. Laboratório com emojis decorativos nas categorias e cartões, conforme pedido.

@@ -20,6 +20,7 @@
     <meta property="og:image" content="cover.jpg" />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="lobby.css" />
+    <link rel="stylesheet" href="reference.css" />
   </head>
   <body data-menu="welcome">
     <canvas
@@ -504,6 +505,50 @@
       </section>
       <p id="options-status" role="status"></p>
     </dialog>
+    <dialog id="results" aria-labelledby="results-title">
+      <header class="results-top">
+        <h2 id="results-title">RESULTADO</h2>
+        <div id="result-wallet"></div>
+      </header>
+      <div class="results-band">
+        <canvas
+          id="result-snake"
+          width="240"
+          height="340"
+          aria-label="A tua cobrinha personalizada"
+        ></canvas>
+        <section class="result-stats">
+          <div class="result-rank">
+            <span>POSIÇÃO</span><strong id="result-rank">1</strong
+            ><small>/ 13</small>
+          </div>
+          <dl>
+            <div>
+              <dt>Maior pontuação</dt>
+              <dd id="result-max">0</dd>
+            </div>
+            <div>
+              <dt>Eliminações</dt>
+              <dd id="result-knockouts">0</dd>
+            </div>
+            <div>
+              <dt>Tempo de jogo</dt>
+              <dd id="result-duration">00:00</dd>
+            </div>
+            <div>
+              <dt>Moedas recolhidas</dt>
+              <dd id="result-coins">0</dd>
+            </div>
+          </dl>
+        </section>
+        <section id="result-upgrades" aria-label="Melhorias"></section>
+      </div>
+      <p id="result-status" role="status"></p>
+      <footer class="result-actions">
+        <button id="result-home">Menu principal</button
+        ><button id="result-again">JOGAR OUTRA VEZ</button>
+      </footer>
+    </dialog>
     <script src="i18n.js"></script>
     <script src="icons.js"></script>
     <script src="engine.js"></script>
@@ -514,5 +559,6 @@
     <script src="journey-ui.js"></script>
     <script src="lobby.js"></script>
     <script src="options.js"></script>
+    <script src="reference-ui.js"></script>
   </body>
 </html>

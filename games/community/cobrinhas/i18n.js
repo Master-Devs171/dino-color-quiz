@@ -207,6 +207,37 @@ Ajudas ativas|Active power-ups|Ayudas activas|Bonus actifs|Aktive Hilfen|Aktywne
 Moedas|Coins|Monedas|Pièces|Münzen|Monety
 moeda|coin|moneda|pièce|Münze|moneta
 Livro de descobertas|Discovery book|Libro de descubrimientos|Livre des découvertes|Entdeckerbuch|Księga odkryć
+RESULTADO|RESULT|RESULTADO|RÉSULTAT|ERGEBNIS|WYNIK
+POSIÇÃO|RANK|POSICIÓN|CLASSEMENT|PLATZ|MIEJSCE
+Maior pontuação|Highest score|Mayor puntuación|Meilleur score|Höchste Punktzahl|Najwyższy wynik
+Eliminações|Knockouts|Eliminaciones|Éliminations|Ausscheidungen|Wyeliminowani
+Tempo de jogo|Game duration|Tiempo de juego|Durée de jeu|Spieldauer|Czas gry
+Moedas recolhidas|Coins collected|Monedas recogidas|Pièces ramassées|Gesammelte Münzen|Zebrane monety
+Menu principal|Main menu|Menú principal|Menu principal|Hauptmenü|Menu główne
+JOGAR OUTRA VEZ|PLAY AGAIN|JUGAR OTRA VEZ|REJOUER|NOCH MAL SPIELEN|ZAGRAJ PONOWNIE
+Melhorias|Upgrades|Mejoras|Améliorations|Verbesserungen|Ulepszenia
+Melhoria guardada!|Upgrade saved!|¡Mejora guardada!|Amélioration enregistrée !|Verbesserung gespeichert!|Ulepszenie zapisane!
+Laboratório|Laboratory|Laboratorio|Laboratoire|Labor|Laboratorium
+Categorias de skins|Outfit categories|Categorías de aspectos|Catégories de tenues|Outfit-Kategorien|Kategorie strojów
+Todas|All|Todas|Toutes|Alle|Wszystkie
+Comuns|Common|Comunes|Communes|Gewöhnlich|Zwykłe
+Raras|Rare|Raras|Rares|Selten|Rzadkie
+Épicas|Epic|Épicas|Épiques|Episch|Epickie
+Lendárias|Legendary|Legendarias|Légendaires|Legendär|Legendarne
+Criar a minha cobra|Make my own snake|Crear mi serpiente|Créer mon serpent|Meine Schlange gestalten|Stwórz własnego węża
+USAR|USE|USAR|UTILISER|BENUTZEN|UŻYJ
+Desbloquear|Unlock|Desbloquear|Débloquer|Freischalten|Odblokuj
+RODAR!|SPIN!|¡GIRAR!|TOURNER !|DREHEN!|ZAKRĘĆ!
+Joga para rodar outra vez|Play to spin again|Juega para volver a girar|Joue pour tourner à nouveau|Spiele, um erneut zu drehen|Zagraj, aby zakręcić ponownie
+Prémios em moedas|Coin prizes|Premios en monedas|Prix en pièces|Münzpreise|Nagrody w monetach
+Uma oferta por partida. Todos os prémios têm a mesma possibilidade de sair.|One gift per round. All prizes have an equal chance.|Un regalo por partida. Todos los premios tienen la misma probabilidad.|Un cadeau par partie. Tous les prix ont la même chance.|Ein Geschenk pro Runde. Alle Preise sind gleich wahrscheinlich.|Jeden prezent na rundę. Każda nagroda ma taką samą szansę.
+Grátis. Sem anúncios. Sem gastar moedas.|Free. No ads. No coins needed.|Gratis. Sin anuncios. Sin gastar monedas.|Gratuit. Sans publicité. Sans dépenser de pièces.|Kostenlos. Ohne Werbung. Ohne Münzeinsatz.|Za darmo. Bez reklam. Bez wydawania monet.
+Cenourinha|Little carrot|Zanahorita|Petite carotte|Möhrchen|Marchewka
+Chocolate|Chocolate|Chocolate|Chocolat|Schokolade|Czekolada
+Milhinho|Sweetcorn|Maicito|Petit maïs|Mais|Kukurydza
+Gatinho|Kitten|Gatito|Chaton|Kätzchen|Kotek
+Cristal de gelo|Ice crystal|Cristal de hielo|Cristal de glace|Eiskristall|Kryształ lodu
+Fénix|Phoenix|Fénix|Phénix|Phönix|Feniks
 Opções do jogo|Game options|Opciones del juego|Options du jeu|Spieloptionen|Opcje gry
 Opções|Options|Opciones|Options|Optionen|Opcje
 Cenário|Background|Escenario|Décor|Hintergrund|Tło

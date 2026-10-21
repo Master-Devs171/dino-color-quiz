@@ -823,11 +823,11 @@
               " " +
               POWERS[kind].name +
               " · " +
-              POWERS[kind].duration +
+              Math.ceil(game.player.effects[kind]) +
               " segundos!",
             now,
           );
-      if (game.events.includes("border")) {
+      if (game.events.includes("border") || game.events.includes("retry")) {
         running = false;
         paused = false;
         clearInput();
@@ -840,6 +840,17 @@
           " pontos. Vamos tentar outra vez?";
         $("play").querySelector("span").textContent = "Voltar a jogar!";
         $("play").focus({ preventScroll: true });
+        window.GardenResults?.show({
+          ...game.roundStats,
+          score: game.player.score,
+          seconds: game.time,
+          rank:
+            1 +
+            game.snakes.filter(
+              (s) => s.id !== 0 && s.score > game.roundStats.maxScore,
+            ).length,
+          border: game.events.includes("border"),
+        });
       } else if (game.events.includes("retry"))
         notice("Uma nova voltinha! Já vais voltar 🌱", now);
       else if (game.events.includes("drop"))
@@ -932,6 +943,21 @@
     draw();
   }
   window.GardenBridge = {
+    applyUpgrades(levels) {
+      for (const key of ["magnet", "vision", "speed", "coins"])
+        game.upgrades[key] = Math.max(
+          0,
+          Math.min(10, Math.floor(Number(levels[key]) || 0)),
+        );
+    },
+    home() {
+      running = false;
+      paused = false;
+      clearInput();
+      overlay.hidden = false;
+      uiMode("welcome");
+      $("round-result").hidden = true;
+    },
     setOptions(options) {
       arenaTheme = ["blue", "sea", "garden"].includes(options.theme)
         ? options.theme

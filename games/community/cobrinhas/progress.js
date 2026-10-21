@@ -179,6 +179,76 @@
       trail: "stars",
     },
   };
+  Object.assign(shop, {
+    carrot: {
+      texture: "carrot",
+      name: "Cenourinha",
+      icon: "🍊",
+      price: 100,
+      color: "#ff952c",
+      secondary: "#ffbd59",
+      headColor: "#ff952c",
+      pattern: "stripes",
+      hat: "flower",
+    },
+    chocolate: {
+      texture: "chocolate",
+      name: "Chocolate",
+      icon: "🍭",
+      price: 200,
+      color: "#955a3d",
+      secondary: "#bd8559",
+      headColor: "#955a3d",
+      pattern: "stripes",
+    },
+    corn: {
+      texture: "corn",
+      name: "Milhinho",
+      icon: "🌻",
+      price: 400,
+      color: "#ffcf30",
+      secondary: "#fff080",
+      headColor: "#ffcf30",
+      pattern: "dots",
+      hat: "flower",
+    },
+    kitten: {
+      texture: "kitten",
+      name: "Gatinho",
+      icon: "🐉",
+      price: 600,
+      color: "#f2a654",
+      secondary: "#ffe3b5",
+      headColor: "#f2a654",
+      pattern: "stripes",
+      hat: "bow",
+    },
+    frost: {
+      texture: "ice",
+      name: "Cristal de gelo",
+      icon: "☁️",
+      price: 800,
+      color: "#8fe9ff",
+      secondary: "#ffffff",
+      headColor: "#8fe9ff",
+      pattern: "dots",
+      hat: "crown",
+      trail: "bubbles",
+    },
+    phoenix: {
+      name: "Fénix",
+      icon: "🌟",
+      price: 1000,
+      color: "#ff774c",
+      secondary: "#ffe668",
+      headColor: "#ff774c",
+      pattern: "rainbow",
+      hat: "crown",
+      trail: "stars",
+    },
+  });
+  const wheelPrizes = [600, 5000, 400, 500, 10, 200, 1000, 100];
+  const upgradeKeys = ["magnet", "vision", "speed", "coins"];
   const surprises = {
     berry: {
       name: "Amora",
@@ -236,6 +306,13 @@
         Number.isSafeInteger(v) && v >= 0 ? Math.min(v, 1000000) : 0;
       this.state = {
         coins: number(s.coins),
+        wheelReady: s.wheelReady !== false,
+        upgrades: Object.fromEntries(
+          upgradeKeys.map((key) => [
+            key,
+            Math.min(10, number(s.upgrades?.[key])),
+          ]),
+        ),
         purchased: Array.isArray(s.purchased)
           ? [...new Set(s.purchased.filter((id) => Object.hasOwn(shop, id)))]
           : [],
@@ -273,6 +350,14 @@
         budget -= shop[id].price;
         return true;
       });
+      for (const key of upgradeKeys) {
+        const level = Math.min(
+          this.state.upgrades[key],
+          Math.floor(budget / 150),
+        );
+        this.state.upgrades[key] = level;
+        budget -= level * 150;
+      }
     }
     value(task) {
       return task.metric === "regions"
@@ -282,6 +367,7 @@
           : this.state[task.metric] || 0;
     }
     record(kind, value = 1) {
+      if (kind === "rounds") this.state.wheelReady = true;
       if (kind === "fruit" || kind === "rounds" || kind === "coins")
         this.state[kind] = Math.min(
           1000000,
@@ -343,13 +429,35 @@
       this.state.surprises.push(id);
       return id;
     }
+    spinCoins(random = Math.random) {
+      if (!this.state.wheelReady) return null;
+      const n = Number(random());
+      const index = Number.isFinite(n)
+        ? Math.max(0, Math.min(7, Math.floor(n * 8)))
+        : 0;
+      this.state.wheelReady = false;
+      this.record("coins", wheelPrizes[index]);
+      const skin = this.spin(() => n);
+      return { index, amount: wheelPrizes[index], skin };
+    }
+    buyUpgrade(key) {
+      if (
+        !upgradeKeys.includes(key) ||
+        this.state.upgrades[key] >= 10 ||
+        this.coins < 150
+      )
+        return false;
+      this.state.upgrades[key]++;
+      return true;
+    }
     get coins() {
       return (
         this.state.coins +
         tasks
           .filter((t) => this.state.claimed.includes(t.id))
           .reduce((n, t) => n + t.stars, 0) -
-        this.state.purchased.reduce((n, id) => n + shop[id].price, 0)
+        this.state.purchased.reduce((n, id) => n + shop[id].price, 0) -
+        upgradeKeys.reduce((n, key) => n + this.state.upgrades[key] * 150, 0)
       );
     }
     // Compatibility for older callers and saves; the currency is now coins.
@@ -376,6 +484,14 @@
       return JSON.parse(JSON.stringify(this.state));
     }
   }
-  root.GardenProgress = { Book, tasks, skins, shop, surprises };
+  root.GardenProgress = {
+    Book,
+    tasks,
+    skins,
+    shop,
+    surprises,
+    wheelPrizes,
+    upgradeKeys,
+  };
   if (typeof module !== "undefined") module.exports = root.GardenProgress;
 })(typeof window === "undefined" ? globalThis : window);

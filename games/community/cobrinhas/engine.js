@@ -48,6 +48,8 @@
       };
     }
     reset() {
+      this.upgrades ??= { magnet: 0, vision: 0, speed: 0, coins: 0 };
+      this.roundStats = { maxScore: 0, knockouts: 0, coins: 0 };
       this.player = this.makeSnake(0, { x: WORLD / 2, y: WORLD / 2 });
       this.snakes = [this.player];
       for (let i = 1; i <= 12; i++) {
@@ -213,43 +215,65 @@
           continue;
         }
         const old = s.body;
+        // Sample travelled distance along the head's trail. A constraint chain
+        // can settle into a static tail during tight circles; a trail cannot.
+        if (!s.path || distance(s.path[0], head) > 0.01)
+          s.path = old.map((point) => ({ ...point }));
+        s.path.unshift(p);
         s.body = [p];
-        // Maintain constant body spacing, independent of frame rate.
-        let anchor = p;
-        for (let i = 1; i < old.length; i++) {
-          const d = distance(anchor, old[i]) || 1;
-          anchor = {
-            x: anchor.x + ((old[i].x - anchor.x) * GAP) / d,
-            y: anchor.y + ((old[i].y - anchor.y) * GAP) / d,
-          };
-          s.body.push(anchor);
+        const length = Math.max(
+          old.length,
+          Math.min(s.targetLength, old.length + 1),
+        );
+        let segment = 0,
+          travelled = 0;
+        for (let i = 1; i < length; i++) {
+          const target = i * GAP;
+          while (
+            segment < s.path.length - 2 &&
+            travelled + distance(s.path[segment], s.path[segment + 1]) < target
+          ) {
+            travelled += distance(s.path[segment], s.path[segment + 1]);
+            segment++;
+          }
+          const a = s.path[segment],
+            b = s.path[segment + 1] || a,
+            d = distance(a, b),
+            t = d ? Math.min(1, (target - travelled) / d) : 0;
+          s.body.push({ x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t });
         }
-        if (s.body.length < s.targetLength)
-          s.body.push({ ...s.body[s.body.length - 1] });
+        s.path.length = Math.min(s.path.length, segment + 3);
         if (s.id === 0) {
           for (const coin of this.coins) {
             if (coin.cooldown > 0) continue;
             const d = distance(p, coin);
-            if (s.effects.magnet > 0 && d > 0 && d < 185) {
+            if (
+              s.effects.magnet > 0 &&
+              d > 0 &&
+              d < 185 + this.upgrades.magnet * 10
+            ) {
               const pull = Math.min(d, 300 * dt);
               coin.x += ((p.x - coin.x) / d) * pull;
               coin.y += ((p.y - coin.y) / d) * pull;
             }
             if (distance(p, coin) < 25) {
               coin.cooldown = 25;
-              this.events.push("coin");
+              const value = 1 + Math.floor(this.upgrades.coins / 2);
+              for (let n = 0; n < value; n++) this.events.push("coin");
+              this.roundStats.coins += value;
             }
           }
           for (const item of this.powerups)
             if (item.cooldown === 0 && distance(p, item) < 38) {
-              s.effects[item.kind] = POWERS[item.kind].duration;
+              s.effects[item.kind] =
+                POWERS[item.kind].duration + this.upgrades[item.kind] * 2;
               item.cooldown = 20;
               this.events.push("power:" + item.kind);
             }
           if (s.effects.magnet > 0)
             for (const f of this.food) {
               const d = distance(p, f);
-              if (d > 0 && d < 185) {
+              if (d > 0 && d < 185 + this.upgrades.magnet * 10) {
                 const pull = Math.min(d, 300 * dt);
                 f.x += ((p.x - f.x) / d) * pull;
                 f.y += ((p.y - f.y) / d) * pull;
@@ -280,11 +304,16 @@
                 )
               ) {
                 hit.add(s);
+                if (s.id !== 0 && other.id === 0) this.roundStats.knockouts++;
                 break;
               }
             }
         }
       hit.forEach((s) => this.drop(s));
+      this.roundStats.maxScore = Math.max(
+        this.roundStats.maxScore,
+        this.player.score,
+      );
       let missing =
         FOOD_COUNT - this.food.reduce((n, f) => n + (f.kind !== 5 ? 1 : 0), 0);
       while (missing-- > 0)

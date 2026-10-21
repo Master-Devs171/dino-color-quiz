@@ -137,6 +137,12 @@
   const tokens = Object.keys(map).sort((a, b) => b.length - a.length),
     pattern = new RegExp(tokens.join("|"), "gu");
   function enhance(root) {
+    if (root.nodeType === 1 && root.hasAttribute("data-native-emoji")) return;
+    if (
+      root.nodeType === 3 &&
+      root.parentElement?.closest("[data-native-emoji]")
+    )
+      return;
     if (root.nodeType === 3) {
       const text = root.nodeValue;
       if (!text || !tokens.some((t) => text.includes(t))) return;

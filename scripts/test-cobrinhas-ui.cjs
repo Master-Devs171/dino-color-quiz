@@ -295,6 +295,21 @@ async function test() {
     "segment cache must reduce drawing work",
   );
   assert.ok(draws > 1000);
+  for (const texture of [
+    "round",
+    "carrot",
+    "chocolate",
+    "corn",
+    "kitten",
+    "ice",
+  ]) {
+    assert.equal(env.SnakeStyle.sanitize({ texture }).texture, texture);
+    env.SnakeStyle.draw(ctx, sample, { texture }, 0, true);
+  }
+  assert.equal(
+    env.SnakeStyle.sanitize({ texture: "invalid" }).texture,
+    "round",
+  );
   console.log(
     "UI runtime: editor, preview, guardar/cancelar/repor, pausa/retoma, suspensão, 360px, caras, todas as bandeiras e fim de partida na borda OK.",
   );

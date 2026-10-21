@@ -179,6 +179,14 @@
     return card;
   }
   function renderShop() {
+    if (window.GardenGallery) {
+      GardenGallery.render(book, () => {
+        save();
+        render();
+        flush();
+      });
+      return;
+    }
     $("shop-list").replaceChildren();
     for (const [id, skin] of Object.entries(shop)) {
       const owned = book.state.purchased.includes(id);
@@ -210,15 +218,12 @@
     }
   }
   function renderWheel() {
-    $("spin-wheel").disabled =
-      !loaded ||
-      spinning ||
-      book.state.surprises.length === Object.keys(surprises).length;
+    $("spin-wheel").disabled = !loaded || spinning || !book.state.wheelReady;
     $("spin-wheel").textContent = spinning
       ? "A rodar…"
-      : book.state.surprises.length === 4
-        ? "Coleção completa! 💛"
-        : "Rodar grátis ✨";
+      : !book.state.wheelReady
+        ? "Joga para rodar outra vez"
+        : "RODAR!";
     $("wheel-collection").replaceChildren();
     for (const id of book.state.surprises) {
       const skin = surprises[id];
@@ -229,13 +234,12 @@
   }
   $("spin-wheel").onclick = () => {
     if (!loaded || spinning) return;
-    const id = book.spin();
-    if (!id) return;
+    const prize = book.spinCoins();
+    if (!prize) return;
     spinning = true;
     save();
     flush();
-    const index = Object.keys(surprises).indexOf(id),
-      target = (360 - (index * 90 + 45)) % 360;
+    const target = (360 - prize.index * 45) % 360;
     wheelRotation = (Math.floor(wheelRotation / 360) + 5) * 360 + target;
     $("prize-wheel").style.transform = "rotate(" + wheelRotation + "deg)";
     $("wheel-status").textContent = "Uma surpresa a caminho…";
@@ -243,15 +247,10 @@
     setTimeout(
       () => {
         spinning = false;
-        $("wheel-status").textContent =
-          "Ganhaste a skin " +
-          surprises[id].name +
-          " " +
-          surprises[id].icon +
-          "! Já ficou guardada.";
+        $("wheel-status").textContent = "🪙 +" + prize.amount + " moedas!";
         renderWheel();
       },
-      matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 2200,
+      matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 3900,
     );
   };
   function claim(id) {
@@ -293,7 +292,7 @@
           : view === "gifts"
             ? "Surpresas do jardim 🎁"
             : view === "shop"
-              ? "A lojinha do jardim 🏪"
+              ? "Laboratório"
               : "Roda da Sorte 🎡";
     render();
   }
@@ -320,6 +319,15 @@
   for (const id of ["tasks", "album", "gifts", "shop", "wheel"])
     $("show-" + id).onclick = () => switchView(id);
   window.GardenJournal = {
+    get book() {
+      return book;
+    },
+    commit() {
+      save();
+      render();
+      flush();
+      GardenBridge.applyUpgrades?.(book.state.upgrades);
+    },
     record(kind, value) {
       if (!loaded) {
         queued.push([kind, value]);
@@ -343,6 +351,7 @@
         "Podes brincar. O progresso desta partida pode não ficar guardado.";
     }
     loaded = true;
+    GardenBridge.applyUpgrades?.(book.state.upgrades);
     for (const [k, v] of queued) book.record(k, v);
     if (queued.length) save();
     queued = [];
