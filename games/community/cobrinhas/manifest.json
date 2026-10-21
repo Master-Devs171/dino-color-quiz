@@ -70,7 +70,10 @@
     "games/community/cobrinhas/options.js",
     "games/community/cobrinhas/icons/coin.svg",
     "games/community/cobrinhas/reference-ui.js",
-    "games/community/cobrinhas/reference.css"
+    "games/community/cobrinhas/reference.css",
+    "games/community/cobrinhas/icons/diamond.svg",
+    "games/community/cobrinhas/icons/puzzle.svg",
+    "games/community/cobrinhas/icons/wave.svg"
   ],
   "permissions": [
     "storage"
@@ -78,3 +81,4 @@
   "license": "MIT",
   "author": "Master-Devs171"
 }
+

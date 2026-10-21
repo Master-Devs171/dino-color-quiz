@@ -9,8 +9,11 @@
     };
   const { shop, skins, surprises, tasks, wheelPrizes } = GardenProgress;
   function emoji(text, cls = "lab-emoji") {
-    const span = make("span", text, cls);
-    span.setAttribute("data-native-emoji", "");
+    const span = make("img", undefined, cls);
+    const names = {"🧩":"puzzle","💎":"diamond","🌊":"wave","🍬":"candy","🥕":"leaf","🍫":"candy","🌽":"sun","🐱":"face","❄️":"diamond","🔥":"rocket","🐍":"face"};
+    span.src = "icons/" + (names[text] || GardenIcons.map[text] || "star") + ".svg";
+    span.alt = "";
+    span.draggable = false;
     span.setAttribute("aria-hidden", "true");
     return span;
   }

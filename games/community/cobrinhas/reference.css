@@ -1,3 +1,6 @@
+ .lab-emoji { width: 40px; height: 40px; object-fit: contain; }
+.skin-emoji { width: 39px; height: 39px; object-fit: contain; }
+@media(max-width:800px){ .lab-emoji { width:28px;height:28px; } .skin-emoji { width:32px;height:32px; } }
 /* Full-screen arcade panels; shared artwork remains local. */
 .rarity-tabs button {
   position: relative;
