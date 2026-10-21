@@ -10,11 +10,11 @@
       name="viewport"
       content="width=device-width,initial-scale=1,viewport-fit=cover"
     />
-    <meta name="theme-color" content="#edf4df" />
+    <meta name="theme-color" content="#102947" />
     <title>Cobrinhas do Jardim</title>
     <meta
       name="description"
-      content="Uma aventura de cobrinhas fofinhas: apanha frutas, cresce e personaliza a tua cobrinha!"
+      content="Entra na arena, recolhe moedas e alimentos, cresce e personaliza a tua cobra."
     />
     <meta property="og:title" content="Cobrinhas do Jardim" />
     <meta property="og:image" content="cover.jpg" />
@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="workshop.css" />
   <link rel="stylesheet" href="menu.css" />
 <link rel="stylesheet" href="extras.css" />
+<link rel="stylesheet" href="arcade-theme.css" />
 </head>
   <body data-menu="welcome">
     <canvas
@@ -34,7 +35,7 @@
     <header>
       <div class="score">
         <span class="hud-icon">🍓</span>
-        <div><small>AS TUAS FRUTINHAS</small><b id="score">0</b></div>
+        <div><small>PONTUAÇÃO</small><b id="score">0</b></div>
       </div>
       <div class="record">
         <span>🌟</span>
@@ -57,7 +58,7 @@
       <div class="ranking-title">
         <span>🌼</span>
         <div>
-          <b>Amigos do jardim</b><small>Uma aventura com o computador</small>
+          <b>Classificação</b><small>Adversários do computador</small>
         </div>
       </div>
       <div id="ranking"></div>
@@ -71,7 +72,7 @@
           ><span class="joystick-arrow left">‹</span
           ><span class="joystick-arrow right">›</span><span id="stick"></span>
         </div>
-        <small>Vamos por aqui!</small>
+        <small>Controlos</small>
       </div>
       <button id="boost"><span>⚡</span><small>Acelerar</small></button>
     </div>
@@ -103,7 +104,7 @@
               >Cada descoberta faz o teu jardim crescer.</small
             >
           </div>
-          <h2 class="pause-title">Uma pausinha ☁️</h2>
+          <h2 class="pause-title">Pausa</h2>
           <div id="round-result" role="status" hidden></div>
           <div class="title-tag">🌼 UM MUNDO DE DESCOBERTAS 🌼</div>
           <h1>
