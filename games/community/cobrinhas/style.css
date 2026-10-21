@@ -1708,12 +1708,12 @@ canvas {
     height: 76px;
   }
   #boost:after {
-    content: "ESPAÇO";
+    content: "CLIQUE / SHIFT / ESPAÇO";
     font-size: 8px;
     display: block;
   }
   body[data-menu="playing"]:after {
-    content: "Setas / WASD para virar · Espaço para acelerar · Esc para pausar";
+    content: "Rato / WASD / setas para virar · Clique esquerdo / Shift / Espaço para acelerar · Esc para pausar";
     position: fixed;
     bottom: 24px;
     left: 24px;

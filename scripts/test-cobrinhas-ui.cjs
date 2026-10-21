@@ -213,6 +213,71 @@ async function test() {
   elements.play.onclick();
   assert.equal(elements["round-result"].hidden, true);
   assert.equal(elements.overlay.hidden, true);
+  // Holding an accelerator must stop on release; touch steering must not boost.
+  let requestedBoost = false,
+    requestedHeading = 0;
+  const update = arena.update.bind(arena);
+  arena.update = (dt, heading, boost, gentle) => {
+    requestedBoost = boost;
+    requestedHeading = heading;
+    return update(dt, heading, boost, gentle);
+  };
+  const keyboard = {
+    code: "ShiftLeft",
+    target: new Element(),
+    preventDefault() {},
+  };
+  listeners.keydown(keyboard);
+  scheduled(4034);
+  assert.equal(requestedBoost, true);
+  listeners.keyup(keyboard);
+  scheduled(4068);
+  assert.equal(requestedBoost, false);
+  let controlsTime = 4068;
+  for (const code of ["Space", "ShiftRight"]) {
+    listeners.keydown({ ...keyboard, code });
+    scheduled((controlsTime += 34));
+    assert.equal(requestedBoost, true);
+    listeners.keyup({ ...keyboard, code });
+    scheduled((controlsTime += 34));
+    assert.equal(requestedBoost, false);
+  }
+  for (const [code, angle] of [
+    ["KeyW", -Math.PI / 2],
+    ["KeyA", Math.PI],
+    ["KeyS", Math.PI / 2],
+    ["KeyD", 0],
+  ]) {
+    listeners.keydown({ ...keyboard, code });
+    scheduled((controlsTime += 34));
+    assert.equal(requestedHeading, angle);
+    listeners.keyup({ ...keyboard, code });
+  }
+  const pointer = {
+    pointerId: 1,
+    pointerType: "mouse",
+    button: 0,
+    clientX: 300,
+    clientY: 300,
+  };
+  elements.garden.onpointerdown(pointer);
+  scheduled((controlsTime += 34));
+  assert.equal(requestedBoost, true);
+  listeners.keydown({ ...keyboard, code: "Space" });
+  elements.garden.onpointerup();
+  scheduled((controlsTime += 34));
+  assert.equal(
+    requestedBoost,
+    true,
+    "Releasing mouse does not cancel held Space",
+  );
+  listeners.keyup({ ...keyboard, code: "Space" });
+  scheduled((controlsTime += 34));
+  assert.equal(requestedBoost, false);
+  elements.garden.onpointerdown({ ...pointer, pointerType: "touch" });
+  scheduled((controlsTime += 34));
+  assert.equal(requestedBoost, false);
+  elements.garden.onpointercancel();
   document.hidden = true;
   listeners.visibilitychange();
   assert.equal(elements.overlay.hidden, false);
@@ -237,8 +302,44 @@ async function test() {
         );
   for (const flagStyle of env.SnakeStyle.options.flagStyle)
     env.SnakeStyle.draw(ctx, sample, { flag: "custom", flagStyle }, 2, true);
-  const beforeFresh=draws;env.SnakeStyle.draw(ctx,sample,{color:'#112233',pattern:'plain'},2,true);const freshCost=draws-beforeFresh;const beforeCached=draws;env.SnakeStyle.draw(ctx,sample,{color:'#112233',pattern:'plain'},2,true);const cachedCost=draws-beforeCached;assert.ok(cachedCost<freshCost*.8,'segment cache must reduce drawing work');
+  const beforeFresh = draws;
+  env.SnakeStyle.draw(
+    ctx,
+    sample,
+    { color: "#112233", pattern: "plain" },
+    2,
+    true,
+  );
+  const freshCost = draws - beforeFresh;
+  const beforeCached = draws;
+  env.SnakeStyle.draw(
+    ctx,
+    sample,
+    { color: "#112233", pattern: "plain" },
+    2,
+    true,
+  );
+  const cachedCost = draws - beforeCached;
+  assert.ok(
+    cachedCost < freshCost * 0.8,
+    "segment cache must reduce drawing work",
+  );
   assert.ok(draws > 1000);
+  for (const texture of [
+    "round",
+    "carrot",
+    "chocolate",
+    "corn",
+    "kitten",
+    "ice",
+  ]) {
+    assert.equal(env.SnakeStyle.sanitize({ texture }).texture, texture);
+    env.SnakeStyle.draw(ctx, sample, { texture }, 0, true);
+  }
+  assert.equal(
+    env.SnakeStyle.sanitize({ texture: "invalid" }).texture,
+    "round",
+  );
   console.log(
     "UI runtime: editor, preview, guardar/cancelar/repor, pausa/retoma, suspensão, 360px, caras, todas as bandeiras e fim de partida na borda OK.",
   );

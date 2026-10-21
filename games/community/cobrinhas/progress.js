@@ -134,21 +134,181 @@
     },
   };
   const shop = {
-    mermaid: {name:'Sereia',icon:'🧜‍♀️',price:3,color:'#64d7d3',secondary:'#c5a2ee',headColor:'#64d7d3',pattern:'stripes',hat:'bow',trail:'bubbles'},
-    astronaut: {name:'Astronauta',icon:'🚀',price:5,color:'#b9b4f4',secondary:'#f5f6ff',headColor:'#b9b4f4',pattern:'dots',hat:'cap',trail:'stars'},
-    peach: {name:'Pêssego',icon:'🍑',price:7,color:'#ffb68d',secondary:'#fff0b0',headColor:'#ffb68d',pattern:'stripes',hat:'flower',trail:'hearts'},
-    dragon: {name:'Dragão doce',icon:'🐉',price:9,color:'#82dbab',secondary:'#ffcb68',headColor:'#82dbab',pattern:'dots',hat:'crown',trail:'stars'}
+    mermaid: {
+      name: "Sereia",
+      icon: "🧜‍♀️",
+      price: 3,
+      color: "#64d7d3",
+      secondary: "#c5a2ee",
+      headColor: "#64d7d3",
+      pattern: "stripes",
+      hat: "bow",
+      trail: "bubbles",
+    },
+    astronaut: {
+      name: "Astronauta",
+      icon: "🚀",
+      price: 5,
+      color: "#b9b4f4",
+      secondary: "#f5f6ff",
+      headColor: "#b9b4f4",
+      pattern: "dots",
+      hat: "cap",
+      trail: "stars",
+    },
+    peach: {
+      name: "Pêssego",
+      icon: "🍑",
+      price: 7,
+      color: "#ffb68d",
+      secondary: "#fff0b0",
+      headColor: "#ffb68d",
+      pattern: "stripes",
+      hat: "flower",
+      trail: "hearts",
+    },
+    dragon: {
+      name: "Dragão doce",
+      icon: "🐉",
+      price: 9,
+      color: "#82dbab",
+      secondary: "#ffcb68",
+      headColor: "#82dbab",
+      pattern: "dots",
+      hat: "crown",
+      trail: "stars",
+    },
   };
+  Object.assign(shop, {
+    carrot: {
+      texture: "carrot",
+      name: "Cenourinha",
+      icon: "🍊",
+      price: 100,
+      color: "#ff952c",
+      secondary: "#ffbd59",
+      headColor: "#ff952c",
+      pattern: "stripes",
+      hat: "flower",
+    },
+    chocolate: {
+      texture: "chocolate",
+      name: "Chocolate",
+      icon: "🍭",
+      price: 200,
+      color: "#955a3d",
+      secondary: "#bd8559",
+      headColor: "#955a3d",
+      pattern: "stripes",
+    },
+    corn: {
+      texture: "corn",
+      name: "Milhinho",
+      icon: "🌻",
+      price: 400,
+      color: "#ffcf30",
+      secondary: "#fff080",
+      headColor: "#ffcf30",
+      pattern: "dots",
+      hat: "flower",
+    },
+    kitten: {
+      texture: "kitten",
+      name: "Gatinho",
+      icon: "🐉",
+      price: 600,
+      color: "#f2a654",
+      secondary: "#ffe3b5",
+      headColor: "#f2a654",
+      pattern: "stripes",
+      hat: "bow",
+    },
+    frost: {
+      texture: "ice",
+      name: "Cristal de gelo",
+      icon: "☁️",
+      price: 800,
+      color: "#8fe9ff",
+      secondary: "#ffffff",
+      headColor: "#8fe9ff",
+      pattern: "dots",
+      hat: "crown",
+      trail: "bubbles",
+    },
+    phoenix: {
+      name: "Fénix",
+      icon: "🌟",
+      price: 1000,
+      color: "#ff774c",
+      secondary: "#ffe668",
+      headColor: "#ff774c",
+      pattern: "rainbow",
+      hat: "crown",
+      trail: "stars",
+    },
+  });
+  const wheelPrizes = [600, 5000, 400, 500, 10, 200, 1000, 100];
+  const upgradeKeys = ["magnet", "vision", "speed", "coins"];
   const surprises = {
-    berry: {name:'Amora',icon:'🫐',color:'#a49aee',secondary:'#f7caf0',headColor:'#a49aee',pattern:'stripes',hat:'bow',trail:'hearts'},
-    melon: {name:'Melancia',icon:'🍉',color:'#85d9a3',secondary:'#ffd1da',headColor:'#85d9a3',pattern:'dots',hat:'cap',trail:'bubbles'},
-    cloud: {name:'Nuvem',icon:'☁️',color:'#b1ddf5',secondary:'#ffffff',headColor:'#b1ddf5',pattern:'stripes',hat:'flower',trail:'bubbles'},
-    rainbow: {name:'Festa de cores',icon:'🌈',color:'#f4a9cc',secondary:'#fff0a5',headColor:'#f4a9cc',pattern:'rainbow',hat:'crown',trail:'stars'}
+    berry: {
+      name: "Amora",
+      icon: "🫐",
+      color: "#a49aee",
+      secondary: "#f7caf0",
+      headColor: "#a49aee",
+      pattern: "stripes",
+      hat: "bow",
+      trail: "hearts",
+    },
+    melon: {
+      name: "Melancia",
+      icon: "🍉",
+      color: "#85d9a3",
+      secondary: "#ffd1da",
+      headColor: "#85d9a3",
+      pattern: "dots",
+      hat: "cap",
+      trail: "bubbles",
+    },
+    cloud: {
+      name: "Nuvem",
+      icon: "☁️",
+      color: "#b1ddf5",
+      secondary: "#ffffff",
+      headColor: "#b1ddf5",
+      pattern: "stripes",
+      hat: "flower",
+      trail: "bubbles",
+    },
+    rainbow: {
+      name: "Festa de cores",
+      icon: "🌈",
+      color: "#f4a9cc",
+      secondary: "#fff0a5",
+      headColor: "#f4a9cc",
+      pattern: "rainbow",
+      hat: "crown",
+      trail: "stars",
+    },
   };
   const countBits = (n) => {
     let total = 0;
     for (let i = 0; i < 4; i++) total += (n >> i) & 1;
     return total;
+  };
+  const cosmetics = {
+    cheer: 100,
+    love: 100,
+    wow: 100,
+    win: 100,
+    bubble: 200,
+    frost: 200,
+    sparkle: 200,
+    sunshine: 200,
+  };
+  const timedGifts = {
+    small: { amount: 400, interval: 300000 },
+    large: { amount: 300, interval: 3600000 },
   };
   class Book {
     constructor(saved) {
@@ -159,8 +319,66 @@
       const number = (v) =>
         Number.isSafeInteger(v) && v >= 0 ? Math.min(v, 1000000) : 0;
       this.state = {
-        purchased: Array.isArray(s.purchased) ? [...new Set(s.purchased.filter(id => Object.hasOwn(shop,id)))] : [],
-        surprises: Array.isArray(s.surprises) ? [...new Set(s.surprises.filter(id => Object.hasOwn(surprises,id)))] : [],
+        coins: number(s.coins),
+        giftTimes: Object.fromEntries(
+          Object.keys(timedGifts).map((id) => [
+            id,
+            Number.isSafeInteger(s.giftTimes?.[id]) && s.giftTimes[id] >= 0
+              ? s.giftTimes[id]
+              : 0,
+          ]),
+        ),
+        profile: {
+          name:
+            typeof s.profile?.name === "string"
+              ? s.profile.name.trim().slice(0, 24) || "Explorador"
+              : "Explorador",
+          bestScore: Math.max(
+            0,
+            Math.min(1e9, Math.floor(Number(s.profile?.bestScore) || 0)),
+          ),
+          bestSurvival: Math.max(
+            0,
+            Math.min(1e9, Number(s.profile?.bestSurvival) || 0),
+          ),
+          totalSeconds: Math.max(
+            0,
+            Math.min(1e9, Number(s.profile?.totalSeconds) || 0),
+          ),
+          kills: number(s.profile?.kills),
+        },
+        cosmetics: Array.isArray(s.cosmetics)
+          ? [
+              ...new Set(
+                s.cosmetics.filter((id) => Object.hasOwn(cosmetics, id)),
+              ),
+            ]
+          : [],
+        reaction: ["none", "cheer", "love", "wow", "win"].includes(s.reaction)
+          ? s.reaction
+          : "none",
+        knockout: ["none", "bubble", "frost", "sparkle", "sunshine"].includes(
+          s.knockout,
+        )
+          ? s.knockout
+          : "none",
+        wheelReady: s.wheelReady !== false,
+        upgrades: Object.fromEntries(
+          upgradeKeys.map((key) => [
+            key,
+            Math.min(10, number(s.upgrades?.[key])),
+          ]),
+        ),
+        purchased: Array.isArray(s.purchased)
+          ? [...new Set(s.purchased.filter((id) => Object.hasOwn(shop, id)))]
+          : [],
+        surprises: Array.isArray(s.surprises)
+          ? [
+              ...new Set(
+                s.surprises.filter((id) => Object.hasOwn(surprises, id)),
+              ),
+            ]
+          : [],
         fruit: number(s.fruit),
         outfits: number(s.outfits),
         rounds: number(s.rounds),
@@ -178,8 +396,42 @@
           ? [...new Set(s.claimed.filter((v) => tasks.some((t) => t.id === v)))]
           : [],
       };
-      let budget=tasks.filter(t=>this.state.claimed.includes(t.id)).reduce((n,t)=>n+t.stars,0);
-      this.state.purchased=this.state.purchased.filter(id=>{if(shop[id].price>budget)return false;budget-=shop[id].price;return true;});
+      let budget =
+        this.state.coins +
+        tasks
+          .filter((t) => this.state.claimed.includes(t.id))
+          .reduce((n, t) => n + t.stars, 0);
+      this.state.purchased = this.state.purchased.filter((id) => {
+        if (shop[id].price > budget) return false;
+        budget -= shop[id].price;
+        return true;
+      });
+      for (const key of upgradeKeys) {
+        const level = Math.min(
+          this.state.upgrades[key],
+          Math.floor(budget / 150),
+        );
+        this.state.upgrades[key] = level;
+        budget -= level * 150;
+      }
+      this.state.cosmetics = this.state.cosmetics.filter((id) => {
+        if (cosmetics[id] > budget) return false;
+        budget -= cosmetics[id];
+        return true;
+      });
+      for (const key of ["reaction", "knockout"])
+        if (!this.state.cosmetics.includes(this.state[key]))
+          this.state[key] = "none";
+    }
+    buyCosmetic(id) {
+      if (
+        !Object.hasOwn(cosmetics, id) ||
+        this.state.cosmetics.includes(id) ||
+        this.coins < cosmetics[id]
+      )
+        return false;
+      this.state.cosmetics.push(id);
+      return true;
     }
     value(task) {
       return task.metric === "regions"
@@ -188,8 +440,32 @@
           ? this.state.styles.length
           : this.state[task.metric] || 0;
     }
+    claimGift(id, now = Date.now()) {
+      const gift = timedGifts[id];
+      if (
+        !gift ||
+        !Number.isSafeInteger(now) ||
+        now < 0 ||
+        now < this.state.giftTimes[id] ||
+        now > Number.MAX_SAFE_INTEGER - gift.interval
+      )
+        return null;
+      this.state.giftTimes[id] = now + gift.interval;
+      this.record("coins", gift.amount);
+      return { ...gift, readyAt: this.state.giftTimes[id] };
+    }
     record(kind, value = 1) {
-      if (kind === "fruit" || kind === "rounds")
+      if (kind === "session") {
+        const p = this.state.profile;
+        const safe = (v) => Math.max(0, Math.min(1e9, Number(v) || 0));
+        p.totalSeconds += Math.min(1, safe(value.seconds));
+        p.bestScore = Math.max(p.bestScore, Math.floor(safe(value.score)));
+        p.bestSurvival = Math.max(p.bestSurvival, safe(value.survival));
+        p.kills = Math.min(1e9, p.kills + Math.floor(safe(value.kills)));
+        return;
+      }
+      if (kind === "rounds") this.state.wheelReady = true;
+      if (kind === "fruit" || kind === "rounds" || kind === "coins")
         this.state[kind] = Math.min(
           1000000,
           this.state[kind] + Math.max(0, Math.floor(Number(value) || 0)),
@@ -228,21 +504,63 @@
       return task;
     }
     buy(id) {
-      const item = Object.hasOwn(shop,id) && shop[id];
-      if(!item || this.state.purchased.includes(id) || this.stars < item.price) return false;
-      this.state.purchased.push(id); return true;
+      const item = Object.hasOwn(shop, id) && shop[id];
+      if (!item || this.state.purchased.includes(id) || this.stars < item.price)
+        return false;
+      this.state.purchased.push(id);
+      return true;
     }
     spin(random = Math.random) {
-      const remaining = Object.keys(surprises).filter(id => !this.state.surprises.includes(id));
-      if(!remaining.length) return null;
+      const remaining = Object.keys(surprises).filter(
+        (id) => !this.state.surprises.includes(id),
+      );
+      if (!remaining.length) return null;
       const n = Number(random());
-      const index = Number.isFinite(n) ? Math.min(remaining.length-1,Math.max(0,Math.floor(n*remaining.length))) : 0;
-      const id = remaining[index]; this.state.surprises.push(id); return id;
+      const index = Number.isFinite(n)
+        ? Math.min(
+            remaining.length - 1,
+            Math.max(0, Math.floor(n * remaining.length)),
+          )
+        : 0;
+      const id = remaining[index];
+      this.state.surprises.push(id);
+      return id;
     }
+    spinCoins(random = Math.random) {
+      if (!this.state.wheelReady) return null;
+      const n = Number(random());
+      const index = Number.isFinite(n)
+        ? Math.max(0, Math.min(7, Math.floor(n * 8)))
+        : 0;
+      this.state.wheelReady = false;
+      this.record("coins", wheelPrizes[index]);
+      const skin = this.spin(() => n);
+      return { index, amount: wheelPrizes[index], skin };
+    }
+    buyUpgrade(key) {
+      if (
+        !upgradeKeys.includes(key) ||
+        this.state.upgrades[key] >= 10 ||
+        this.coins < 150
+      )
+        return false;
+      this.state.upgrades[key]++;
+      return true;
+    }
+    get coins() {
+      return (
+        this.state.coins +
+        tasks
+          .filter((t) => this.state.claimed.includes(t.id))
+          .reduce((n, t) => n + t.stars, 0) -
+        this.state.purchased.reduce((n, id) => n + shop[id].price, 0) -
+        this.state.cosmetics.reduce((n, id) => n + cosmetics[id], 0) -
+        upgradeKeys.reduce((n, key) => n + this.state.upgrades[key] * 150, 0)
+      );
+    }
+    // Compatibility for older callers and saves; the currency is now coins.
     get stars() {
-      return tasks
-        .filter((t) => this.state.claimed.includes(t.id))
-        .reduce((n, t) => n + t.stars, 0) - this.state.purchased.reduce((n,id) => n + shop[id].price,0);
+      return this.coins;
     }
     get xp() {
       return (
@@ -264,6 +582,16 @@
       return JSON.parse(JSON.stringify(this.state));
     }
   }
-  root.GardenProgress = { Book, tasks, skins, shop, surprises };
+  root.GardenProgress = {
+    Book,
+    timedGifts,
+    cosmetics,
+    tasks,
+    skins,
+    shop,
+    surprises,
+    wheelPrizes,
+    upgradeKeys,
+  };
   if (typeof module !== "undefined") module.exports = root.GardenProgress;
 })(typeof window === "undefined" ? globalThis : window);

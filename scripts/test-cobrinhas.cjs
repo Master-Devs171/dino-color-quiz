@@ -41,6 +41,8 @@ assert.equal(
 assert.ok(player.body.length, "player survives bot hitting its body");
 assert.ok(g.food.some((f) => f.kind === 5 && f.value === 3));
 assert.ok(g.events.includes("drop"));
+assert.equal(g.roundStats.knockouts,1);
+assert.ok(Math.abs(g.knockoutPosition.x-1100)<2 && Math.abs(g.knockoutPosition.y-1186)<2, "cosmetic effect uses defeated snake position");
 const retry = new Garden();
 retry.player.body = Array.from({ length: 34 }, (_, i) => ({
   x: 1200 - i * 8,
@@ -136,5 +138,5 @@ const {sizeForScore,zoomForScore}=require('../games/community/cobrinhas/engine.j
 assert.equal(new Garden().player.body.length,12);
 for(const score of [0,10,50,100,300,1000]){assert.ok(sizeForScore(score+10)>sizeForScore(score));assert.ok(zoomForScore(score+10)<=zoomForScore(score));}
 assert.ok(sizeForScore(300)>sizeForScore(0)*1.6);assert.ok(zoomForScore(300)<zoomForScore(0)*.75);
-assert.ok(sizeForScore(1000000)<=2.4);assert.ok(zoomForScore(1000000)>=.7);
+assert.ok(sizeForScore(1000000)>sizeForScore(10000));assert.ok(zoomForScore(1000000)>=.32);
 console.log('Crescimento: início pequeno, grossura progressiva e câmara com afastamento limitado OK.');

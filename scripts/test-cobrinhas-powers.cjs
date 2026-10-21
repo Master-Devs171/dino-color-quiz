@@ -14,3 +14,6 @@ for(let i=0;i<40;i++)magnet.update(1/60,0);assert.ok(magnet.player.score>=3);
 const normal=arena(),fast=arena(),both=arena();fast.player.effects.speed=8;both.player.effects.speed=8;normal.update(1/60,0);fast.update(1/60,0);both.update(1/60,0,true);assert.ok(fast.player.body[0].x>normal.player.body[0].x);assert.equal(both.player.body[0].x,fast.player.body[0].x);
 const edge=arena();edge.player.body[0]={x:WORLD-14,y:1000};edge.player.effects.speed=8;edge.update(.04,0);assert.ok(edge.events.includes('border'));assert.equal(edge.player.effects.speed,0);
 console.log('Ajudas: recolha, duração, íman com pontos, velocidade sem multiplicação, reposição e eliminação na borda OK.');
+
+for(const kind of Object.keys(POWERS)){const g=arena();g.upgrades[kind]=3;g.player.effects[kind]=20;g.powerups=[{...g.player.body[0],kind,cooldown:0},{...g.player.body[0],kind,cooldown:0}];g.update(1/60,0);assert.ok(Math.abs(g.player.effects[kind]-(20-1/60+2*(POWERS[kind].duration+6)))<1e-8,'Repeated pickups add remaining duration including upgrades');}
+console.log('Bónus repetidos: durações acumuladas e melhorias preservadas para todos os tipos OK.');
