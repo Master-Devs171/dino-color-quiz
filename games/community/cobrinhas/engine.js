@@ -12,9 +12,12 @@
   };
   const palette = ["#78c85d", "#b591ee", "#ffb752", "#58cddd", "#ef8db4"];
   const sizeForScore = (score) =>
-    1.2 + 1.2 * (1 - Math.exp(-Math.max(0, Number(score) || 0) / 250));
+    1.2 + 0.5 * Math.log1p(Math.max(0, Number(score) || 0) / 60);
   const zoomForScore = (score) =>
-    Math.max(0.7, 1.65 / Math.sqrt(1 + Math.max(0, Number(score) || 0) / 300));
+    Math.max(0.32, 1.65 / Math.sqrt(1 + Math.max(0, Number(score) || 0) / 300));
+  const lengthForScore = (score) =>
+    12 + Math.floor(180 * Math.log1p(Math.max(0, Number(score) || 0) / 120));
+  const distanceSquared = (a, b) => (a.x - b.x) ** 2 + (a.y - b.y) ** 2;
   const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
   class Garden {
     constructor(random = Math.random) {
@@ -152,7 +155,7 @@
             best = Infinity;
           if (s.think <= 0 || !nearest) {
             for (const f of this.food) {
-              const d = distance(head, f);
+              const d = distanceSquared(head, f);
               if (d < best) {
                 best = d;
                 nearest = f;
@@ -173,7 +176,7 @@
           for (const other of this.snakes)
             if (other !== s && !other.grace) {
               for (let j = 0; j < other.body.length; j += 3)
-                if (distance(ahead, other.body[j]) < 45) {
+                if (distanceSquared(ahead, other.body[j]) < 45 * 45) {
                   danger = other.body[j];
                   break;
                 }
@@ -227,19 +230,21 @@
           Math.min(s.targetLength, old.length + 1),
         );
         let segment = 0,
-          travelled = 0;
+          travelled = 0,
+          segmentDistance = distance(s.path[0], s.path[1] || s.path[0]);
         for (let i = 1; i < length; i++) {
           const target = i * GAP;
           while (
             segment < s.path.length - 2 &&
-            travelled + distance(s.path[segment], s.path[segment + 1]) < target
+            travelled + segmentDistance < target
           ) {
-            travelled += distance(s.path[segment], s.path[segment + 1]);
+            travelled += segmentDistance;
             segment++;
+            segmentDistance = distance(s.path[segment], s.path[segment + 1]);
           }
           const a = s.path[segment],
             b = s.path[segment + 1] || a,
-            d = distance(a, b),
+            d = segmentDistance,
             t = d ? Math.min(1, (target - travelled) / d) : 0;
           s.body.push({ x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t });
         }
@@ -266,7 +271,7 @@
           }
           for (const item of this.powerups)
             if (item.cooldown === 0 && distance(p, item) < 38) {
-              s.effects[item.kind] =
+              s.effects[item.kind] +=
                 POWERS[item.kind].duration + this.upgrades[item.kind] * 2;
               item.cooldown = 20;
               this.events.push("power:" + item.kind);
@@ -282,10 +287,10 @@
             }
         }
         for (let i = this.food.length - 1; i >= 0; i--)
-          if (distance(p, this.food[i]) < 25) {
+          if (distanceSquared(p, this.food[i]) < 25 * 25) {
             const f = this.food.splice(i, 1)[0];
             s.score += f.value;
-            s.targetLength = Math.min(400, Math.floor(12 + s.score * 1.5));
+            s.targetLength = lengthForScore(s.score);
             if (s.id === 0) this.events.push("eat");
           }
       }
@@ -295,13 +300,15 @@
         if (s.body.length && !s.grace) {
           for (const other of this.snakes)
             if (other !== s && other.body.length && !other.grace) {
+              const collisionRadius =
+                RADIUS *
+                0.825 *
+                (sizeForScore(s.score) + sizeForScore(other.score));
               if (
                 other.body.some(
                   (p) =>
-                    distance(s.body[0], p) <
-                    RADIUS *
-                      0.825 *
-                      (sizeForScore(s.score) + sizeForScore(other.score)),
+                    distanceSquared(s.body[0], p) <
+                    collisionRadius * collisionRadius,
                 )
               ) {
                 hit.add(s);
@@ -341,6 +348,7 @@
     FOOD_LIMIT,
     POWERS,
     sizeForScore,
+    lengthForScore,
     zoomForScore,
   };
   if (typeof module !== "undefined") module.exports = root.Cobrinhas;

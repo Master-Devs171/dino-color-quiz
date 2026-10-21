@@ -214,10 +214,12 @@ async function test() {
   assert.equal(elements["round-result"].hidden, true);
   assert.equal(elements.overlay.hidden, true);
   // Holding an accelerator must stop on release; touch steering must not boost.
-  let requestedBoost = false;
+  let requestedBoost = false,
+    requestedHeading = 0;
   const update = arena.update.bind(arena);
   arena.update = (dt, heading, boost, gentle) => {
     requestedBoost = boost;
+    requestedHeading = heading;
     return update(dt, heading, boost, gentle);
   };
   const keyboard = {
@@ -231,6 +233,26 @@ async function test() {
   listeners.keyup(keyboard);
   scheduled(4068);
   assert.equal(requestedBoost, false);
+  let controlsTime = 4068;
+  for (const code of ["Space", "ShiftRight"]) {
+    listeners.keydown({ ...keyboard, code });
+    scheduled((controlsTime += 34));
+    assert.equal(requestedBoost, true);
+    listeners.keyup({ ...keyboard, code });
+    scheduled((controlsTime += 34));
+    assert.equal(requestedBoost, false);
+  }
+  for (const [code, angle] of [
+    ["KeyW", -Math.PI / 2],
+    ["KeyA", Math.PI],
+    ["KeyS", Math.PI / 2],
+    ["KeyD", 0],
+  ]) {
+    listeners.keydown({ ...keyboard, code });
+    scheduled((controlsTime += 34));
+    assert.equal(requestedHeading, angle);
+    listeners.keyup({ ...keyboard, code });
+  }
   const pointer = {
     pointerId: 1,
     pointerType: "mouse",
@@ -239,13 +261,21 @@ async function test() {
     clientY: 300,
   };
   elements.garden.onpointerdown(pointer);
-  scheduled(4102);
+  scheduled((controlsTime += 34));
   assert.equal(requestedBoost, true);
+  listeners.keydown({ ...keyboard, code: "Space" });
   elements.garden.onpointerup();
-  scheduled(4136);
+  scheduled((controlsTime += 34));
+  assert.equal(
+    requestedBoost,
+    true,
+    "Releasing mouse does not cancel held Space",
+  );
+  listeners.keyup({ ...keyboard, code: "Space" });
+  scheduled((controlsTime += 34));
   assert.equal(requestedBoost, false);
   elements.garden.onpointerdown({ ...pointer, pointerType: "touch" });
-  scheduled(4170);
+  scheduled((controlsTime += 34));
   assert.equal(requestedBoost, false);
   elements.garden.onpointercancel();
   document.hidden = true;

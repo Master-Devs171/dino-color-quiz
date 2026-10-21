@@ -15,6 +15,7 @@
     heading = 0,
     best = 0,
     boost = false,
+    mouseBoost = false,
     last = 0,
     toastUntil = 0;
   let camera = { x: WORLD / 2, y: WORLD / 2 },
@@ -74,7 +75,7 @@
       renderBodies.set(s.id, body);
     }
     body.length = s.body.length;
-    const alpha = simulationClock * 60;
+    const alpha = Math.min(1, Math.max(0, simulationClock * 60));
     const previous = s.previousBody || s.body;
     for (let i = 0; i < body.length; i++) {
       const p = s.body[i],
@@ -340,6 +341,7 @@
   function clearInput() {
     keys.clear();
     boost = false;
+    mouseBoost = false;
     stickPointer = null;
     fieldPointer = null;
     mouseAim = null;
@@ -356,6 +358,7 @@
       /^(Arrow|Key[WASD])/.test(e.code) ||
       ["Space", "ShiftLeft", "ShiftRight"].includes(e.code)
     ) {
+      if (!running || paused) return;
       if (
         e.target.matches("input,select") ||
         (e.code === "Space" && e.target.matches("button"))
@@ -387,23 +390,37 @@
     );
   }
   canvas.onpointerdown = (e) => {
+    if (!running || paused) return;
     fieldPointer = e.pointerId;
+    canvas.focus({ preventScroll: true });
     canvas.setPointerCapture(e.pointerId);
     point(e);
     mouseAim =
       e.pointerType === "mouse"
         ? { clientX: e.clientX, clientY: e.clientY }
         : null;
-    if (e.pointerType === "mouse" && e.button === 0) boost = true;
+    if (e.pointerType === "mouse" && e.button === 0) mouseBoost = true;
   };
   canvas.onpointermove = (e) => {
-    if (e.pointerType === "mouse")
+    if (e.pointerType === "mouse") {
+      if (typeof e.buttons === "number") mouseBoost = Boolean(e.buttons & 1);
       mouseAim = { clientX: e.clientX, clientY: e.clientY };
+    }
     if (e.pointerType === "mouse" || fieldPointer === e.pointerId) point(e);
   };
-  canvas.onpointerup = canvas.onpointercancel = () => {
-    fieldPointer = null;
-    boost = false;
+  canvas.onpointerup =
+    canvas.onpointercancel =
+    canvas.onlostpointercapture =
+      () => {
+        fieldPointer = null;
+        boost = false;
+        mouseBoost = false;
+      };
+  addEventListener("pointerup", (e) => {
+    if (e.pointerType === "mouse" && e.button === 0) mouseBoost = false;
+  });
+  canvas.oncontextmenu = (e) => {
+    if (running && !paused) e.preventDefault();
   };
   const joystick = $("joystick");
   function stick(e) {
@@ -745,6 +762,7 @@
           1 / 60,
           heading,
           boost ||
+            mouseBoost ||
             keys.has("Space") ||
             keys.has("ShiftLeft") ||
             keys.has("ShiftRight"),
@@ -928,7 +946,14 @@
       Math.max(0.42, Math.min(0.95, Math.min(width, height) / 650)) *
       zoomForScore(game.player.score) *
       (game.player.effects.vision > 0 ? 0.84 : 1) *
-      (boost || game.player.effects.speed > 0 ? 0.91 : 1);
+      (boost ||
+      mouseBoost ||
+      keys.has("Space") ||
+      keys.has("ShiftLeft") ||
+      keys.has("ShiftRight") ||
+      game.player.effects.speed > 0
+        ? 0.91
+        : 1);
     scale += (targetScale - scale) * (1 - Math.exp(-dt * 3));
     const h = game.player.body[0];
     if (h) {

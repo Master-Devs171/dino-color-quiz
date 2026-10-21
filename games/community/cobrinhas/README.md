@@ -61,3 +61,5 @@ Roda gratuita com oito prémios em moedas (100, 600, 5000, 400, 500, 10, 200 e 1
 Movimento: a cauda segue o percurso real da cabeça por distância percorrida, incluindo voltas de 360° repetidas. Laboratório com emojis decorativos nas categorias e cartões, conforme pedido.
 
 4.1.0 — Oficina por cartões (corpo, olhos, boca e acessórios); loja com melhorias, reações, efeitos de eliminação e bandeiras. Reações aparecem com E ou botão; efeitos são cosméticos, ativados quando uma cobra do computador choca com a tua. Escolhas e compras são guardadas; moedas apenas do jogo.
+
+4.2.0 — Crescimento contínuo sem limite fixo de segmentos/grossura; bónus repetidos somam duração. WASD/setas/rato orientam; clique esquerdo, Shift e Espaço aceleram (fontes independentes). Menos raízes quadradas repetidas no percurso e colisões.

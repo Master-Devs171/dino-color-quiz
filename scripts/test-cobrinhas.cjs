@@ -138,5 +138,5 @@ const {sizeForScore,zoomForScore}=require('../games/community/cobrinhas/engine.j
 assert.equal(new Garden().player.body.length,12);
 for(const score of [0,10,50,100,300,1000]){assert.ok(sizeForScore(score+10)>sizeForScore(score));assert.ok(zoomForScore(score+10)<=zoomForScore(score));}
 assert.ok(sizeForScore(300)>sizeForScore(0)*1.6);assert.ok(zoomForScore(300)<zoomForScore(0)*.75);
-assert.ok(sizeForScore(1000000)<=2.4);assert.ok(zoomForScore(1000000)>=.7);
+assert.ok(sizeForScore(1000000)>sizeForScore(10000));assert.ok(zoomForScore(1000000)>=.32);
 console.log('Crescimento: início pequeno, grossura progressiva e câmara com afastamento limitado OK.');

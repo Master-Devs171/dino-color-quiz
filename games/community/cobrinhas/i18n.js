@@ -4,6 +4,8 @@
   const languages = ["pt-PT", "pt-BR", "en", "es", "fr", "de", "pl"];
   // Portuguese | English | Spanish | French | German | Polish
   const rows = `
+Clique esquerdo / Shift / Espaço para acelerar|Left click / Shift / Space to boost|Clic izquierdo / Mayús / Espacio para acelerar|Clic gauche / Maj / Espace pour accélérer|Linksklick / Umschalt / Leertaste für Tempo|Lewy przycisk / Shift / Spacja: przyspieszenie
+Rato / WASD / setas para virar|Mouse / WASD / arrows to steer|Ratón / WASD / flechas para girar|Souris / WASD / flèches pour tourner|Maus / WASD / Pfeiltasten zum Steuern|Mysz / WASD / strzałki: sterowanie
 Jogar!|Play!|¡Jugar!|Jouer !|Spielen!|Graj!
 Continuar a brincar|Keep playing|Seguir jugando|Continuer à jouer|Weiterspielen|Graj dalej
 Voltar a jogar!|Play again!|¡Jugar otra vez!|Rejouer !|Noch mal spielen!|Zagraj ponownie!
