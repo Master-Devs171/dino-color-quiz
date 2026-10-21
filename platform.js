@@ -96,7 +96,7 @@
   if (!host || !originalOpen) return;
   const css = document.createElement("link");
   css.rel = "stylesheet";
-  css.href = "platform.css?v=9";
+  css.href = "platform.css?v=10";
   document.head.appendChild(css);
   brand.innerHTML = "<span>🦖</span> DinoPlay";
   footer.textContent =
@@ -111,6 +111,7 @@
     busy = null,
     parentOpen = false,
     removeConfirm = null,
+    profileDeleteConfirm = false,
     pendingInstall = null,
     friendSyncTimer = null,
     friendSyncBusy = false,
@@ -216,7 +217,7 @@
     });
   }
   async function syncParentFriends() {
-    if (friendSyncBusy || !parentOpen || tab !== "parents") return;
+    if (friendSyncBusy || !parentOpen || tab !== "parents" || !platform.onlineMultiplayerEnabled) return;
     friendSyncBusy = true;
     const before = friendSnapshot();
     try {
@@ -268,12 +269,16 @@
     );
     return `<div class="dp-extras-info"><b>🛍️ ${safeText(tr("Extras dos jogos"))}</b><p>Compras só podem ser apresentadas e confirmadas nesta Área dos Pais. Os jogos nunca recebem dados de pagamento.</p></div><div class="dp-extras-list">${rows.length ? rows.join("") : `<div class="dp-no-extras">${safeText(tr("Ainda não existem extras disponíveis."))}</div>`}</div><div class="dp-parent-note">🔒 Os pagamentos permanecem desativados até existir validação segura no servidor. Nenhum desbloqueio pago é guardado apenas neste dispositivo.</div>`;
   }
+  function parentPrivacyMarkup() {
+    const hasProfile = Boolean(window.DinoPlayMultiplayer?.hasIdentity());
+    return `<div class="dp-data-card about"><b>🦕 Quem somos</b><p>O DinoPlay nasceu de uma necessidade real de um grupo privado de pais: criar um espaço seguro, divertido e positivo para os nossos filhos.</p><a href="./about.html" target="_blank" rel="noopener">CONHECER A NOSSA HISTÓRIA</a></div><div class="dp-data-card community"><b>💬 Comunidade DinoPlay</b><p>Um espaço no Discord destinado exclusivamente a pais e programadores. Não é uma área para crianças.</p><a href="https://discord.gg/f22q9cQYNp" target="_blank" rel="noopener noreferrer">ENTRAR NA COMUNIDADE</a></div><div class="dp-data-card"><b>🛡️ Dados e privacidade</b><p>O progresso dos jogos e o PIN parental ficam neste dispositivo. Se o multiplayer for usado, o serviço guarda um identificador aleatório, o apelido e as amizades autorizadas.</p><a href="./privacy.html" target="_blank" rel="noopener">LER POLÍTICA DE PRIVACIDADE</a></div><div class="dp-data-card danger"><b>Apagar perfil multiplayer</b><p>Remove do servidor o apelido, todas as amizades e a identificação multiplayer deste dispositivo. O progresso dos jogos e o PIN parental não são apagados.</p><button id="deleteMultiplayerProfile" type="button" ${hasProfile ? "" : "disabled"}>${profileDeleteConfirm ? "CONFIRMAR ELIMINAÇÃO" : hasProfile ? "APAGAR PERFIL MULTIPLAYER" : "NÃO EXISTE PERFIL MULTIPLAYER"}</button><small id="profileDeleteMessage" role="status"></small></div>`;
+  }
   function applyParentPage(view) {
     const title = view.querySelector(":scope > .dp-section > .dp-title");
     if (!title) return;
     const nav = document.createElement("div");
     nav.className = "dp-parent-pages";
-    nav.innerHTML = [["security", "🔐", "Segurança"], ["friends", "👨‍👩‍👧", "Amigos"], ["games", "🎮", "Jogos"], ["extras", "🛍️", "Extras"]].map(([id, icon, label]) => `<button type="button" data-parent-page="${id}" class="${parentPage === id ? "active" : ""}">${icon} ${safeText(tr(label))}</button>`).join("");
+    nav.innerHTML = [["security", "🔐", "Segurança"], ["friends", "👨‍👩‍👧", "Amigos"], ["games", "🎮", "Jogos"], ["extras", "🛍️", "Extras"], ["privacy", "🛡️", "Privacidade"]].map(([id, icon, label]) => `<button type="button" data-parent-page="${id}" class="${parentPage === id ? "active" : ""}">${icon} ${safeText(tr(label))}</button>`).join("");
     title.after(nav);
     const section = title.parentElement;
     const groups = {
@@ -283,6 +288,7 @@
     };
     Object.entries(groups).forEach(([id, nodes]) => nodes.forEach((node) => node.classList.toggle("hidden", parentPage !== id)));
     if (parentPage === "extras") nav.insertAdjacentHTML("afterend", parentExtrasMarkup());
+    if (parentPage === "privacy") nav.insertAdjacentHTML("afterend", parentPrivacyMarkup());
     if (parentPage === "friends" && !platform.onlineMultiplayerEnabled)
       nav.insertAdjacentHTML("afterend", '<div class="dp-parent-note">🔒 Ativa primeiro o multiplayer na página Segurança.</div>');
   }
@@ -324,6 +330,14 @@
     startFriendSync();
   }
   function bind() {
+    Object.entries({
+      confirmParentPin: "Repetir PIN",
+      parentRecovery: "Código de recuperação",
+      currentParentPin: "PIN atual",
+      nextParentPin: "Novo PIN",
+      childNicknameInput: "Nome ou apelido",
+      friendCodeInput: "Código do outro responsável",
+    }).forEach(([id, label]) => document.querySelector(`#${id}`)?.setAttribute("aria-label", tr(label)));
     document.querySelectorAll("[data-go]").forEach(
       (b) =>
         (b.onclick = () => {
@@ -562,6 +576,31 @@
           }
         }),
     );
+    document.querySelector("#deleteMultiplayerProfile")?.addEventListener("click", async () => {
+      const button = document.querySelector("#deleteMultiplayerProfile"),
+        message = document.querySelector("#profileDeleteMessage");
+      if (!profileDeleteConfirm) {
+        profileDeleteConfirm = true;
+        render();
+        return;
+      }
+      button.disabled = true;
+      message.textContent = "A apagar o perfil multiplayer…";
+      try {
+        await window.DinoPlayMultiplayer.deleteProfile();
+        ["multiplayerDeviceId", "multiplayerDeviceSecret", "authorizedFriends", "authorizedFriendProfiles", "childNickname"].forEach((key) => delete platform[key]);
+        platform.onlineMultiplayerEnabled = false;
+        savePlatform();
+        profileDeleteConfirm = false;
+        parentPage = "privacy";
+        render();
+        toast("✅ Perfil multiplayer apagado");
+      } catch {
+        profileDeleteConfirm = false;
+        render();
+        toast("Não foi possível apagar o perfil. Verifica a Internet.", "bad");
+      }
+    });
     document.querySelectorAll("[data-remove]").forEach(
       (b) =>
         (b.onclick = () => {

@@ -1,0 +1,17 @@
+{
+  "name": "dinoplay-android",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "sync": "node ../scripts/build-mobile-web.mjs && cap sync android",
+    "build:debug": "npm run sync && cd android && gradlew.bat assembleDebug",
+    "build:bundle": "npm run sync && cd android && gradlew.bat bundleRelease"
+  },
+  "dependencies": {
+    "@capacitor/android": "8.5.3",
+    "@capacitor/core": "8.5.3"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.5.3"
+  }
+}
