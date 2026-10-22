@@ -2,7 +2,7 @@ let THREE;
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],praises=['Fantástico!','Muito bem!','Boa!','És incrível!','Conseguiste!'];
 const defaultState={puzzle:{level:0,pieces:[],completed:[]},paint:{row:null,col:0,image:'',color:'#ff6688'},blocks:{mapVersion:8,inventoryVersion:6,cameraMode:'third',gameMode:'explore',worldTime:.22,x:498,y:505,dir:{x:1,y:0},collected:[],placed:[],dug:{},fluids:{},drained:{},houseCreated:false,forestCreated:false,selected:'brick',grass:100,dirt:0,sand:0,brick:100,wood:0,door:4,window:20,water:100,lava:0,flower:100,fed:[]}};
 let state;try{const saved=JSON.parse(localStorage.dinoFunStateV11||'{}');state=structuredClone(defaultState);state.puzzle=Object.assign(state.puzzle,saved.puzzle||{});state.paint=Object.assign(state.paint,saved.paint||{});state.blocks=Object.assign(state.blocks,saved.blocks||{});if(state.blocks.mapVersion!==8)state.blocks=structuredClone(defaultState.blocks)}catch(e){state=structuredClone(defaultState)}
-const APP_VERSION='4.9';
+const APP_VERSION='5.0';
 const MAX_PLACED_BLOCKS=3200;
 let sound=true,audioCtx,puzzleLevel=state.puzzle.level,puzzlePieces=[],puzzleSelected=null,puzzleLocked=false,swRegistration,updateFound=false,manualUpdate=false,reloading=false,updateSetupPromise,saveTimer;
 const screens=$$('.screen');
@@ -115,7 +115,7 @@ $('#cameraMode').onclick=toggleCamera;$('#useWorld').onclick=useWorldObject;$('#
 $('#useWorld').insertAdjacentHTML('beforebegin','<button id="mineWorld" aria-label="Remover bloco">⛏️<small>REMOVER</small></button><button id="placeWorld" aria-label="Colocar bloco">🧱<small>COLOCAR</small></button>');
 $('#useWorld').insertAdjacentHTML('afterend','<button id="jumpWorld" aria-label="Saltar">⬆️<small>SALTAR</small></button>');
 $('.world-actions').insertAdjacentHTML('beforebegin','<div id="worldHotbar" class="world-hotbar"></div><span class="world-crosshair" aria-hidden="true">＋</span>');
-const hotbarTypes=['grass','dirt','brick','wood','sand'];
+const hotbarTypes=['grass','brick','wood'];
 function renderHotbar(){const host=$('#worldHotbar');host.innerHTML=hotbarTypes.map(type=>{const item=inventoryItems.find(v=>v[0]===type);return`<button data-hotbar="${type}" class="${state.blocks.selected===type?'active':''}"><span>${item[1]}</span><small>${state.blocks[type]||0}</small></button>`}).join('')+'<button id="hotbarMore" aria-label="Abrir inventário">•••</button>';$$('[data-hotbar]').forEach(button=>button.onclick=()=>{state.blocks.selected=button.dataset.hotbar;renderHotbar();syncWorld3D();tone(470,.05)});$('#hotbarMore').onclick=()=>$('#openInventory').click()}
 const movePlayerBeforeCollision=movePlayer;
 function walkSurface(cell){const base=terrainSurface(cell),solids=cellBlocks(cell).filter(b=>!['water','lava','flower'].includes(b.t)&&!(b.t==='door'&&b.open));if(!solids.length)return base;return Math.max(base,...solids.map(b=>(b.level??0)+(b.t==='door'?2:1)))}
@@ -125,7 +125,7 @@ function jumpPlayer(){if(jumping||!player3D)return;jumping=true;const started=pe
 $('#mineWorld').onclick=removeBlock;$('#placeWorld').onclick=placeBlock;$('#jumpWorld').onclick=jumpPlayer;
 let lookPointer=null,lookX=0,lookY=0;
 const lookCanvas=$('#blockCanvas');lookCanvas.style.touchAction='none';lookCanvas.onpointerdown=e=>{if(inventoryPanel.classList.contains('hidden')){lookPointer=e.pointerId;lookX=e.clientX;lookY=e.clientY;lookCanvas.setPointerCapture?.(e.pointerId)}};lookCanvas.onpointermove=e=>{if(e.pointerId!==lookPointer)return;const dx=e.clientX-lookX,dy=e.clientY-lookY;lookX=e.clientX;lookY=e.clientY;cameraYaw+=dx*.012;cameraPitch=Math.max(-.75,Math.min(.55,cameraPitch-dy*.008));const dir={x:Math.round(Math.sin(cameraYaw)),y:Math.round(Math.cos(cameraYaw))};if(dir.x||dir.y){state.blocks.dir=dir;playerTurn=Math.atan2(dir.x,dir.y)}};const stopLook=e=>{if(e.pointerId===lookPointer)lookPointer=null};lookCanvas.onpointerup=stopLook;lookCanvas.onpointercancel=stopLook;
-const joystickLoopOriginal=joystickLoop;joystickLoop=now=>{requestAnimationFrame(joystickLoop);if(joystickPower<.18||!$('#blocksScreen').classList.contains('active')||document.hidden)return;const interval=155-joystickPower*95;if(now-lastJoystickStep<interval)return;lastJoystickStep=now;const forward=-joystickY,right=joystickX,worldX=right*Math.cos(cameraYaw)+forward*Math.sin(cameraYaw),worldY=-right*Math.sin(cameraYaw)+forward*Math.cos(cameraYaw),dx=Math.abs(worldX)>.28?Math.sign(worldX):0,dy=Math.abs(worldY)>.28?Math.sign(worldY):0;if(dx||dy)movePlayer(dx,dy)};
+const joystickLoopOriginal=joystickLoop;joystickLoop=now=>{requestAnimationFrame(joystickLoop);if(joystickPower<.22||!$('#blocksScreen').classList.contains('active')||document.hidden)return;const interval=220-joystickPower*105;if(now-lastJoystickStep<interval)return;lastJoystickStep=now;const forward=-joystickY,right=joystickX,worldX=right*Math.cos(cameraYaw)+forward*Math.sin(cameraYaw),worldY=-right*Math.sin(cameraYaw)+forward*Math.cos(cameraYaw);let dx=Math.abs(worldX)>.34?Math.sign(worldX):0,dy=Math.abs(worldY)>.34?Math.sign(worldY):0;if(Math.abs(worldX)>Math.abs(worldY)*1.65)dy=0;if(Math.abs(worldY)>Math.abs(worldX)*1.65)dx=0;if(dx||dy)movePlayer(dx,dy)};
 renderHotbar();
 
 // Dois estilos de jogo: construção livre ou exploração com recolha de recursos.
@@ -162,3 +162,6 @@ const movePlayerGrounded=movePlayer;movePlayer=(dx,dy)=>{if(state.blocks.flying)
 let flyHoldTimer=null;$('#jumpWorld').onpointerdown=()=>{if(!state.blocks.flying)return;clearInterval(flyHoldTimer);flyHoldTimer=setInterval(()=>flightY=Math.min(62,flightY+.35),65)};const stopFlyHold=()=>{clearInterval(flyHoldTimer);flyHoldTimer=null};$('#jumpWorld').onpointerup=stopFlyHold;$('#jumpWorld').onpointercancel=stopFlyHold;
 function flightLoop(){requestAnimationFrame(flightLoop);if(!state.blocks.flying||!player3D||!$('#blocksScreen').classList.contains('active'))return;player3D.position.y+=(flightY-player3D.position.y)*.32;if(playerTarget)playerTarget.y=flightY}requestAnimationFrame(flightLoop);
 const applyWorldModeBase=applyWorldMode;applyWorldMode=()=>{if(state.blocks.gameMode!=='creative'&&state.blocks.flying)setFlying(false);applyWorldModeBase()};applyWorldMode();
+
+// A câmara só muda ao arrastar o ecrã; caminhar ou andar de lado não roda a visão.
+const movePlayerCameraStable=movePlayer;movePlayer=(dx,dy)=>{const view={...(state.blocks.dir||{x:0,y:1})};movePlayerCameraStable(dx,dy);state.blocks.dir=view};
