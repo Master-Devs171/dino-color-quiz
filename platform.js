@@ -94,15 +94,17 @@
     originalOpen = window.openGame,
     parental = window.DinoPlayParental;
   if (!host || !originalOpen) return;
-  const css = document.createElement("link");
-  css.rel = "stylesheet";
-  css.href = "platform.css?v=10";
-  document.head.appendChild(css);
+  if (!document.querySelector('link[href^="platform.css"]')) {
+    const css = document.createElement("link");
+    css.rel = "stylesheet";
+    css.href = "platform.css?v=11";
+    document.head.appendChild(css);
+  }
   brand.innerHTML = "<span>🦖</span> DinoPlay";
   footer.textContent =
     "🔒 Sem anúncios · Sem chat · Progresso guardado neste dispositivo";
   document.title = "DinoPlay";
-  document.querySelector("#updateStatus").textContent = "DinoPlay v4.4";
+  document.querySelector("#updateStatus").textContent = "DinoPlay v4.5";
   host.classList.add("platform-home");
   host.innerHTML = `<div class="dp-head"><div><small>OLÁ, EXPLORADOR!</small><h1>Dino<span>Play</span></h1><p>A tua biblioteca de aventuras</p></div><img class="dp-mascot" src="assets/dinoplay-mascot.png" alt="Dinossauro DinoPlay"></div><div id="dpView"></div><span id="puzzleMenuProgress" hidden></span><span id="blockMenuProgress" hidden></span><nav class="dp-nav"><button data-tab="home" class="active">🏠<small>Início</small></button><button data-tab="library">🎮<small>Biblioteca</small></button><button data-tab="parents">👨‍👩‍👧<small>Pais</small></button></nav>`;
   let tab = "home",
@@ -924,6 +926,8 @@
   );
   themeObserver.observe(host, { attributes: true, attributeFilter: ["class"] });
   render();
+  document.body.classList.remove("platform-loading");
+  document.querySelector("#platformBoot")?.remove();
   window.DinoPlayRefreshCatalog = (showFeedback = false) =>
     loadCatalog(showFeedback).catch(() => {
       if (showFeedback)
