@@ -690,9 +690,10 @@
     ctx.globalAlpha = 1;
     ctx.restore();
     // A small map makes it easier to find food and the other snakes.
-    const size = width < 700 ? 64 : 120,
+    const compactMap = width < 700 || height < 500,
+      size = compactMap ? 58 : 120,
       x = 18,
-      y = width < 700 ? 88 : 20;
+      y = compactMap ? 84 : 20;
     ctx.fillStyle = "#200637bb";
     ctx.beginPath();
     ctx.roundRect(x - 8, y - 20, size + 16, size + 30, 16);

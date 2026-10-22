@@ -1,0 +1,113 @@
+/* Compact mobile layouts, including the shorter viewport inside DinoPlay. */
+@media(max-width:700px),(max-height:500px){
+body[data-menu="playing"] header{top:8px;left:8px;right:8px;gap:6px;align-items:start}
+body[data-menu="playing"] header .score,body[data-menu="playing"] header .record{padding:6px 8px;min-height:44px;border-radius:14px;gap:6px}
+body[data-menu="playing"] header .score small,body[data-menu="playing"] header .record small{font-size:8px;letter-spacing:.03em}
+body[data-menu="playing"] header .score b,body[data-menu="playing"] header .record b{font-size:21px;line-height:1}
+body[data-menu="playing"] header .score>span,body[data-menu="playing"] header .record>span,body[data-menu="playing"] header .game-icon{width:27px;height:27px;font-size:25px}
+body[data-menu="playing"] #pause,body[data-menu="playing"] #edit-snake{width:44px;height:44px;min-width:44px;min-height:44px;padding:7px;border-radius:13px;font-size:24px}
+body[data-menu="playing"] #edit-snake{margin-left:auto}
+body[data-menu="playing"] #scoreboard{top:62px;right:8px;left:auto;width:135px;max-width:40vw;padding:5px 8px;border-radius:12px;font-size:10px}
+body[data-menu="playing"] #ranking-toggle{min-height:34px;padding:4px;font-size:12px;gap:5px}
+body[data-menu="playing"] #ranking-toggle .game-icon{width:18px;height:18px}
+body[data-menu="playing"] #mini-task{top:106px;left:94px;right:8px;width:auto;max-width:none;transform:none;padding:5px 8px;min-height:25px;font-size:10px;line-height:1.3;border-radius:12px}
+body[data-menu="playing"] #power-status{top:140px;left:94px;right:8px;width:auto;max-width:none;transform:none;padding:5px 7px;font-size:10px;line-height:1.3;min-height:0;border-radius:12px;display:flex;flex-wrap:wrap;gap:3px}
+body[data-menu="playing"] #power-status:empty{display:none}
+body[data-menu="playing"] #coin-counter{top:158px;left:10px;min-height:30px;padding:4px 7px;font-size:13px;border-width:2px;border-radius:13px;gap:4px}
+body[data-menu="playing"] #coin-counter .game-icon{width:20px;height:20px}
+body[data-menu="playing"] #notice{top:190px;left:50%;right:auto;transform:translateX(-50%);width:max-content;max-width:80vw;padding:6px 10px;font-size:11px;pointer-events:none}
+body[data-menu="playing"] .input-help,body[data-menu="playing"] .steer-wrap>small{display:none}
+body[data-menu="playing"] #joystick{width:92px;height:92px;min-width:0;min-height:0}
+body[data-menu="playing"] #stick{width:44px;height:44px}
+body[data-menu="playing"] #boost{width:68px;height:68px;min-width:0;min-height:0;padding:8px}
+body[data-menu="playing"] #boost small{font-size:10px}
+body[data-menu="playing"] #send-reaction{right:12px;bottom:104px;width:44px;height:44px;padding:5px;border-radius:13px}
+body[data-menu="playing"] #send-reaction img{width:30px;height:30px}
+}
+@media(max-width:700px){
+body[data-menu="welcome"] .menu-top{left:12px;right:70px;gap:8px;justify-content:space-between;top:12px}
+body[data-menu="welcome"] .menu-level{min-width:100px;gap:5px}
+body[data-menu="welcome"] .menu-wallet{min-width:96px;padding-left:22px;padding-right:27px}
+body[data-menu="welcome"] .menu-wallet b{font-size:20px}
+body[data-menu="welcome"] .garden-menu{width:72px;left:8px;top:21%;bottom:18%}
+body[data-menu="welcome"] .garden-menu button{height:50px}
+body[data-menu="welcome"] .garden-menu button>span{width:48px;height:48px;top:-27px}
+body[data-menu="welcome"] .garden-menu button b{font-size:11px}
+body[data-menu="welcome"] .menu-claim{left:86px;top:18.5%;font-size:11px;padding:4px 7px;min-height:28px}
+body[data-menu="welcome"] #customize{left:26%;width:59%;top:36%;height:11%}
+body[data-menu="welcome"] #customize>b{font-size:12px}
+body[data-menu="welcome"] #play{left:26%;width:66%;height:9%;top:70%;font-size:32px}
+#boutique{padding:8px}
+#boutique header{height:44px;gap:6px}
+#boutique header h2{font-size:18px;padding:7px 9px;min-width:0;white-space:nowrap}
+#boutique .boutique-back{min-width:42px;height:42px;font-size:25px}
+#boutique .boutique-wallet{font-size:11px;padding:5px;gap:3px;white-space:nowrap}
+#boutique .boutique-wallet img{width:21px;height:21px}
+#boutique .boutique-layout{height:calc(100% - 50px);grid-template-rows:104px minmax(0,1fr);gap:8px;padding-top:6px}
+#boutique .boutique-preview{grid-template-columns:72px minmax(0,1fr);grid-template-rows:38px 22px 32px;gap:3px 8px}
+#boutique .boutique-preview>canvas{width:72px;height:100px;max-height:none;grid-row:1/4;grid-column:1}
+#boutique .boutique-apply{min-height:36px;padding:4px;font-size:14px;grid-column:2;margin:0}
+#boutique .boutique-status{font-size:10px;line-height:1.15;min-height:0;margin:0;grid-column:2}
+#boutique .lobby-laboratory{min-height:30px;padding:4px 8px;font-size:11px;margin:0;grid-column:2}
+#boutique .lobby-laboratory img{width:18px;height:18px}
+#boutique .boutique-tabs{padding:0;gap:2px}
+#boutique .boutique-tabs button{font-size:11px;padding:9px 2px;border-radius:10px 10px 0 0;overflow-wrap:anywhere;min-height:38px}
+#boutique .boutique-tabs [aria-selected="true"]{transform:none;margin:0;padding-bottom:9px}
+#boutique .boutique-content{padding:8px;gap:8px;border-radius:12px;box-shadow:0 4px 0 #086ca8}
+#boutique .boutique-choice{min-height:98px;font-size:12px;padding:5px}
+#boutique .boutique-choice canvas{height:65px}
+#boutique .boutique-choice img{width:58px;height:58px}
+#boutique .boutique-colors{max-height:100px;overflow:auto;gap:6px;padding:7px 2px;flex-shrink:0}
+#boutique .boutique-colors label{font-size:11px;gap:4px}
+#boutique .boutique-colors>button{width:28px;height:30px}
+#adventures[data-view="shop"] .adventure-top{min-height:58px;padding:8px}
+#adventures[data-view="shop"] .adventure-top h2{font-size:16px;padding:7px}
+#adventures[data-view="shop"] .adventure-wallet{top:15px;right:58px}
+#adventures[data-view="shop"] #wallet-stars{font-size:12px;padding:4px 6px;gap:3px}
+#adventures[data-view="shop"] #adventures-close{width:40px;height:40px;font-size:27px;top:8px;right:8px}
+#adventures[data-view="shop"] .book-scroll{padding:6px 8px;overflow:auto}
+#adventures[data-view="shop"] #shop-list{gap:10px}
+#adventures[data-view="shop"] .rarity-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;overflow:visible;padding:0}
+#adventures[data-view="shop"] .rarity-tabs button{min-width:0;min-height:66px;padding:5px 2px;border-width:2px;border-radius:10px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+#adventures[data-view="shop"] .rarity-tabs .lab-emoji{position:static;width:20px;height:20px}
+#adventures[data-view="shop"] .rarity-tabs b{font-size:10px;overflow-wrap:anywhere}
+#adventures[data-view="shop"] .rarity-tabs small{font-size:10px;margin:0}
+#adventures[data-view="shop"] .catalog-toolbar button{font-size:14px;min-height:38px;padding:6px 10px;border-width:2px;border-radius:12px}
+#adventures[data-view="shop"] .skin-catalog{min-height:0;padding:6px 0 12px;gap:10px;align-items:start}
+#adventures[data-view="shop"] .catalog-card{flex-basis:132px;border-width:3px;border-radius:12px}
+#adventures[data-view="shop"] .catalog-card canvas{height:180px}
+#adventures[data-view="shop"] .catalog-card .skin-emoji{width:26px;height:26px}
+#adventures[data-view="shop"] .catalog-card h3{font-size:12px;margin:2px 3px 7px}
+#adventures[data-view="shop"] .catalog-card button{min-height:36px;font-size:12px;padding:6px}
+}
+@media(max-height:500px) and (min-width:701px){
+body[data-menu="playing"] header{left:92px;top:8px;right:8px}
+body[data-menu="playing"] header .score,body[data-menu="playing"] header .record{padding:5px 8px;min-height:40px}
+body[data-menu="playing"] header small{font-size:8px}
+body[data-menu="playing"] header b{font-size:20px}
+body[data-menu="playing"] #pause,body[data-menu="playing"] #edit-snake{width:40px;height:40px;min-height:40px;font-size:23px}
+body[data-menu="playing"] #mini-task{top:59px;left:92px;right:auto;max-width:40vw;padding:5px 8px;font-size:10px;transform:none}
+body[data-menu="playing"] #power-status{top:92px;left:92px;right:auto;max-width:45vw;padding:4px 7px;font-size:10px;transform:none}
+body[data-menu="playing"] #coin-counter{top:121px;left:10px;padding:4px 7px;font-size:13px}
+body[data-menu="playing"] #scoreboard{top:59px;right:8px;width:140px;padding:5px 8px}
+body[data-menu="playing"] #ranking-toggle{min-height:30px;font-size:11px}
+body[data-menu="playing"] #send-reaction{bottom:94px;right:12px;width:40px;height:40px}
+body[data-menu="playing"] .input-help{display:none}
+#boutique{padding:8px}#boutique header{height:42px}#boutique header h2{font-size:20px;padding:4px 15px}
+#boutique .boutique-layout{height:calc(100% - 48px);grid-template-columns:25% minmax(0,1fr)}
+#boutique .boutique-preview>canvas{max-height:calc(100% - 100px)}
+#boutique .boutique-apply{font-size:15px;min-height:32px;padding:4px}
+#boutique .boutique-status{font-size:10px;margin:3px 0}
+#boutique .lobby-laboratory{font-size:11px;min-height:30px;padding:3px}
+#boutique .boutique-tabs button{font-size:13px;padding:7px 3px}
+#boutique .boutique-tabs [aria-selected="true"]{transform:none;margin:0;padding-bottom:7px}
+#boutique .boutique-content{padding:8px;gap:8px}
+#boutique .boutique-choice{min-height:85px;font-size:12px;padding:4px}
+#boutique .boutique-choice canvas{height:58px}
+#boutique .boutique-colors{max-height:58px;overflow:auto;padding:5px;gap:5px}
+#adventures[data-view="shop"] .rarity-tabs button{min-height:54px;padding:4px 8px}
+#adventures[data-view="shop"] .skin-catalog{min-height:0}
+#adventures[data-view="shop"] .catalog-card canvas{height:140px}
+}
+
+@media(max-width:700px),(max-height:500px){body[data-menu="playing"]::after,body[data-menu="playing"] #boost::after{display:none}}
