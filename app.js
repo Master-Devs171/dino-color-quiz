@@ -2,10 +2,11 @@ let THREE;
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],praises=['Fantástico!','Muito bem!','Boa!','És incrível!','Conseguiste!'];
 const defaultState={puzzle:{level:0,pieces:[],completed:[]},paint:{row:null,col:0,image:'',color:'#ff6688'},blocks:{mapVersion:9,inventoryVersion:6,cameraMode:'third',gameMode:'explore',worldTime:.22,x:498,y:505,dir:{x:1,y:0},collected:[],placed:[],dug:{},fluids:{},drained:{},houseCreated:false,forestCreated:false,selected:'brick',grass:100,dirt:0,sand:0,brick:100,wood:0,door:4,window:20,water:100,lava:0,flower:100,fed:[]}};
 let state;try{const saved=JSON.parse(localStorage.dinoFunStateV11||'{}');state=structuredClone(defaultState);state.puzzle=Object.assign(state.puzzle,saved.puzzle||{});state.paint=Object.assign(state.paint,saved.paint||{});state.blocks=Object.assign(state.blocks,saved.blocks||{});if(state.blocks.mapVersion!==9)state.blocks=structuredClone(defaultState.blocks)}catch(e){state=structuredClone(defaultState)}
-const APP_VERSION='5.6';
+const APP_VERSION='5.7';
 const MAX_PLACED_BLOCKS=3200;
 let sound=true,audioCtx,puzzleLevel=state.puzzle.level,puzzlePieces=[],puzzleSelected=null,puzzleLocked=false,swRegistration,updateFound=false,manualUpdate=false,reloading=false,updateSetupPromise,saveTimer;
 const screens=$$('.screen');
+document.addEventListener('contextmenu',event=>{if(event.target.closest('#blocksScreen,#raceScreen'))event.preventDefault()});
 function save(){clearTimeout(saveTimer);try{localStorage.setItem('dinoFunStateV11',JSON.stringify(state))}catch(e){console.warn('Não foi possível guardar o progresso',e)}updateMenu()}
 function scheduleSave(){clearTimeout(saveTimer);saveTimer=setTimeout(save,300)}
 function show(id){screens.forEach(s=>s.classList.remove('active'));$('#'+id).classList.add('active');document.body.classList.toggle('world-mode',id==='blocksScreen'||id==='raceScreen');$('#backBtn').classList.toggle('hidden',id==='menuScreen'||id==='blocksScreen'||id==='raceScreen')}
