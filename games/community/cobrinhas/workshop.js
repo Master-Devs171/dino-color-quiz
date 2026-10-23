@@ -126,6 +126,15 @@
         0,
         true,
       );
+    } else if (target === canvas && window.innerWidth <= 700) {
+      // A shorter, thicker snake stays readable in the compact preview.
+      c.translate(target.width / 2, target.height / 2);
+      c.scale(2.2, 2.2);
+      const body = Array.from({ length: 20 }, (_, i) => ({
+        x: Math.sin(i * 0.15) * 5,
+        y: 65 - i * 7,
+      }));
+      SnakeStyle.draw(c, { id: 0, angle: Math.PI / 2, body }, style, 0, true);
     } else {
       const body = Array.from(
         { length: Math.max(12, Math.floor((target.height - 65) / 4.7)) },

@@ -459,6 +459,7 @@
     joystick.style.bottom = "auto";
   }
   function startTouch(e, onJoystick = false) {
+    if (touchId !== null && touchId !== e.pointerId) return true;
     document.body.dataset.touchActive = "true";
     if (prefs.control === "touch" && !onJoystick) return false;
     if (prefs.control === "fixed" && !onJoystick) return true;
@@ -492,7 +493,8 @@
     stick.style.transform = `translate(${x * f}px,${y * f}px)`;
     return true;
   }
-  function endTouch() {
+  function endTouch(e) {
+    if (e && touchId !== null && e.pointerId !== touchId) return;
     touchId = null;
     origin = null;
     document.body.dataset.touchActive = "false";
@@ -506,7 +508,7 @@
     moveTouch(e);
   };
   joystick.onpointermove = moveTouch;
-  joystick.onpointerup = joystick.onpointercancel = endTouch;
+  joystick.onpointerup = joystick.onpointercancel = joystick.onlostpointercapture = endTouch;
   window.GardenControls = { start: startTouch, move: moveTouch, end: endTouch };
   window.GardenExtras = {
     giftReady() {
