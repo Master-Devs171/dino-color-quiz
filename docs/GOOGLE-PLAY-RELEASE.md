@@ -18,6 +18,8 @@ Este documento é a checklist de lançamento. Não se deve publicar antes de tod
 4. Criar uma upload key local e ativar Play App Signing; nunca guardar a chave, passwords ou credenciais no Git.
 5. Gerar e testar o AAB de release.
 
+O projeto já contém configuração de assinatura externa e o assistente `scripts/create-upload-key.ps1`. A chave e a password ficam apenas em ficheiros ignorados pelo Git. A opção recomendada é deixar a Google gerar e proteger a app signing key e usar a chave local somente como upload key.
+
 O `assetlinks.json` só é necessário se forem ativados Android App Links para abrir URLs do site diretamente na aplicação; deixou de ser um bloqueio da arquitetura principal.
 
 ## Play Console
@@ -52,6 +54,17 @@ Responder conservadoramente e rever o formulário com a política publicada:
 - nome, descrição curta e descrição completa sem alegações enganosas;
 - email público de suporte e contacto de privacidade do programador;
 - traduções da ficha para os idiomas escolhidos.
+
+## Ações que exigem o titular da conta
+
+- confirmar o nome legal/identidade do programador na Play Console;
+- confirmar definitivamente o package name `io.github.rjcferreira.dinoplay` antes da primeira release;
+- indicar o email público de suporte e o contacto de privacidade;
+- criar a aplicação e aceitar os termos de Play App Signing;
+- introduzir e guardar a password da upload key sem a partilhar;
+- preencher e submeter os questionários de público-alvo, Families, classificação e Data safety;
+- adicionar os testadores e iniciar o teste fechado de 14 dias, quando aplicável;
+- decidir e confirmar a submissão final para análise. Nenhuma destas ações deve ser automatizada sem revisão do titular.
 
 ## Testes obrigatórios e recomendados
 

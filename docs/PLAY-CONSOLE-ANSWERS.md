@@ -32,7 +32,7 @@ O perfil multiplayer pode ser eliminado em Área dos Pais → Privacidade. A eli
 
 ## Permissões Android pretendidas
 
-- Internet e estado de rede, necessários à TWA e às funções online.
+- Apenas Internet, necessária para catálogo, atualizações e funções multiplayer. A aplicação é um pacote Capacitor com conteúdo incluído, não uma TWA nem um simples atalho para o site.
 - Nenhuma permissão de localização, câmara, microfone, contactos, telefone, SMS, Bluetooth, armazenamento partilhado ou identificador de publicidade.
 - Notificações desativadas.
 
@@ -43,3 +43,15 @@ Responder segundo todo o catálogo disponível na versão submetida. Não declar
 ## Testes fechados
 
 Se a conta pessoal foi criada depois de 13 de novembro de 2023, preparar pelo menos 12 testadores continuamente inscritos durante 14 dias e recolher feedback real antes de pedir acesso à produção.
+
+## Eliminação de dados
+
+- A aplicação não cria uma conta tradicional com email ou palavra-passe.
+- Se o responsável ativar multiplayer, é criado um perfil técnico pseudónimo no dispositivo.
+- O responsável pode eliminá-lo em **Área dos Pais → Privacidade → Apagar perfil multiplayer**.
+- A eliminação remove bilateralmente as amizades, o apelido, os convites e a identidade técnica do servidor.
+- O endpoint de produção foi testado com criação, amizade e eliminação completas.
+
+## Verificação do programador
+
+Confirmar na Play Console que a identidade está verificada e que `io.github.rjcferreira.dinoplay` fica registado para cumprir a verificação Android em vigor desde 30 de setembro de 2026.

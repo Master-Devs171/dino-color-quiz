@@ -18,6 +18,7 @@ mobile/android/app/src/main/assets/capacitor.config.json
 mobile/android/*.jks
 mobile/android/*.keystore
 mobile/android/keystore.properties
+mobile/android/upload_certificate.pem
 
 # Local tooling
 node_modules/

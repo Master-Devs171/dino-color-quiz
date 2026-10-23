@@ -10,7 +10,8 @@ const mobilePackage=JSON.parse(await read('mobile/package.json'));
 const capacitor=JSON.parse(await read('mobile/capacitor.config.json'));
 const androidManifest=await read('mobile/android/app/src/main/AndroidManifest.xml');
 const androidVariables=await read('mobile/android/variables.gradle');
-const requiredFiles=['privacy.html','about.html','dinoplay-v23-512.png','assets/google-play-feature-graphic.png','android/assetlinks.template.json','docs/PLAY-STORE-LISTING.md','docs/PLAY-CONSOLE-ANSWERS.md','mobile/android/gradlew.bat'];
+const androidBuild=await read('mobile/android/app/build.gradle');
+const requiredFiles=['privacy.html','about.html','platform.css','dinoplay-v23-512.png','assets/google-play-feature-graphic.png','android/assetlinks.template.json','docs/PLAY-STORE-LISTING.md','docs/PLAY-CONSOLE-ANSWERS.md','mobile/android/gradlew.bat','mobile/android/keystore.properties.example','scripts/create-upload-key.ps1'];
 for(const file of requiredFiles)await access(resolve(root,file));
 if(manifest.packageId!=='io.github.rjcferreira.dinoplay')throw new Error('Package ID inesperado');
 if(manifest.host!=='rjcferreira.github.io')throw new Error('Host TWA inesperado');
@@ -27,5 +28,6 @@ if(!/^8\.(?:[5-9]|\d{2,})\./.test(mobilePackage.dependencies['@capacitor/android
 if(!/compileSdkVersion\s*=\s*36/.test(androidVariables)||!/targetSdkVersion\s*=\s*36/.test(androidVariables))throw new Error('Android não aponta para API 36');
 if(!/minSdkVersion\s*=\s*26/.test(androidVariables))throw new Error('Android mínimo deve ser API 26');
 if(!/android:allowBackup="false"/.test(androidManifest)||!/android:usesCleartextTraffic="false"/.test(androidManifest))throw new Error('Proteções Android incompletas');
+if(!/keystore\.properties/.test(androidBuild)||!/signingConfig signingConfigs\.release/.test(androidBuild))throw new Error('Configuração de assinatura release em falta');
 for(const forbidden of ['ACCESS_FINE_LOCATION','ACCESS_COARSE_LOCATION','CAMERA','RECORD_AUDIO','READ_CONTACTS','AD_ID'])if(androidManifest.includes(forbidden))throw new Error(`Permissão proibida: ${forbidden}`);
 console.log('DinoPlay: preparação Google Play e projeto Android Capacitor validados.');
