@@ -1,0 +1,6 @@
+#arena-feedback,#edge-warning{display:none}
+body[data-menu="playing"] #arena-feedback{position:fixed;bottom:max(18px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:7px 13px;border:1px solid #c3a5ef;border-radius:18px;background:#270845db;color:#fff6bf;font-size:13px;font-weight:800;pointer-events:none;font-variant-numeric:tabular-nums;z-index:3}
+#boost-indicator{color:#8fffe0;border-left:1px solid #ac8dce;padding-left:10px}
+#boost-indicator[hidden]{display:none}
+body[data-menu="playing"] #edge-warning:not([hidden]){display:block;position:fixed;left:50%;transform:translateX(-50%);bottom:65px;max-width:70vw;padding:8px 14px;border:2px solid #ffdc70;border-radius:15px;background:#65351ae8;color:#fff6c9;font-size:13px;font-weight:800;text-align:center;pointer-events:none;z-index:3}
+@media(max-width:700px),(max-height:500px){body[data-menu="playing"] #arena-feedback{bottom:12px;font-size:11px;padding:6px 10px}body[data-menu="playing"] #edge-warning:not([hidden]){bottom:49px;font-size:11px;padding:6px 10px}}

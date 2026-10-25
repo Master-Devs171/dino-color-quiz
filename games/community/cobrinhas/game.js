@@ -790,6 +790,7 @@
       }
       game.events = events;
       window.GardenExtras?.tick(game, events);
+      window.GardenArenaHUD?.update(game, boost || mouseBoost || keys.has("Space") || keys.has("ShiftLeft") || keys.has("ShiftRight"));
       const meals = events.filter((event) => event === "eat").length;
       if (meals) window.GardenJournal?.record("fruit", meals);
       const coins = events.filter((event) => event === "coin").length;
