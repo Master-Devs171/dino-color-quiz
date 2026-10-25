@@ -1,0 +1,33 @@
+/* Shared menu palette: the same blue scene, navy panels and golden actions. */
+:root{--menu-scene:radial-gradient(ellipse at 51% 48%,#00c8ef 0%,#009ff0 52%,#0560ba 100%);--menu-panel:#17396e;--menu-edge:#102c56;--menu-card:#91dcfa;--menu-gold:linear-gradient(#fff15c 0%,#ffdb20 43%,#ffbd0d 44%,#f2a308 100%);--menu-ink:#183c64}
+#boutique,#adventures,#game-options,#wardrobe{background:var(--menu-scene);color:white;border-color:var(--menu-edge)}
+#boutique header h2,#boutique .boutique-wallet,#adventures .adventure-top h2,#wallet-stars,#wallet-level,#options-title,#wardrobe-title{background:var(--menu-panel);color:white;border-color:var(--menu-edge);border-radius:14px;box-shadow:0 4px 0 #0870a2}
+#boutique .boutique-tabs button,#adventures .book-tabs button,#adventures .rarity-tabs button,#wardrobe [role="tab"],#extra-dialog .extra-tabs button{background:var(--menu-panel);color:white;border-color:var(--menu-edge);box-shadow:inset 0 2px 0 #3b5a8e}
+#boutique .boutique-tabs [aria-selected="true"],#adventures .book-tabs [aria-selected="true"],#adventures .book-tabs [aria-pressed="true"],#adventures .rarity-tabs [aria-pressed="true"],#wardrobe [aria-selected="true"],#extra-dialog .extra-tabs [aria-selected="true"]{background:var(--menu-gold);color:#774409;border-color:#b98f19}
+#adventures .rarity-tabs small{color:#b9eaff}
+#adventures .rarity-tabs [aria-pressed="true"] small{color:#87551b}
+#boutique .boutique-content,#extra-dialog .extra-content,#wardrobe .editor-scroll{background:#dff5ff;border-color:#154575;color:var(--menu-ink);box-shadow:0 6px 0 #0870a2;outline:none}
+#boutique .boutique-choice,#adventures .catalog-card,#adventures .task-card,#adventures .album-card,#game-options .option-cards button{background:var(--menu-card);border-color:#154575;color:var(--menu-ink);border-radius:14px}
+#boutique .boutique-choice[aria-pressed="true"],#game-options .option-cards button[aria-pressed="true"]{background:#ffde48;border-color:#b98f19}
+#boutique .boutique-choice span,#boutique .boutique-section,#boutique .boutique-upgrade h3,#boutique .boutique-upgrade p,#boutique .boutique-upgrade small{color:var(--menu-ink)}
+#boutique .boutique-colors label{color:white}
+#boutique .boutique-buy,#boutique .boutique-apply,#adventures .task-card button:not(:disabled),#adventures .catalog-toolbar button,#extra-dialog .extra-secondary,#extra-dialog .control-choices button[aria-pressed="true"],#results .result-actions button{background:var(--menu-gold);color:#774409;border-color:#b98f19;box-shadow:0 4px 0 #99570c;text-shadow:none;border-radius:14px}
+#boutique .boutique-buy:disabled,#boutique .boutique-apply:disabled{background:#c9d7df;color:#526777;border-color:#a6b6c4;box-shadow:0 3px 0 #7c96aa}
+#boutique .boutique-back,#adventures-close,#options-close,#wardrobe-close,#extra-dialog .extra-close{background:var(--menu-gold);border-color:#fff08a;color:#935b05;box-shadow:0 4px 0 #99570c;border-radius:14px}
+#adventures .catalog-card button,#boutique .lobby-laboratory,#extra-dialog .control-choices button{background:var(--menu-panel);color:white;border-color:var(--menu-edge)}
+#adventures .catalog-card h3,#adventures .task-card h3,#adventures .task-card p{color:var(--menu-ink)}
+#adventures .task-card small{color:#395e7c}
+#adventures .catalog-card .rarity-badge{background:var(--menu-panel)}
+#extra-dialog::backdrop,#extra-dialog[data-view="profile"]::backdrop,#adventures[data-view="wheel"]::backdrop{background:#053c70d9}
+#extra-dialog .extra-title{background:var(--menu-panel);color:white;border-radius:0 0 16px 16px}
+#extra-dialog .control-demo{background:var(--menu-card);border-color:#154575}
+#extra-dialog .extra-check input{accent-color:#e8ad08}
+#extra-dialog[data-view="gifts"]{background:var(--menu-scene)}
+#extra-dialog[data-view="gifts"] .extra-content{background:transparent;box-shadow:none;border:0;color:white}
+#extra-dialog .extra-wallet,#extra-dialog .profile-stat,#extra-dialog .profile-avatar{background:var(--menu-panel);border-color:#154575;color:white}
+#extra-dialog[data-view="profile"] .extra-content{background:var(--menu-panel);border:2px solid #154575;padding:14px;border-radius:16px;color:white;box-shadow:0 6px 0 #0870a2}
+#extra-dialog .profile-identity input{background:#102c56;border-radius:7px;color:white}
+#extra-dialog .profile-stat{border-color:#5cbcec;box-shadow:none}
+#results{background:#073c6ded;color:white}
+#results .result-actions #result-again{background:var(--menu-gold);color:#774409;border-color:#b98f19;box-shadow:0 5px 0 #99570c;text-shadow:none}
+@media(max-width:700px){#extra-dialog[data-view="profile"] .extra-content{padding:10px}#boutique .boutique-tabs button,#extra-dialog .extra-tabs button{border-radius:10px 10px 0 0}}
