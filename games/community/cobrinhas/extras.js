@@ -438,6 +438,7 @@
   }, 430);
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) audio?.suspend().catch(() => {});
+    else if (audio && (prefs.music || prefs.sound)) audio.resume().catch(() => {});
   });
   // Touch controls reuse the arena joystick and preserve all keyboard/mouse controls.
   const joystick = $("joystick"),

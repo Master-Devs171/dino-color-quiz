@@ -5,7 +5,7 @@ const { Book } = require("../games/community/cobrinhas/progress.js");
 const nodes = {},
   handlers = {},
   intervals = [];
-let tones = 0,
+let audioInstance, tones = 0,
   heading = null;
 class Node {
   constructor() {
@@ -73,14 +73,17 @@ const parent = new Node(),
 const book = new Book();
 class Audio {
   constructor() {
+    audioInstance = this;
     this.state = "running";
     this.currentTime = 0;
     this.destination = {};
   }
   resume() {
+    this.state = "running";
     return Promise.resolve();
   }
   suspend() {
+    this.state = "suspended";
     return Promise.resolve();
   }
   createOscillator() {
@@ -199,6 +202,12 @@ nodes["pref-music"].checked = true;
 nodes["pref-music"].onchange();
 intervals[0]();
 assert.equal(tones, 1);
+context.document.hidden = true;
+handlers.visibilitychange();
+assert.equal(audioInstance.state, "suspended");
+context.document.hidden = false;
+handlers.visibilitychange();
+assert.equal(audioInstance.state, "running", "audio resumes after returning to the game");
 nodes["pref-music"].checked = false;
 nodes["pref-music"].onchange();
 intervals[0]();

@@ -221,9 +221,9 @@
     const key = color + "|" + spot + "|" + r.toFixed(2) + "|" + texture;
     if (segmentCache.has(key)) return segmentCache.get(key);
     const tile = root.document.createElement("canvas");
-    tile.width = tile.height = 80;
+    tile.width = tile.height = 128;
     const c = tile.getContext("2d");
-    c.scale(2, 2);
+    c.scale(3.2, 3.2);
     c.translate(20, 18);
     c.fillStyle = "#63854b18";
     c.beginPath();
@@ -231,8 +231,9 @@
     c.fill();
     const shading = c.createRadialGradient?.(-r * 0.35, -r * 0.4, 1, 0, 0, r);
     if (shading?.addColorStop) {
-      shading.addColorStop(0, color);
-      shading.addColorStop(0.6, color);
+      const light = "#" + [1, 3, 5].map(i => Math.round(parseInt(color.slice(i, i + 2), 16) * .65 + 255 * .35).toString(16).padStart(2, "0")).join("");
+      shading.addColorStop(0, light);
+      shading.addColorStop(0.48, color);
       shading.addColorStop(
         1,
         "#" +
@@ -355,9 +356,19 @@
     const chomp =
       !reduced && s.chomp > 0 ? 1 + Math.sin(s.chomp * 14) * 0.08 : 1;
     ctx.scale(chomp * growth, chomp * growth);
-    ctx.fillStyle = a.headColor;
+    const headLight = ctx.createRadialGradient?.(-6, -7, 1, 0, 0, 20);
+    if (headLight?.addColorStop) {
+      headLight.addColorStop(0, a.headColor);
+      headLight.addColorStop(.6, a.headColor);
+      headLight.addColorStop(1, "#" + [1, 3, 5].map(i => Math.round(parseInt(a.headColor.slice(i, i + 2), 16) * .58).toString(16).padStart(2, "0")).join(""));
+    }
+    ctx.fillStyle = headLight?.addColorStop ? headLight : a.headColor;
     ctx.beginPath();
     ctx.ellipse(0, 0, 17, 16, 0, 0, 7);
+    ctx.fill();
+    ctx.fillStyle = "#ffffff38";
+    ctx.beginPath();
+    ctx.ellipse(-6, -6, 6, 3, -.5, 0, 7);
     ctx.fill();
     if (a.texture === "kitten") {
       ctx.fillStyle = a.headColor;

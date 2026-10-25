@@ -476,9 +476,9 @@
   function draw() {
     ctx.clearRect(0, 0, width, height);
     const theme = {
-      blue: ["#168dd5", "#106fba"],
-      sea: ["#139fc6", "#087eab"],
-      garden: ["#63b88a", "#409b74"],
+      blue: ["#168dd5", "#1483c8"],
+      sea: ["#139fc6", "#1594ba"],
+      garden: ["#63b88a", "#50a77f"],
     }[arenaTheme];
     ctx.fillStyle = theme[0];
     ctx.fillRect(0, 0, width, height);

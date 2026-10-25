@@ -147,6 +147,9 @@
     }
     c.restore();
   }
+  window.addEventListener?.("resize", () => {
+    if (panel.open && draft) refreshPreview();
+  });
   function refreshPreview() {
     preview(canvas, draft);
     if (mode === "store") {
