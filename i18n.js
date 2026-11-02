@@ -40,6 +40,13 @@ const platformExtra={
  'A INSTALAR…':{en:'INSTALLING…',fr:'INSTALLATION…',de:'WIRD INSTALLIERT…',es:'INSTALANDO…',pl:'INSTALOWANIE…'}
  ,'Pontos':{en:'Points',fr:'Points',de:'Punkte',es:'Puntos',pl:'Punkty'}
  ,'Fechar':{en:'Close',fr:'Fermer',de:'Schließen',es:'Cerrar',pl:'Zamknij'}
+ ,'Fechar jogo':{'pt-BR':'Fechar jogo',en:'Close game',fr:'Fermer le jeu',de:'Spiel schließen',es:'Cerrar juego',pl:'Zamknij grę'}
+ ,'A preparar a aventura…':{'pt-BR':'Preparando a aventura…',en:'Preparing the adventure…',fr:'Préparation de l’aventure…',de:'Das Abenteuer wird vorbereitet…',es:'Preparando la aventura…',pl:'Przygotowywanie przygody…'}
+ ,'O jogo está a carregar em segurança.':{'pt-BR':'O jogo está carregando com segurança.',en:'The game is loading safely.',fr:'Le jeu se charge en toute sécurité.',de:'Das Spiel wird sicher geladen.',es:'El juego se está cargando de forma segura.',pl:'Gra jest bezpiecznie wczytywana.'}
+ ,'Ainda a preparar…':{'pt-BR':'Ainda preparando…',en:'Still preparing…',fr:'Toujours en préparation…',de:'Noch in Vorbereitung…',es:'Todavía preparando…',pl:'Nadal przygotowujemy…'}
+ ,'Este jogo precisa de mais alguns segundos.':{'pt-BR':'Este jogo precisa de mais alguns segundos.',en:'This game needs a few more seconds.',fr:'Ce jeu a besoin de quelques secondes de plus.',de:'Dieses Spiel braucht noch ein paar Sekunden.',es:'Este juego necesita unos segundos más.',pl:'Ta gra potrzebuje jeszcze kilku sekund.'}
+ ,'Não foi possível abrir o jogo.':{'pt-BR':'Não foi possível abrir o jogo.',en:'The game could not be opened.',fr:'Impossible d’ouvrir le jeu.',de:'Das Spiel konnte nicht geöffnet werden.',es:'No se pudo abrir el juego.',pl:'Nie udało się otworzyć gry.'}
+ ,'Fecha e tenta novamente.':{'pt-BR':'Feche e tente novamente.',en:'Close it and try again.',fr:'Fermez et réessayez.',de:'Schließe es und versuche es erneut.',es:'Ciérralo e inténtalo de nuevo.',pl:'Zamknij i spróbuj ponownie.'}
  ,'Voltar':{en:'Back',fr:'Retour',de:'Zurück',es:'Volver',pl:'Wróć'}
  ,'Puzzles':{en:'Puzzles',fr:'Puzzles',de:'Puzzles',es:'Puzles',pl:'Puzzle'}
  ,'Ação':{en:'Action',fr:'Action',de:'Action',es:'Acción',pl:'Akcja'}

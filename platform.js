@@ -1057,18 +1057,22 @@
       return;
     const overlay = document.createElement("section");
     overlay.className = "dp-runtime";
-    const launchUrl = await installedGameUrl(game);
     // Android serves installed packages through Capacitor's private local
     // origin. Native frames need that origin for ES modules, JSON, WebGL and
     // media; browser frames keep the stricter opaque-origin sandbox.
     const gameSandbox = nativeMode
       ? "allow-scripts allow-same-origin allow-pointer-lock"
       : "allow-scripts allow-pointer-lock";
-    overlay.innerHTML = `<header><b>${safeText(game.name)}</b><button type="button" aria-label="Fechar jogo">✕</button></header><iframe title="${safeText(game.name)}" sandbox="${gameSandbox}" allow="fullscreen" src="${safeText(launchUrl)}"></iframe>`;
+    overlay.innerHTML = `<header><b>${safeText(game.name)}</b><button type="button" aria-label="${safeText(tr("Fechar jogo"))}">✕</button></header><div class="dp-game-loader" role="status" aria-live="polite"><div class="dp-loader-scene" aria-hidden="true"><span class="dp-loader-orbit one"></span><span class="dp-loader-orbit two"></span><img src="assets/dinoplay-mascot.png" alt=""><i></i><i></i><i></i></div><strong>${safeText(tr("A preparar a aventura…"))}</strong><small>${safeText(tr("O jogo está a carregar em segurança."))}</small><span class="dp-loader-bar"><i></i></span></div><iframe title="${safeText(game.name)}" sandbox="${gameSandbox}" allow="fullscreen"></iframe>`;
     document.body.appendChild(overlay);
     document.body.classList.remove("dp-shell");
     const frame = overlay.querySelector("iframe"),
+      loader = overlay.querySelector(".dp-game-loader"),
       storageName = `dinoPlayCommunity:${id}`;
+    const loaderStartedAt = performance.now();
+    let loadTimeout = 0,
+      frameStarted = false,
+      closed = false;
     const contentCacheName = `dinoplay-content-${id}`,
       contentUrls = new Set(),
       repository = String(game.repository || "").match(/^https:\/\/github\.com\/([^/]+)\/([^/]+)\/?$/i),
@@ -1076,12 +1080,26 @@
         ? `https://raw.githubusercontent.com/${repository[1]}/${repository[2]}/main/content/`
         : "";
     const close = () => {
+      closed = true;
+      clearTimeout(loadTimeout);
       window.removeEventListener("message", receive);
       contentUrls.forEach((value) => URL.revokeObjectURL(value));
       overlay.remove();
       document.body.classList.add("dp-shell");
       render();
     };
+    const finishLoading = () => {
+      if (!frameStarted || closed || !loader) return;
+      const delay = Math.max(0, 420 - (performance.now() - loaderStartedAt));
+      setTimeout(() => {
+        if (closed) return;
+        clearTimeout(loadTimeout);
+        loader.classList.add("done");
+        frame.classList.add("ready");
+        setTimeout(() => loader.remove(), 320);
+      }, delay);
+    };
+    frame.addEventListener("load", finishLoading);
     const reply = (request, ok, value, error) =>
       frame.contentWindow?.postMessage(
         { source: "dinoplay-host", id: request.id, ok, value, error },
@@ -1208,6 +1226,29 @@
     };
     overlay.querySelector("button").addEventListener("click", close);
     window.addEventListener("message", receive);
+    try {
+      const launchUrl = await installedGameUrl(game);
+      if (closed) return;
+      frameStarted = true;
+      frame.src = launchUrl;
+      loadTimeout = setTimeout(() => {
+        if (!loader || closed || frame.classList.contains("ready")) return;
+        loader.classList.add("slow");
+        loader.querySelector("strong").textContent = tr("Ainda a preparar…");
+        loader.querySelector("small").textContent = tr(
+          "Este jogo precisa de mais alguns segundos.",
+        );
+      }, 12000);
+    } catch (error) {
+      loader.classList.add("failed");
+      loader.querySelector("strong").textContent = tr(
+        "Não foi possível abrir o jogo.",
+      );
+      loader.querySelector("small").textContent = tr(
+        "Fecha e tenta novamente.",
+      );
+      console.error("DinoPlay: game launch failed", error);
+    }
   }
   function toast(text, type = "") {
     let t = document.querySelector(".dp-toast");
