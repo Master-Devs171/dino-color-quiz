@@ -47,6 +47,19 @@ requireText(
   "versão única partilhada com a interface",
 );
 requireText(
+  shell,
+  '`./sw.js?v=${encodeURIComponent(APP_VERSION)}`',
+  "Service Worker identificado pela versão publicada",
+);
+for (const [, asset] of index.matchAll(
+  /(?:src|href)="([^"?]+\.(?:js|css)\?v=\d+)"/g,
+))
+  requireText(
+    worker,
+    `./${asset}`,
+    `pré-cache atualizado para ${asset}`,
+  );
+requireText(
   platform,
   "window.DINOPLAY_VERSION",
   "interface usa a versão interna atual",

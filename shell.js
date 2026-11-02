@@ -1,5 +1,5 @@
 (() => {
-  const APP_VERSION = "5.80";
+  const APP_VERSION = "5.81";
   let registration = null;
   let reloading = false;
   window.DINOPLAY_VERSION = APP_VERSION;
@@ -22,7 +22,10 @@
   async function setupUpdates() {
     if (window.Capacitor?.isNativePlatform?.()) return;
     if (!("serviceWorker" in navigator)) return;
-    registration = await navigator.serviceWorker.register("./sw.js", { updateViaCache: "none" });
+    registration = await navigator.serviceWorker.register(
+      `./sw.js?v=${encodeURIComponent(APP_VERSION)}`,
+      { updateViaCache: "none" },
+    );
     navigator.serviceWorker.addEventListener("controllerchange", () => {
       if (!reloading) { reloading = true; location.reload(); }
     });
