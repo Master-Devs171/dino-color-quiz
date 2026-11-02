@@ -585,6 +585,66 @@
       "repository": "https://github.com/Rjcferreira/dinoplay-dinocontos",
       "sourceBase": "https://raw.githubusercontent.com/Rjcferreira/dinoplay-dinocontos/v1.0.1/",
       "pageBase": "https://rjcferreira.github.io/dinoplay-dinocontos/"
+    },
+    {
+      "schemaVersion": 1,
+      "id": "dinosea",
+      "name": "OceanPals: Aventura Marinha",
+      "version": "1.13.5",
+      "entry": "index.html",
+      "category": "explore",
+      "age": "6+",
+      "cover": "assets/covers/dinosea-cover.png",
+      "description": "Escolhe uma espécie marinha, alimenta-te, cresce, explora o oceano e foge dos predadores.",
+      "offline": true,
+      "multiplayer": false,
+      "permissions": [
+        "storage"
+      ],
+      "languages": [
+        "pt-PT"
+      ],
+      "assets": [
+        "index.html",
+        "style.css",
+        "boot.js",
+        "game.js",
+        "vendor/three.module.min.js",
+        "vendor/three.core.min.js",
+        "vendor/GLTFLoader.js",
+        "vendor/BufferGeometryUtils.js",
+        "assets/models/quaternius-cute-fish/clownfish.glb",
+        "assets/models/quaternius-cute-fish/bluetang.glb",
+        "assets/models/quaternius-cute-fish/puffer.glb",
+        "assets/models/quaternius-cute-fish/piranha.glb",
+        "assets/models/quaternius-cute-fish/lionfish.glb",
+        "assets/models/quaternius-cute-fish/tuna.glb",
+        "assets/models/quaternius-cute-fish/swordfish.glb",
+        "assets/models/quaternius-cute-fish/shark.glb",
+        "assets/models/quaternius-cute-fish/goblinshark.glb",
+        "assets/models/quaternius-cute-fish/LICENSE-CC0.txt",
+        "assets/models/quaternius-cute-fish/SOURCE.md",
+        "assets/models/oceanpals-extra/dolphin.glb",
+        "assets/models/oceanpals-extra/whale.glb",
+        "assets/models/oceanpals-extra/turtle.glb",
+        "assets/models/oceanpals-extra/octopus.glb",
+        "assets/models/oceanpals-extra/crocodile.glb",
+        "assets/models/oceanpals-extra/snake.glb",
+        "assets/models/oceanpals-extra/crab.glb",
+        "assets/models/oceanpals-extra/crawfish.glb",
+        "assets/models/oceanpals-extra/SOURCES-AND-LICENSES.md",
+        "assets/covers/dinosea-cover.png",
+        "assets/backgrounds/pet-den-showroom-v1.png",
+        "sdk/dinoplay-game-sdk.js"
+      ],
+      "license": "MIT",
+      "author": "DinoPlay",
+      "runtime": "sandbox",
+      "size": "11 MB",
+      "catalogCover": "assets/game-covers/dinosea.png?v=1.13.5",
+      "repository": "https://github.com/Rjcferreira/dinoplay-oceanpals",
+      "sourceBase": "https://raw.githubusercontent.com/Rjcferreira/dinoplay-oceanpals/v1.13.5/",
+      "pageBase": "https://rjcferreira.github.io/dinoplay-oceanpals/"
     }
   ]
 }
