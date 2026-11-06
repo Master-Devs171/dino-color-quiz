@@ -650,7 +650,7 @@
       "schemaVersion": 1,
       "id": "vortex-city",
       "name": "Vórtex City",
-      "version": "1.0.2",
+      "version": "1.1.0",
       "entry": "dist/index.html",
       "category": "explore",
       "age": "7+",
@@ -679,10 +679,10 @@
       "license": "MIT",
       "author": "Master-Devs171",
       "runtime": "sandbox",
-      "size": "2.33 MB",
-      "catalogCover": "assets/game-covers/vortex-city.jpg?v=1.0.2",
+      "size": "2.34 MB",
+      "catalogCover": "assets/game-covers/vortex-city.jpg?v=1.1.0",
       "repository": "https://github.com/Master-Devs171/dinoplay-vortex-city",
-      "sourceBase": "https://raw.githubusercontent.com/Master-Devs171/dinoplay-vortex-city/v1.0.2/",
+      "sourceBase": "https://raw.githubusercontent.com/Master-Devs171/dinoplay-vortex-city/v1.1.0/",
       "pageBase": "https://master-devs171.github.io/dinoplay-vortex-city/"
     }
   ]
