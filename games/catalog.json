@@ -650,7 +650,7 @@
       "schemaVersion": 1,
       "id": "dino-blade-merge",
       "name": "Dino Blade Merge",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "entry": "dist/index.html",
       "category": "action",
       "age": "7+",
@@ -676,10 +676,10 @@
       "license": "MIT",
       "author": "Master-Devs171",
       "runtime": "sandbox",
-      "size": "245 KB",
-      "catalogCover": "assets/game-covers/dino-blade-merge.jpg?v=1.0.1",
+      "size": "246 KB",
+      "catalogCover": "assets/game-covers/dino-blade-merge.jpg?v=1.0.2",
       "repository": "https://github.com/Master-Devs171/dinoplay-dino-blade-merge",
-      "sourceBase": "https://raw.githubusercontent.com/Master-Devs171/dinoplay-dino-blade-merge/v1.0.1/",
+      "sourceBase": "https://raw.githubusercontent.com/Master-Devs171/dinoplay-dino-blade-merge/v1.0.2/",
       "pageBase": "https://master-devs171.github.io/dinoplay-dino-blade-merge/"
     }
   ]
