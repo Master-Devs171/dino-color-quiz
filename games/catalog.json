@@ -650,7 +650,7 @@
       "schemaVersion": 1,
       "id": "salta-dino",
       "name": "Salta, Dino!",
-      "version": "1.0.2",
+      "version": "1.1.0",
       "entry": "dist/index.html",
       "category": "action",
       "age": "7+",
@@ -676,10 +676,10 @@
       "license": "MIT",
       "author": "Master-Devs171",
       "runtime": "sandbox",
-      "size": "163 KB",
-      "catalogCover": "assets/game-covers/salta-dino.jpg?v=1.0.2",
+      "size": "168 KB",
+      "catalogCover": "assets/game-covers/salta-dino.jpg?v=1.1.0",
       "repository": "https://github.com/Master-Devs171/dinoplay-salta-dino",
-      "sourceBase": "https://raw.githubusercontent.com/Master-Devs171/dinoplay-salta-dino/v1.0.2/",
+      "sourceBase": "https://raw.githubusercontent.com/Master-Devs171/dinoplay-salta-dino/v1.1.0/",
       "pageBase": "https://master-devs171.github.io/dinoplay-salta-dino/"
     }
   ]
